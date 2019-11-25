@@ -1,5 +1,7 @@
 .DEFAULT_GOAL := all
 
+TIMED?=1
+
 _CoqProject:
 	@(echo "-Q . CoqPerformanceTests"; git ls-files "*.v") > $@
 
