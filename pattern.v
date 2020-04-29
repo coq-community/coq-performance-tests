@@ -18,14 +18,16 @@ Ltac do_time n :=
 
 Local Set Warnings Append "-abstract-large-number".
 
+Tactic Notation "do_n" tactic3(tac) := do 50 tac.
+
 Goal True.
 Proof.
   do_time 2; do_time 4; do_time 8; do_time 16; do_time 32; do_time 64;
     do_time 128; do_time 256; do_time 512.
-  idtac 1024; do 9 do_time 1024.
-  idtac 2048; do 9 do_time 2048.
-  idtac 4096; do 9 do_time 4096.
-  idtac 8192; do 9 do_time 8192.
-  idtac 16384; do 9 do_time 16384.
+  idtac 1024; do_n do_time 1024.
+  idtac 2048; do_n do_time 2048.
+  idtac 4096; do_n do_time 4096.
+  idtac 8192; do_n do_time 8192.
+  idtac 16384; do_n do_time 16384.
   exact I.
 Defined.
