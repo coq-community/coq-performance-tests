@@ -19,6 +19,9 @@
 *.v.d
 *.vio
 *.vo
+*.vok
+*.vos
+*.v.timing
 .coq-native/
 .csdp.cache
 .lia.cache
