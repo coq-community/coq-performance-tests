@@ -1,16 +1,51 @@
-.DEFAULT_GOAL := all
+.DEFAULT_GOAL := coq
 
-TIMED?=1
-TIMING?=1
+.PHONY: coq
+coq:
+	+$(MAKE) -C src
+	+$(MAKE) -C PerformanceExperiments
 
-export TIMED
-export TIMING
+.PHONY: install clean
+install clean:
+	+$(MAKE) -C src $@
+	+$(MAKE) -C PerformanceExperiments $@
 
-_CoqProject:
-	@(echo "-Q . CoqPerformanceTests"; git ls-files "*.v") > $@
+.PHONY: perf
+perf:
+	+$(MAKE) --no-print-directory -C PerformanceExperiments perf-Sanity perf-SuperFast perf-Fast
+	+$(MAKE) --no-print-directory -C PerformanceExperiments perf-csv
 
-Makefile.coq: _CoqProject
-	$(COQBIN)coq_makefile -f $< -o $@
+.PHONY: install-perf
+install-perf:
+	+$(MAKE) --no-print-directory -C PerformanceExperiments install-perf-Sanity install-perf-SuperFast install-perf-Fast
 
-%: Makefile.coq
-	$(MAKE) -f Makefile.coq $@
+.PHONY: install-perf-Sanity
+install-perf-Sanity:
+	+$(MAKE) --no-print-directory -C PerformanceExperiments install-perf-Sanity
+
+.PHONY: pdf
+pdf:
+	+$(MAKE) --no-print-directory -C plots
+
+.PHONY: copy-pdf
+copy-pdf:
+	mkdir -p $(OUTPUT)
+	cp -t $(OUTPUT) plots/all.pdf
+
+.PHONY: doc
+doc:
+	+$(MAKE) --no-print-directory -C plots svg
+
+.PHONY: copy-perf
+copy-perf:
+	+$(MAKE) --no-print-directory -C PerformanceExperiments OUTPUT="$(abspath $(OUTPUT))" $@
+
+.PHONY: copy-doc
+copy-doc:
+	cp -t $(OUTPUT) plots/*.svg
+
+include PerformanceExperiments/Makefile.variables
+PERF_KINDS := $(addprefix perf-,$(SIZES))
+.PHONY: $(PERF_KINDS)
+$(PERF_KINDS):
+	+$(MAKE) --no-print-directory -C PerformanceExperiments $@

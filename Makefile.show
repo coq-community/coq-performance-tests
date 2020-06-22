@@ -1,0 +1,5 @@
+# Print shell commands (set to non empty)
+VERBOSE ?=
+
+SHOW := $(if $(VERBOSE),@true "",@echo "")
+HIDE := $(if $(VERBOSE),,@)

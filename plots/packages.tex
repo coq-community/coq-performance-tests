@@ -1,0 +1,314 @@
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{gnuplottex}[2016/08/21]%must be before listings package; min date is for compat with tikzexternalize
+\usepackage{pgfkeys}
+\usepackage{pgfplotstable}
+\pgfplotsset{compat=1.15}
+\usepackage{currfile}
+
+\usepgfplotslibrary{external}
+\tikzexternalize
+\tikzsetfigurename{\tikzexternalrealjob-\currfilebase-figure}
+
+\usepackage{hyperref}
+\usepackage{unicode-math}
+\usepackage{amsmath}
+\usepackage{newunicodechar}
+\newcommand{\newunicodecharpdftex}[2]{\newunicodechar{#1}{\texorpdfstring{#2}{#1}}}
+\newunicodecharpdftex{Α}{\ensuremath{\Alpha}}
+\newunicodecharpdftex{Β}{\ensuremath{\Beta}}
+\newunicodecharpdftex{Γ}{\ensuremath{\Gamma}}
+\newunicodecharpdftex{Δ}{\ensuremath{\Delta}}
+\newunicodecharpdftex{Ε}{\ensuremath{\Epsilon}}
+\newunicodecharpdftex{Ζ}{\ensuremath{\Zeta}}
+\newunicodecharpdftex{Η}{\ensuremath{\Eta}}
+\newunicodecharpdftex{Θ}{\ensuremath{\Theta}}
+\newunicodecharpdftex{Ι}{\ensuremath{\Iota}}
+\newunicodecharpdftex{Κ}{\ensuremath{\Kappa}}
+\newunicodecharpdftex{Λ}{\ensuremath{\Lambda}}
+\newunicodecharpdftex{Μ}{\ensuremath{\Mu}}
+\newunicodecharpdftex{Ν}{\ensuremath{\Nu}}
+\newunicodecharpdftex{Ξ}{\ensuremath{\Xi}}
+\newunicodecharpdftex{Ο}{\ensuremath{\Omicron}}
+\newunicodecharpdftex{Π}{\ensuremath{\Pi}}
+\newunicodecharpdftex{Ρ}{\ensuremath{\Rho}}
+\newunicodecharpdftex{Σ}{\ensuremath{\Sigma}}
+\newunicodecharpdftex{Τ}{\ensuremath{\Tau}}
+\newunicodecharpdftex{Υ}{\ensuremath{\Upsilon}}
+\newunicodecharpdftex{Φ}{\ensuremath{\Phi}}
+\newunicodecharpdftex{Χ}{\ensuremath{\Chi}}
+\newunicodecharpdftex{Ψ}{\ensuremath{\Psi}}
+\newunicodecharpdftex{Ω}{\ensuremath{\Omega}}
+\newunicodecharpdftex{α}{\ensuremath{\alpha}}
+\newunicodecharpdftex{β}{\ensuremath{\beta}}
+\newunicodecharpdftex{γ}{\ensuremath{\gamma}}
+\newunicodecharpdftex{δ}{\ensuremath{\delta}}
+\newunicodecharpdftex{ϵ}{\ensuremath{\epsilon}}
+\newunicodecharpdftex{ε}{\ensuremath{\varepsilon}}
+\newunicodecharpdftex{ζ}{\ensuremath{\zeta}}
+\newunicodecharpdftex{η}{\ensuremath{\eta}}
+\newunicodecharpdftex{θ}{\ensuremath{\theta}}
+\newunicodecharpdftex{ϑ}{\ensuremath{\vartheta}}
+\newunicodecharpdftex{ι}{\ensuremath{\iota}}
+\newunicodecharpdftex{κ}{\ensuremath{\kappa}}
+\newunicodecharpdftex{ϰ}{\ensuremath{\varkappa}}
+\newunicodecharpdftex{λ}{\ensuremath{\lambda}}
+\newunicodecharpdftex{μ}{\ensuremath{\mu}}
+\newunicodecharpdftex{ν}{\ensuremath{\nu}}
+\newunicodecharpdftex{ξ}{\ensuremath{\xi}}
+\newunicodecharpdftex{ο}{\ensuremath{\omicron}}
+\newunicodecharpdftex{π}{\ensuremath{\pi}}
+\newunicodecharpdftex{ϖ}{\ensuremath{\varpi}}
+\newunicodecharpdftex{ρ}{\ensuremath{\rho}}
+\newunicodecharpdftex{ϱ}{\ensuremath{\varrho}}
+\newunicodecharpdftex{σ}{\ensuremath{\sigma}}
+\newunicodecharpdftex{ς}{\ensuremath{\varsigma}}
+\newunicodecharpdftex{τ}{\ensuremath{\tau}}
+\newunicodecharpdftex{υ}{\ensuremath{\upsilon}}
+\newunicodecharpdftex{ϕ}{\ensuremath{\phi}}
+\newunicodecharpdftex{φ}{\ensuremath{\varphi}}
+\newunicodecharpdftex{χ}{\ensuremath{\chi}}
+\newunicodecharpdftex{ψ}{\ensuremath{\psi}}
+\newunicodecharpdftex{ω}{\ensuremath{\omega}}
+\newunicodecharpdftex{∀}{\ensuremath{\forall}}
+\newunicodecharpdftex{∃}{\ensuremath{\exists}}
+\newunicodecharpdftex{→}{\ensuremath{\to}}
+\newunicodecharpdftex{⇒}{\ensuremath{\Rightarrow}}
+\newunicodecharpdftex{×}{\ensuremath{\times}}
+\newunicodecharpdftex{∧}{\ensuremath{\wedge}}
+\newunicodecharpdftex{⊢}{\ensuremath{\vdash}}
+\newunicodecharpdftex{𝔹}{\ensuremath{\mathbb{B}}}
+\newunicodecharpdftex{ℂ}{\ensuremath{\mathbb{C}}}
+\newunicodecharpdftex{ℕ}{\ensuremath{\mathbb{N}}}
+\newunicodecharpdftex{ℙ}{\ensuremath{\mathbb{P}}}
+\newunicodecharpdftex{ℚ}{\ensuremath{\mathbb{Q}}}
+\newunicodecharpdftex{ℝ}{\ensuremath{\mathbb{R}}}
+\newunicodecharpdftex{ℤ}{\ensuremath{\mathbb{Z}}}
+\newunicodecharpdftex{⁰}{\ensuremath{{}^0}}
+\newunicodecharpdftex{¹}{\ensuremath{{}^1}}
+\newunicodecharpdftex{²}{\ensuremath{{}^2}}
+\newunicodecharpdftex{³}{\ensuremath{{}^3}}
+\newunicodecharpdftex{⁴}{\ensuremath{{}^4}}
+\newunicodecharpdftex{⁵}{\ensuremath{{}^5}}
+\newunicodecharpdftex{⁶}{\ensuremath{{}^6}}
+\newunicodecharpdftex{⁷}{\ensuremath{{}^7}}
+\newunicodecharpdftex{⁸}{\ensuremath{{}^8}}
+\newunicodecharpdftex{⁹}{\ensuremath{{}^9}}
+\newunicodecharpdftex{₀}{\ensuremath{{}_0}}
+\newunicodecharpdftex{₁}{\ensuremath{{}_1}}
+\newunicodecharpdftex{₂}{\ensuremath{{}_2}}
+\newunicodecharpdftex{₃}{\ensuremath{{}_3}}
+\newunicodecharpdftex{₄}{\ensuremath{{}_4}}
+\newunicodecharpdftex{₅}{\ensuremath{{}_5}}
+\newunicodecharpdftex{₆}{\ensuremath{{}_6}}
+\newunicodecharpdftex{₇}{\ensuremath{{}_7}}
+\newunicodecharpdftex{₈}{\ensuremath{{}_8}}
+\newunicodecharpdftex{₉}{\ensuremath{{}_9}}
+\newunicodecharpdftex{⁺}{\ensuremath{{}^+}}
+\newunicodecharpdftex{⁻}{\ensuremath{{}^-}}
+\newunicodecharpdftex{⁼}{\ensuremath{{}^=}}
+\newunicodecharpdftex{⁽}{\ensuremath{{}^(}}
+\newunicodecharpdftex{⁾}{\ensuremath{{}^)}}
+\newunicodecharpdftex{₊}{\ensuremath{{}_+}}
+\newunicodecharpdftex{₋}{\ensuremath{{}_-}}
+\newunicodecharpdftex{₌}{\ensuremath{{}_=}}
+\newunicodecharpdftex{₍}{\ensuremath{{}_(}}
+\newunicodecharpdftex{₎}{\ensuremath{{}_)}}
+
+\newunicodecharpdftex{ᵃ}{\ensuremath{{}^{\text{a}}}}
+\newunicodecharpdftex{ᵇ}{\ensuremath{{}^{\text{b}}}}
+\newunicodecharpdftex{ᶜ}{\ensuremath{{}^{\text{c}}}}
+\newunicodecharpdftex{ᵈ}{\ensuremath{{}^{\text{d}}}}
+\newunicodecharpdftex{ᵉ}{\ensuremath{{}^{\text{e}}}}
+\newunicodecharpdftex{ᶠ}{\ensuremath{{}^{\text{f}}}}
+\newunicodecharpdftex{ᵍ}{\ensuremath{{}^{\text{g}}}}
+\newunicodecharpdftex{ʰ}{\ensuremath{{}^{\text{h}}}}
+\newunicodecharpdftex{ⁱ}{\ensuremath{{}^{\text{i}}}}
+\newunicodecharpdftex{ʲ}{\ensuremath{{}^{\text{j}}}}
+\newunicodecharpdftex{ᵏ}{\ensuremath{{}^{\text{k}}}}
+\newunicodecharpdftex{ˡ}{\ensuremath{{}^{\text{l}}}}
+\newunicodecharpdftex{ᵐ}{\ensuremath{{}^{\text{m}}}}
+\newunicodecharpdftex{ⁿ}{\ensuremath{{}^{\text{n}}}}
+\newunicodecharpdftex{ᵒ}{\ensuremath{{}^{\text{o}}}}
+\newunicodecharpdftex{ᵖ}{\ensuremath{{}^{\text{p}}}}
+\newunicodecharpdftex{ʳ}{\ensuremath{{}^{\text{r}}}}
+\newunicodecharpdftex{ˢ}{\ensuremath{{}^{\text{s}}}}
+\newunicodecharpdftex{ᵗ}{\ensuremath{{}^{\text{t}}}}
+\newunicodecharpdftex{ᵘ}{\ensuremath{{}^{\text{u}}}}
+\newunicodecharpdftex{ᵛ}{\ensuremath{{}^{\text{v}}}}
+\newunicodecharpdftex{ʷ}{\ensuremath{{}^{\text{w}}}}
+\newunicodecharpdftex{ˣ}{\ensuremath{{}^{\text{x}}}}
+\newunicodecharpdftex{ʸ}{\ensuremath{{}^{\text{y}}}}
+\newunicodecharpdftex{ᶻ}{\ensuremath{{}^{\text{z}}}}
+\newunicodecharpdftex{ₐ}{\ensuremath{{}_{\text{a}}}}
+\newunicodecharpdftex{ₑ}{\ensuremath{{}_{\text{e}}}}
+\newunicodecharpdftex{ₕ}{\ensuremath{{}_{\text{h}}}}
+\newunicodecharpdftex{ᵢ}{\ensuremath{{}_{\text{i}}}}
+\newunicodecharpdftex{ⱼ}{\ensuremath{{}_{\text{j}}}}
+\newunicodecharpdftex{ₖ}{\ensuremath{{}_{\text{k}}}}
+\newunicodecharpdftex{ₗ}{\ensuremath{{}_{\text{l}}}}
+\newunicodecharpdftex{ₘ}{\ensuremath{{}_{\text{m}}}}
+\newunicodecharpdftex{ₙ}{\ensuremath{{}_{\text{n}}}}
+\newunicodecharpdftex{ₒ}{\ensuremath{{}_{\text{o}}}}
+\newunicodecharpdftex{ₚ}{\ensuremath{{}_{\text{p}}}}
+\newunicodecharpdftex{ᵣ}{\ensuremath{{}_{\text{r}}}}
+\newunicodecharpdftex{ₛ}{\ensuremath{{}_{\text{s}}}}
+\newunicodecharpdftex{ₜ}{\ensuremath{{}_{\text{t}}}}
+\newunicodecharpdftex{ᵤ}{\ensuremath{{}_{\text{u}}}}
+\newunicodecharpdftex{ᵥ}{\ensuremath{{}_{\text{v}}}}
+\newunicodecharpdftex{ₓ}{\ensuremath{{}_{\text{x}}}}
+
+\newunicodecharpdftex{≅}{\ensuremath{\cong}}
+\newunicodecharpdftex{∘}{\ensuremath{\circ}}
+
+
+% to have the external picture be updated every time the input files are changed
+\makeatletter
+\newcommand{\einput}[1]{\@@input #1 \space}
+\newcommand{\beginTikzpictureStamped}[2][]{%
+    {%
+        \everyeof{\noexpand}% IDK why \noexpand is the magic one, but I got it from http://mirrors.ibiblio.org/CTAN/macros/latex/contrib/oberdiek/catchfile.pdf
+        \long\xdef\@tikzstamp{#2}%
+    }%
+    \def\@dobegintikzpicture{\begin{tikzpicture}[#1]}%
+    \expandafter\@dobegintikzpicture\expandafter\def\expandafter\tikzstamp\expandafter{\@tikzstamp}%
+}
+\newcommand{\TikzpictureStamped}[3][]{\beginTikzpictureStamped[#1]{#2}#3\end{tikzpicture}}%
+\makeatother
+
+
+\usepackage{xstring} % for \IfStrEq, \IfInteger
+
+%% exponential regression fit
+\makeatletter
+% https://tex.stackexchange.com/a/50113/2066
+\newcommand*{\IsInteger}[3]{%
+    \IfStrEq{#1}{ }{%
+        #3% is a blank string
+    }{%
+    \IfInteger{#1}{#2}{#3}%
+}%
+}%
+\newcommand{\pgftognucolumnset}[2]{%
+    \IsInteger{\pgfkeysvalueof{#1}}{%
+        % pgf 0-indexes columns, while gnuplot 1-indexes columns, so we add 1 to adjust
+        \edef#2{\the\numexpr\pgfkeysvalueof{#1}+1\relax}%
+    }{%
+    \edef#2{(column("\pgfkeysvalueof{#1}"))}%
+}%
+}
+\makeatletter
+% \addplotexponentialregression[params for \addplot][default settings for a and b, also for x and y columns]{table file}
+\NewDocumentCommand{\addplotexponentialregression}{ O{no markers} o m}{%
+    \pgfkeyssetvalue{/addplotexponentialregression/x}{0}
+    \pgfkeyssetvalue{/addplotexponentialregression/y}{1}
+    \pgfkeyssetvalue{/addplotexponentialregression/a}{1}
+    \pgfkeyssetvalue{/addplotexponentialregression/b}{1}
+    \pgfkeys{/addplotexponentialregression/.cd,#2}
+    \pgftognucolumnset{/addplotexponentialregression/x}{\@addplotexponentialregression@colx}%
+    \pgftognucolumnset{/addplotexponentialregression/y}{\@addplotexponentialregression@coly}%
+    \edef\@addplotexponentialregression@inita{\pgfkeysvalueof{/addplotexponentialregression/a}}%
+    \edef\@addplotexponentialregression@initb{\pgfkeysvalueof{/addplotexponentialregression/b}}%
+    \addplot [#1] gnuplot [raw gnuplot] { % allows arbitrary gnuplot commands
+        f(x) = a*exp(b*x);     % Define the function to fit
+        % Set reasonable starting values here
+        a=\@addplotexponentialregression@inita;
+        b=\@addplotexponentialregression@initb;
+        fit f(x) '#3' u \@addplotexponentialregression@colx:\@addplotexponentialregression@coly\space via a,b; % Select the file
+        stats '#3' u \@addplotexponentialregression@colx;
+        plot [x=STATS_min:STATS_max] f(x);    % Specify the range to plot
+        set print "#3-parameters.dat";  % Open a file to save the parameters
+        print a, b;                  % Write the parameters to file
+    };
+    \pgfplotstableread{#3-parameters.dat}\parameters % Open the file Gnuplot wrote
+    \pgfplotstablegetelem{0}{0}\of\parameters \xdef\pgfplotstableregressiona{\pgfplotsretval} % Get first element, save into \pgfplotstableregressiona
+    \pgfplotstablegetelem{0}{1}\of\parameters \xdef\pgfplotstableregressionb{\pgfplotsretval}
+}
+% \addplotquadraticregression[params for \addplot][default settings for a and b and c, also for x and y columns]{table file}
+\NewDocumentCommand{\addplotquadraticregression}{ O{no markers} o m}{%
+    \pgfkeyssetvalue{/addplotquadraticregression/x}{0}
+    \pgfkeyssetvalue{/addplotquadraticregression/y}{1}
+    \pgfkeyssetvalue{/addplotquadraticregression/a}{1}
+    \pgfkeyssetvalue{/addplotquadraticregression/b}{1}
+    \pgfkeyssetvalue{/addplotquadraticregression/c}{1}
+    \pgfkeys{/addplotquadraticregression/.cd,#2}
+    \pgftognucolumnset{/addplotquadraticregression/x}{\@addplotquadraticregression@colx}%
+    \pgftognucolumnset{/addplotquadraticregression/y}{\@addplotquadraticregression@coly}%
+    \edef\@addplotquadraticregression@inita{\pgfkeysvalueof{/addplotquadraticregression/a}}%
+    \edef\@addplotquadraticregression@initb{\pgfkeysvalueof{/addplotquadraticregression/b}}%
+    \edef\@addplotquadraticregression@initc{\pgfkeysvalueof{/addplotquadraticregression/c}}%
+    \addplot [#1] gnuplot [raw gnuplot] { % allows arbitrary gnuplot commands
+        f(x) = a*x**2+b*x+c;     % Define the function to fit
+        % Set reasonable starting values here
+        a=\@addplotquadraticregression@inita;
+        b=\@addplotquadraticregression@initb;
+        c=\@addplotquadraticregression@initc;
+        fit f(x) '#3' u \@addplotquadraticregression@colx:\@addplotquadraticregression@coly\space via a,b,c; % Select the file
+        stats '#3' u \@addplotquadraticregression@colx;
+        plot [x=STATS_min:STATS_max] f(x);    % Specify the range to plot
+        set print "#3-parameters.dat";  % Open a file to save the parameters
+        print a, b, c;                  % Write the parameters to file
+    };
+    \pgfplotstableread{#3-parameters.dat}\parameters % Open the file Gnuplot wrote
+    \pgfplotstablegetelem{0}{0}\of\parameters \xdef\pgfplotstableregressiona{\pgfplotsretval} % Get first element, save into \pgfplotstableregressiona
+    \pgfplotstablegetelem{0}{1}\of\parameters \xdef\pgfplotstableregressionb{\pgfplotsretval}
+    \pgfplotstablegetelem{0}{2}\of\parameters \xdef\pgfplotstableregressionc{\pgfplotsretval}
+}
+% \addplotcubicregression[params for \addplot][default settings for a and b and c and d, also for x and y columns]{table file}
+\NewDocumentCommand{\addplotcubicregression}{ O{no markers} o m}{%
+    \pgfkeyssetvalue{/addplotcubicregression/x}{0}
+    \pgfkeyssetvalue{/addplotcubicregression/y}{1}
+    \pgfkeyssetvalue{/addplotcubicregression/a}{1}
+    \pgfkeyssetvalue{/addplotcubicregression/b}{1}
+    \pgfkeyssetvalue{/addplotcubicregression/c}{1}
+    \pgfkeyssetvalue{/addplotcubicregression/d}{1}
+    \pgfkeys{/addplotcubicregression/.cd,#2}
+    \pgftognucolumnset{/addplotcubicregression/x}{\@addplotcubicregression@colx}%
+    \pgftognucolumnset{/addplotcubicregression/y}{\@addplotcubicregression@coly}%
+    \edef\@addplotcubicregression@inita{\pgfkeysvalueof{/addplotcubicregression/a}}%
+    \edef\@addplotcubicregression@initb{\pgfkeysvalueof{/addplotcubicregression/b}}%
+    \edef\@addplotcubicregression@initc{\pgfkeysvalueof{/addplotcubicregression/c}}%
+    \edef\@addplotcubicregression@initd{\pgfkeysvalueof{/addplotcubicregression/d}}%
+    \addplot [#1] gnuplot [raw gnuplot] { % allows arbitrary gnuplot commands
+        f(x) = a*x**3+b*x**2+c*x+d;     % Define the function to fit
+        % Set reasonable starting values here
+        a=\@addplotcubicregression@inita;
+        b=\@addplotcubicregression@initb;
+        c=\@addplotcubicregression@initc;
+        d=\@addplotcubicregression@initd;
+        fit f(x) '#3' u \@addplotcubicregression@colx:\@addplotcubicregression@coly\space via a,b,c,d; % Select the file
+        stats '#3' u \@addplotcubicregression@colx;
+        plot [x=STATS_min:STATS_max] f(x);    % Specify the range to plot
+        set print "#3-parameters.dat";  % Open a file to save the parameters
+        print a, b, c, d;                  % Write the parameters to file
+    };
+    \pgfplotstableread{#3-parameters.dat}\parameters % Open the file Gnuplot wrote
+    \pgfplotstablegetelem{0}{0}\of\parameters \xdef\pgfplotstableregressiona{\pgfplotsretval} % Get first element, save into \pgfplotstableregressiona
+    \pgfplotstablegetelem{0}{1}\of\parameters \xdef\pgfplotstableregressionb{\pgfplotsretval}
+    \pgfplotstablegetelem{0}{2}\of\parameters \xdef\pgfplotstableregressionc{\pgfplotsretval}
+    \pgfplotstablegetelem{0}{3}\of\parameters \xdef\pgfplotstableregressiond{\pgfplotsretval}
+}
+% regress on y = a (x!)
+% \addplotfactorialregression[params for \addplot][default settings for a, also for x and y columns]{table file}
+\NewDocumentCommand{\addplotfactorialregression}{ O{no markers} o m}{%
+    \pgfkeyssetvalue{/addplotquadraticregression/x}{0}
+    \pgfkeyssetvalue{/addplotquadraticregression/y}{1}
+    \pgfkeyssetvalue{/addplotquadraticregression/a}{1}
+    \pgfkeys{/addplotquadraticregression/.cd,#2}
+    \pgftognucolumnset{/addplotquadraticregression/x}{\@addplotquadraticregression@colx}%
+    \pgftognucolumnset{/addplotquadraticregression/y}{\@addplotquadraticregression@coly}%
+    \edef\@addplotquadraticregression@inita{\pgfkeysvalueof{/addplotquadraticregression/a}}%
+    \addplot [#1] gnuplot [raw gnuplot] { % allows arbitrary gnuplot commands
+        f(x) = a*gamma(x+1);     % Define the function to fit
+        % Set reasonable starting values here
+        a=\@addplotquadraticregression@inita;
+        fit f(x) '#3' u \@addplotquadraticregression@colx:\@addplotquadraticregression@coly\space via a; % Select the file
+        stats '#3' u \@addplotquadraticregression@colx;
+        plot [x=STATS_min:STATS_max] f(x);    % Specify the range to plot
+        set print "#3-parameters.dat";  % Open a file to save the parameters
+        print a;                  % Write the parameters to file
+    };
+    \pgfplotstableread{#3-parameters.dat}\parameters % Open the file Gnuplot wrote
+    \pgfplotstablegetelem{0}{0}\of\parameters \xdef\pgfplotstableregressiona{\pgfplotsretval} % Get first element, save into \pgfplotstableregressiona
+}
+\makeatother

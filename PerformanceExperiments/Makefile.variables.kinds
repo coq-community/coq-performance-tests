@@ -1,0 +1,11 @@
+KINDS := \
+	pattern \
+	n_polymorphic_universes \
+	# end of list
+
+SH_KINDS :=
+
+SPECIAL_KINDS :=
+
+ALL_VKINDS := $(KINDS) $(SPECIAL_KINDS)
+ALL_KINDS := $(ALL_VKINDS) $(SH_KINDS)

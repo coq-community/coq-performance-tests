@@ -1,0 +1,62 @@
+include Makefile.coq-versions
+
+.PHONY: clean
+clean::
+	rm -f $(VERSION_FILES) $(MACHINE_FILE) $(MACHINE_EXTENDED_FILE)
+
+.PHONY: all
+all: $(VERSION_FILES) $(MACHINE_FILE) $(MACHINE_EXTENDED_FILE)
+
+.PHONY: copy-perf
+copy-perf::
+	cp -t $(OUTPUT) $(VERSION_FILES) $(MACHINE_FILE) $(MACHINE_EXTENDED_FILE)
+
+ifneq ($(COQ_EXTENDED_VERSION),$(COQ_EXTENDED_VERSION_OLD))
+$(COQ_VERSION_FILE)::
+	$(SHOW)'echo $$COQ_VERSION_INFO ($(COQ_VERSION)) > $@'
+	$(HIDE)echo "$(COQ_EXTENDED_VERSION)" > $@
+
+$(COQ_VERSION_SHORT_FILE)::
+	$(SHOW)'echo $$COQ_VERSION_INFO ($(COQ_VERSION)) > $@'
+	$(HIDE)echo "$(COQ_VERSION)" > $@
+
+$(COQ_VERSION_SHORT_DATE_FILE)::
+	$(SHOW)'echo $$COQ_VERSION_INFO ($(COQ_VERSION), $(COQ_VERSION_DATE)) > $@'
+	$(HIDE)echo "$(COQ_VERSION_DATE)" > $@
+
+$(COQ_VERSION_COMPILATION_DATE_FILE)::
+	$(SHOW)'echo $$COQ_VERSION_INFO ($(COQ_VERSION), $(COQ_VERSION_COMPILATION_DATE)) > $@'
+	$(HIDE)echo "$(COQ_VERSION_COMPILATION_DATE)" > $@
+
+$(COQ_VERSION_OCAML_VERSION_FILE)::
+	$(SHOW)'echo $$COQ_VERSION_INFO ($(COQ_VERSION), $(COQ_VERSION_OCAML_VERSION)) > $@'
+	$(HIDE)echo "$(COQ_VERSION_OCAML_VERSION)" > $@
+
+$(COQ_VERSION_CONFIG_FILE)::
+	$(SHOW)'echo $$COQ_VERSION_INFO ($(COQ_VERSION), <config>) > $@'
+	$(HIDE)$(COQ_VERSION_CONFIG_CMD) > $@
+
+$(COQ_VERSION_OCAML_CONFIG_FILE)::
+	$(SHOW)'echo $$COQ_VERSION_INFO ($(COQ_VERSION), <ocaml config>) > $@'
+	$(HIDE)$(COQ_VERSION_OCAML_CONFIG_CMD) > $@
+
+else
+$(VERSION_FILES) : ;
+endif
+
+
+ETC_DIR := ../etc
+
+$(MACHINE_FILE)::
+	$(SHOW)'etc/machine.sh > $@'
+	$(HIDE)$(ETC_DIR)/machine.sh > $@ 2>&1
+
+$(MACHINE_EXTENDED_FILE)::
+	$(SHOW)'etc/machine-extended.sh > $@'
+	$(HIDE)$(ETC_DIR)/machine-extended.sh > $@
+
+ifneq ($(strip $(COMPATIBILITY_FILES)),)
+$(COMPATIBILITY_FILES) : % : %$(EXPECTED_EXT) $(COQ_VERSION_FILE)
+	$(SHOW)'CP $@{$(EXPECTED_EXT),}'
+	$(HIDE)cp $< $@
+endif

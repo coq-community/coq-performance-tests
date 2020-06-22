@@ -1,0 +1,3 @@
+include Makefile.timing
+include Makefile.generated-files
+include Makefile.coq-versions-files

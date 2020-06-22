@@ -1,0 +1,3 @@
+Require Import PerformanceExperiments.Harness.
+Require Import PerformanceExperiments.@EXAMPLE@.
+Goal True. run@ARGS@. Abort.
