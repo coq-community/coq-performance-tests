@@ -7,7 +7,7 @@ export TIMED
 export TIMING
 
 _CoqProject::
-	@(echo "-Q . CoqPerformanceTests"; git ls-files "src/*.v") > $@
+	@(echo "-Q . CoqPerformanceTests"; git ls-files "*.v") > $@
 
 Makefile.coq: _CoqProject
 	$(COQBIN)coq_makefile -f $< -o $@

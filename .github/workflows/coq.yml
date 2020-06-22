@@ -71,7 +71,7 @@ jobs:
         echo "::group::echo | coqtop"
         true | coqtop
         echo "::endgroup::"
-    - run: make
+    - run: make -j2
     - run: make perf
     - run: sudo make install install-perf
     - run: make pdf
