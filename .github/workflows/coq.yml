@@ -78,7 +78,7 @@ jobs:
     - run: make doc
     - run: make copy-pdf copy-doc copy-perf OUTPUT="doc-build/${COQ_VERSION}"
     - name: Sleep to avoid conflicts between jobs
-    - run: sleep ${SLEEP_TIME}
+      run: sleep ${SLEEP_TIME}
     - name: Deploy pdfs
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
