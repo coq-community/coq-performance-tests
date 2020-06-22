@@ -71,12 +71,16 @@ jobs:
         echo "::group::echo | coqtop"
         true | coqtop
         echo "::endgroup::"
+        echo "::group::apt-show-versions $COQ_PACKAGE"
+        apt-show-versions $COQ_PACKAGE
+        echo "::endgroup::"
     - run: make -j2
     - run: make perf
     - run: sudo make install install-perf
     - run: make pdf
     - run: make doc
     - run: make copy-pdf copy-doc copy-perf OUTPUT="doc-build/${COQ_VERSION}"
+    - run: apt-show-versions $COQ_PACKAGE > doc-build/${COQ_VERSION}/.apt-show-versions
     - name: Sleep to avoid conflicts between jobs
       run: sleep ${SLEEP_TIME}
     - name: Deploy pdfs
