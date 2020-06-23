@@ -59,4 +59,4 @@ $(PDFS) : %.pdf : %.tex
 
 .PHONY: clean
 clean:
-	rm -f *.aux *.out *.nav *.toc *.vrb $(PDFS) *.snm *.log *.bbl *.blg *.tex.d *.run.xml *.atfi *.auxlock *.bcf *-blx.bib *.synctex.gz *'.synctex.gz(busy)' *.synctex *'.synctex(busy)'
+	rm -rf *.aux *.out *.nav *.toc *.vrb $(PDFS) *.snm *.log *.bbl *.blg *.tex.d *.run.xml *.atfi *.auxlock *.bcf *-blx.bib *.synctex.gz *'.synctex.gz(busy)' *.synctex *'.synctex(busy)' *.dpth $(SVGS) generated/

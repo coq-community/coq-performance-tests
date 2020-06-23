@@ -10,6 +10,55 @@ def to_valid_tex_cmd(s):
         s = s.replace(str(n), v)
     return s.replace(' ', '').replace('-', '').replace('_', '')
 
+
+def generate_legend_and_regression(color, mark, xlabel, ylabel, name):
+    variables = {'linear': ('a', 'b'),
+                 'quadratic': ('a', 'b', 'c'),
+                 'cubic': ('a', 'b', 'c', 'd'),
+                 'exponential': ('a', 'b')}
+    ylabels = ylabel.split('-regression-')
+    short_ylabel = ylabels[0]
+    regression_kinds = []
+    for ylabel_part in ylabels[1:]:
+        ylabel_part_parts = ylabel_part.split('-')
+        regression_kinds.append(ylabel_part_parts[0])
+        if len(ylabel_part_parts) > 1:
+            short_ylabel += '-' + '-'.join(ylabel_part_parts[1:])
+    def print_poly(regression_kind):
+        vs = variables[regression_kind]
+        ret = ''
+        for e, v in reversed(list(enumerate(vs))):
+            print_sign_str = '[print sign]' if e != len(vs) - 1 else ''
+            ret += fr'\pgfmathprintnumber{print_sign_str}{{\csname pgfplotstable{short_ylabel}-{regression_kind}regression{v}\endcsname}}'
+            if e == 0: pass
+            else:
+                ret += fr' \cdot \left(\text{{{xlabel}}}\right)'
+                if e != 1: ret += fr'^{{{e}}}'
+                ret += ' '
+        return ret
+    ret = fr'''
+        \addlegendentry{{{short_ylabel}}}'''
+    for regression_kind in regression_kinds:
+        variables_str = '\n'.join(fr'        \expandafter\xdef\csname pgfplotstable{short_ylabel}-{regression_kind}regression{v}\endcsname{{\pgfplotstableregression{v}}}' for v in variables[regression_kind])
+        if regression_kind == 'linear':
+            ret += fr'''
+        \addplot[no markers, color={color}] table[x=param-{xlabel},y={{create col/linear regression={{y={ylabel}}}}}]{{{name}.txt}};
+{variables_str}
+        \addlegendentry{{${print_poly(regression_kind)}$}}'''
+        elif regression_kind in ('quadratic', 'cubic', 'exponential'):
+            ret += fr'''
+        \addplot{regression_kind}regression[no markers, color={color}, smooth][x=param-{xlabel},y={ylabel}]{{{name}.txt}};
+{variables_str}'''
+            if regression_kind in ('quadratic', 'cubic'):
+                ret += fr'''
+        \addlegendentry{{${print_poly(regression_kind)}$}}'''
+            elif regression_kind == 'exponential':
+                ret += fr'''
+        \addlegendentry{{$\pgfmathprintnumber{{\csname pgfplotstable{short_ylabel}-{regression_kind}regressiona\endcsname}}\exp\left(\pgfmathprintnumber{{\csname pgfplotstable{short_ylabel}-{regression_kind}regressionb\endcsname}}\cdot\left(\text{{{xlabel}}}\right)\right)$}}'''
+        else:
+            raise Exception('Invalid regression_kind: %s (not in %s)' % (regression_kind, ', '.join(sorted(variables.keys()))))
+    return ret
+
 def generate_tex(name, txt_lines):
     header = txt_lines[0].strip().split(' ')
     ylabels = [h for h in header[1:] if not h.startswith('param-')]
@@ -22,8 +71,8 @@ def generate_tex(name, txt_lines):
     if len(ylabels) < 1: raise Exception('Invalid header with not enough columns: %s' % repr(txt_lines[0]))
     if not header[0].startswith('param-'): raise Exception('Invalid header: first column %s does not start with param-' % header[0])
     xlabel = header[0][len('param-'):]
-    plots = [fr'''        \addplot[only marks,mark={mark},color={color}] table[x=param-{xlabel},y={ylabel}]{{\{short_name}}};
-        \addlegendentry{{{ylabel}}}'''
+    plots = [fr'        \addplot[only marks,mark={mark},color={color}] table[x=param-{xlabel},y={ylabel}]{{{name}.txt}};'
+             + generate_legend_and_regression(color=color, mark=mark, xlabel=xlabel, ylabel=ylabel, name=name)
              for mark, color, ylabel
              in zip(MARKS + ['*'] * len(ylabels),
                     COLORS + ['black'] * len(ylabels),
@@ -32,10 +81,10 @@ def generate_tex(name, txt_lines):
     return r'''
 \begin{figure*}
   \begin{tikzpicture}
-    \pgfplotstableread{
+    \begin{filecontents*}{%(name)s.txt}
 %(contents)s
-}{\%(short_name)s}
-    \begin{axis}[xlabel=$%(xlabel)s$,
+\end{filecontents*}
+    \begin{axis}[xlabel=%(xlabel)s,
         ylabel=time (s),
         legend pos=outer north east,
         width=0.95\textwidth,

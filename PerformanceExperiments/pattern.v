@@ -17,7 +17,7 @@ Ltac time_solve_goal0 n :=
   | true => optimize_heap
   | false => idtac
   end;
-  time "pattern" pattern Nat.mul, S, O, (@Let_In nat (fun _ => nat)).
+  time "pattern-regression-linear" pattern Nat.mul, S, O, (@Let_In nat (fun _ => nat)).
 
 Global Open Scope Z_scope.
 
