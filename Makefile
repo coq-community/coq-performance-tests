@@ -1,9 +1,13 @@
 .DEFAULT_GOAL := coq
 
+COMPONENTS := src PerformanceExperiments
+
+.PHONY: $(COMPONENTS)
+$(COMPONENTS):
+	+$(MAKE) -C $@
+
 .PHONY: coq
-coq:
-	+$(MAKE) -C src
-	+$(MAKE) -C PerformanceExperiments
+coq: $(COMPONENTS)
 
 .PHONY: install clean
 install clean:
