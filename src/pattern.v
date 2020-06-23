@@ -17,6 +17,7 @@ Ltac do_time n :=
       fail).
 
 Local Set Warnings Append "-abstract-large-number".
+Local Set Warnings Append "-large-nat".
 
 Tactic Notation "do_n" tactic3(tac) := do 50 tac.
 

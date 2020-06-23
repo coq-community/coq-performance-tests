@@ -20,12 +20,12 @@ You can use [`gen-listing.sh`](./PerformanceExperiments/gen-listing.sh) to gener
 
 - [`n_polymorphic_universes`](./PerformanceExperiments/n_polymorphic_universes.v)
 
-  master | 8.11.1
-  --|--
-  <img src="https://coq-community.github.io/coq-performance-tests/master/n-polymorphic-universes.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.11.1/n-polymorphic-universes.svg" height=100px />
+  master | 8.11.2 | 8.10.2 | 8.9.1 | 8.8.2
+  --|--|--|--|--
+  <img src="https://coq-community.github.io/coq-performance-tests/master/n-polymorphic-universes.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.11.2/n-polymorphic-universes.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.10.2/n-polymorphic-universes.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.9.1/n-polymorphic-universes.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.8.2/n-polymorphic-universes.svg" height=100px />
 
 - [`pattern`](./PerformanceExperiments/pattern.v)
 
-  master | 8.11.1
-  --|--
-  <img src="https://coq-community.github.io/coq-performance-tests/master/pattern.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.11.1/pattern.svg" height=100px />
+  master | 8.11.2 | 8.10.2 | 8.9.1 | 8.8.2
+  --|--|--|--|--
+  <img src="https://coq-community.github.io/coq-performance-tests/master/pattern.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.11.2/pattern.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.10.2/pattern.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.9.1/pattern.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.8.2/pattern.svg" height=100px />

@@ -7,7 +7,7 @@ stems="$@"
 stems="$(echo "$stems" | tr ' ' '\n' | sed 's/\.v$//g' | tr '\n' ' ')"
 extra_bar=""
 extra_bar_space=""
-coq_versions="master 8.11.1"
+coq_versions="master 8.11.2 8.10.2 8.9.1 8.8.2"
 for stem in $stems; do
     stem_dash="$(echo "$stem" | sed 's/_/-/g')"
     echo '- [`'"$stem"'`](./PerformanceExperiments/'"$stem"'.v)'
