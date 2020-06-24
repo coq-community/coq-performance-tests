@@ -21,14 +21,14 @@ Ltac describe_goal n :=
   idtac "Params: 0-univ-count=" pow2n ", 1-n=" n.
 Ltac time_solve_goal0 n :=
   assert_succeeds assert Type by
-    time "abstract-regression-quadratic-regression-cubic"
+    time "abstract-regression-quadratic"
          transparent_abstract
          (let v := make n uconstr:(Type) in
           cut True;
           [ intros _;
-            time "exact-regression-quadratic-regression-cubic-regression-linear" exact v
+            time "exact-regression-linear" exact v
           | restart_timer; exact I ]);
-  finish_timing ( "Tactic call close-abstract-regression-quadratic-regression-cubic" ).
+  finish_timing ( "Tactic call close-abstract-regression-quadratic" ).
 
 Definition args_of_size (s : size) : list nat
   := match s with
