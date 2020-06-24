@@ -17,8 +17,8 @@ jobs:
         - { COQ_VERSION: "master", COQ_PACKAGE: "coq        libcoq-ocaml-dev"       , PPA: "ppa:jgross-h/coq-master-daily"             , TIMED: "1", SLEEP_TIME: "1" }
         - { COQ_VERSION: "8.11.2", COQ_PACKAGE: "coq-8.11.2 libcoq-8.11.2-ocaml-dev", PPA: "ppa:jgross-h/many-coq-versions-ocaml-4-05" , TIMED: "1", SLEEP_TIME: "30" }
         - { COQ_VERSION: "8.10.2", COQ_PACKAGE: "coq-8.10.2 libcoq-8.10.2-ocaml-dev", PPA: "ppa:jgross-h/many-coq-versions-ocaml-4-05" , TIMED: "1", SLEEP_TIME: "60" }
-        - { COQ_VERSION: "8.9.1" , COQ_PACKAGE: "coq-8.9.1  libcoq-8.9.1-ocaml-dev" , PPA: "ppa:jgross-h/many-coq-versions-ocaml-4-05" , TIMED: "1", SLEEP_TIME: "90" }
-        - { COQ_VERSION: "8.8.2" , COQ_PACKAGE: "coq-8.8.2  libcoq-8.8.2-ocaml-dev" , PPA: "ppa:jgross-h/many-coq-versions-ocaml-4-05" , TIMED: "1", SLEEP_TIME: "120" }
+        - { COQ_VERSION: "8.9.1" , COQ_PACKAGE: "coq-8.9.1  libcoq-8.9.1-ocaml-dev" , PPA: "ppa:jgross-h/many-coq-versions-ocaml"      , TIMED: "1", SLEEP_TIME: "90" }
+        - { COQ_VERSION: "8.8.2" , COQ_PACKAGE: "coq-8.8.2  libcoq-8.8.2-ocaml-dev" , PPA: "ppa:jgross-h/many-coq-versions-ocaml"      , TIMED: "1", SLEEP_TIME: "120" }
 
     env: ${{ matrix.env }}
 
@@ -80,6 +80,7 @@ jobs:
         echo "::endgroup::"
     - run: make -j2
     - run: make perf
+    - run: make validate -j2
     - run: sudo make install install-perf
     - run: make pdf
     - run: make doc

@@ -9,6 +9,13 @@ $(COMPONENTS):
 .PHONY: coq
 coq: $(COMPONENTS)
 
+.PHONY: validate
+validate: $(addprefix validate-,$(COMPONENTS))
+
+.PHONY: $(addprefix validate-,$(COMPONENTS))
+$(addprefix validate-,$(COMPONENTS)) : validate-% :
+	+$(MAKE) -C $* validate
+
 .PHONY: install clean
 install clean:
 	+$(MAKE) -C src $@
