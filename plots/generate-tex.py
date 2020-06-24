@@ -27,12 +27,12 @@ def generate_legend_and_regression(color, mark, xlabel, ylabel, name):
     def print_poly(regression_kind):
         vs = variables[regression_kind]
         ret = ''
-        for e, v in reversed(list(enumerate(vs))):
+        for e, v in reversed(list(enumerate(reversed(vs)))):
             print_sign_str = '[print sign]' if e != len(vs) - 1 else ''
             ret += fr'\pgfmathprintnumber{print_sign_str}{{\csname pgfplotstable{short_ylabel}-{regression_kind}regression{v}\endcsname}}'
             if e == 0: pass
             else:
-                ret += fr' \cdot \left(\text{{{xlabel}}}\right)'
+                ret += fr' \cdot x' # \left(\text{{{xlabel}}}\right)'
                 if e != 1: ret += fr'^{{{e}}}'
                 ret += ' '
         return ret
