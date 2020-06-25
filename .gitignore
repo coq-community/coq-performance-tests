@@ -342,6 +342,7 @@ TSWLatexianTemp*
 plots/generated/
 plots/*.log
 plots/*.svg
+plots/*.txt
 doc-build/*.pdf
 doc-build/*.txt
 doc-build/*.csv
