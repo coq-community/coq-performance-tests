@@ -7,7 +7,7 @@ A library of Coq source files testing for performance regressions on Coq
 
 Please add tests to this repository.
 
-Each test should go in its own .v file in `src/`, and each .v file should be
+Each test should go in its own .v file in [`src/`](./src/), and each .v file should be
 targeted to take around 1 minute, so that all tests get roughly equal
 weight.
 
