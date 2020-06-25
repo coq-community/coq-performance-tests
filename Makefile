@@ -60,3 +60,7 @@ PERF_KINDS := $(addprefix perf-,$(SIZES))
 .PHONY: $(PERF_KINDS)
 $(PERF_KINDS):
 	+$(MAKE) --no-print-directory -C PerformanceExperiments $@
+
+.PHONY: update-README
+update-README::
+	etc/update-readme.sh $(KINDS)
