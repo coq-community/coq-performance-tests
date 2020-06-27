@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import os, sys
+import os, sys, itertools
 
 COLORS = 'red green blue cyan magenta yellow black gray brown lime olive orange pink purple teal violet darkgray lightgray'.split(' ')
 MARKS = 'o asterisk star oplus otimes square square* triangle triangle* diamond diamond* pentagon pentagon* - | oplus* otimes*'.split(' ')
@@ -76,8 +76,8 @@ def generate_tex(name, txt_lines):
     plots = [fr'        \addplot[only marks,mark={mark},color={color}] table[x=param-{xlabel},y={ylabel}]{{{name}.txt}};'
              + generate_legend_and_regression(color=color, mark=mark, xlabel=xlabel, ylabel=ylabel, name=name)
              for mark, color, ylabel
-             in zip(MARKS + ['*'] * len(ylabels),
-                    COLORS + ['black'] * len(ylabels),
+             in zip(itertools.cycle(MARKS),
+                    itertools.cycle(COLORS),
                     reversed(sorted(ylabels, key=ylabels_dict.get)))]
     plots_txt = '\n'.join(plots)
     return r'''
