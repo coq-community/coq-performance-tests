@@ -38,6 +38,8 @@ def generate_legend_and_regression(color, mark, xlabel, ylabel, name):
         return ret
     ret = fr'''
         \addlegendentry{{{short_ylabel}}}'''
+    if short_ylabel.endswith('-sys'): # skip system time regressions, since they're not very useful, and can make gnuplot fail to converge
+        return ret
     for regression_kind in regression_kinds:
         variables_str = '\n'.join(fr'        \expandafter\xdef\csname pgfplotstable{short_ylabel}-{regression_kind}regression{v}\endcsname{{\pgfplotstableregression{v}}}' for v in variables[regression_kind])
         if regression_kind == 'linear':
