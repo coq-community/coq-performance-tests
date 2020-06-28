@@ -1,7 +1,39 @@
+mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+PERF_ABS_DIR := $(patsubst %/,%,$(dir $(mkfile_path)))
+
+ifneq (,$(wildcard $(PERF_ABS_DIR)/Makefile.coq.conf))
+include $(PERF_ABS_DIR)/Makefile.coq-versions
+else
+$(warning Could not find Makefile.coq.conf, disabling optional tests)
+endif
+
 KINDS := \
 	pattern \
 	n_polymorphic_universes \
+	repeat_setoid_rewrite_under_binders \
+	repeat_setoid_rewrite_under_binders_noop \
+	rewrite_strat_under_binders \
+	rewrite_repeated_app_autorewrite \
+	rewrite_repeated_app_autorewrite_noop \
+	rewrite_repeated_app_ssrrewrite \
+	rewrite_repeated_app_ssrrewrite_noop \
+	rewrite_repeated_app_rewrite_strat \
+	rewrite_repeated_app_fast_rewrite \
+	rewrite_repeated_app_fast_rewrite_no_abstract \
 	# end of list
+
+LTAC2_KINDS := \
+	rewrite_repeated_app_fast_rewrite_ltac2 \
+	# end of list
+
+DISABLED_FILES?=
+ifneq (,$(HAS_LTAC2))
+KINDS += $(LTAC2_KINDS)
+else
+DISABLED_FILES += $(addsuffix .v,$(LTAC2_KINDS)) \
+	rewrite_repeated_app_common_ltac2.v \
+	# end of list
+endif
 
 SH_KINDS :=
 

@@ -1,0 +1,25 @@
+Require Import Ltac2.Ltac2.
+Require Import Ltac2.Constr.
+
+Module Unsafe.
+  Ltac2 mkProd (b : binder) (c : constr) := Unsafe.Prod b c.
+  Ltac2 mkLambda (b : binder) (c : constr) := Unsafe.Lambda b c.
+  Ltac2 mkLetIn (b : binder) (val : constr) (bod : constr) := Unsafe.LetIn b val bod.
+  Ltac2 mkFix (recindxs : int array) (i : int) (names : binder array) (bods : constr array) := Unsafe.Fix recindxs i names bods.
+  Ltac2 mkCoFix (i : int) (names : binder array) (bods : constr array) := Unsafe.CoFix i names bods.
+  Ltac2 match_Prod (k : Unsafe.kind) :=
+    match k with
+    | Unsafe.Prod b c => Some (b, c)
+    | _ => None
+    end.
+  Ltac2 match_Lambda (k : Unsafe.kind) :=
+    match k with
+    | Unsafe.Lambda b c => Some (b, c)
+    | _ => None
+    end.
+  Ltac2 match_LetIn (k : Unsafe.kind) :=
+    match k with
+    | Unsafe.LetIn b val bod => Some (b, val, bod)
+    | _ => None
+    end.
+End Unsafe.

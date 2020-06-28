@@ -31,3 +31,69 @@ You can use `make update-README` to regenerate the tables for this README.
   master | 8.11.2 | 8.10.2 | 8.9.1 | 8.8.2
   --|--|--|--|--
   <img src="https://coq-community.github.io/coq-performance-tests/master/n-polymorphic-universes.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.11.2/n-polymorphic-universes.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.10.2/n-polymorphic-universes.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.9.1/n-polymorphic-universes.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.8.2/n-polymorphic-universes.svg" height=100px />
+
+- [`repeat_setoid_rewrite_under_binders`](./PerformanceExperiments/repeat_setoid_rewrite_under_binders.v)
+
+  master | 8.11.2 | 8.10.2 | 8.9.1 | 8.8.2
+  --|--|--|--|--
+  <img src="https://coq-community.github.io/coq-performance-tests/master/repeat-setoid-rewrite-under-binders.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.11.2/repeat-setoid-rewrite-under-binders.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.10.2/repeat-setoid-rewrite-under-binders.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.9.1/repeat-setoid-rewrite-under-binders.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.8.2/repeat-setoid-rewrite-under-binders.svg" height=100px />
+
+- [`repeat_setoid_rewrite_under_binders_noop`](./PerformanceExperiments/repeat_setoid_rewrite_under_binders_noop.v)
+
+  master | 8.11.2 | 8.10.2 | 8.9.1 | 8.8.2
+  --|--|--|--|--
+  <img src="https://coq-community.github.io/coq-performance-tests/master/repeat-setoid-rewrite-under-binders-noop.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.11.2/repeat-setoid-rewrite-under-binders-noop.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.10.2/repeat-setoid-rewrite-under-binders-noop.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.9.1/repeat-setoid-rewrite-under-binders-noop.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.8.2/repeat-setoid-rewrite-under-binders-noop.svg" height=100px />
+
+- [`rewrite_strat_under_binders`](./PerformanceExperiments/rewrite_strat_under_binders.v)
+
+  master | 8.11.2 | 8.10.2 | 8.9.1 | 8.8.2
+  --|--|--|--|--
+  <img src="https://coq-community.github.io/coq-performance-tests/master/rewrite-strat-under-binders.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.11.2/rewrite-strat-under-binders.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.10.2/rewrite-strat-under-binders.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.9.1/rewrite-strat-under-binders.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.8.2/rewrite-strat-under-binders.svg" height=100px />
+
+- [`rewrite_repeated_app_autorewrite`](./PerformanceExperiments/rewrite_repeated_app_autorewrite.v)
+
+  master | 8.11.2 | 8.10.2 | 8.9.1 | 8.8.2
+  --|--|--|--|--
+  <img src="https://coq-community.github.io/coq-performance-tests/master/rewrite-repeated-app-autorewrite.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.11.2/rewrite-repeated-app-autorewrite.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.10.2/rewrite-repeated-app-autorewrite.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.9.1/rewrite-repeated-app-autorewrite.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.8.2/rewrite-repeated-app-autorewrite.svg" height=100px />
+
+- [`rewrite_repeated_app_autorewrite_noop`](./PerformanceExperiments/rewrite_repeated_app_autorewrite_noop.v)
+
+  master | 8.11.2 | 8.10.2 | 8.9.1 | 8.8.2
+  --|--|--|--|--
+  <img src="https://coq-community.github.io/coq-performance-tests/master/rewrite-repeated-app-autorewrite-noop.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.11.2/rewrite-repeated-app-autorewrite-noop.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.10.2/rewrite-repeated-app-autorewrite-noop.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.9.1/rewrite-repeated-app-autorewrite-noop.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.8.2/rewrite-repeated-app-autorewrite-noop.svg" height=100px />
+
+- [`rewrite_repeated_app_ssrrewrite`](./PerformanceExperiments/rewrite_repeated_app_ssrrewrite.v)
+
+  master | 8.11.2 | 8.10.2 | 8.9.1 | 8.8.2
+  --|--|--|--|--
+  <img src="https://coq-community.github.io/coq-performance-tests/master/rewrite-repeated-app-ssrrewrite.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.11.2/rewrite-repeated-app-ssrrewrite.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.10.2/rewrite-repeated-app-ssrrewrite.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.9.1/rewrite-repeated-app-ssrrewrite.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.8.2/rewrite-repeated-app-ssrrewrite.svg" height=100px />
+
+- [`rewrite_repeated_app_ssrrewrite_noop`](./PerformanceExperiments/rewrite_repeated_app_ssrrewrite_noop.v)
+
+  master | 8.11.2 | 8.10.2 | 8.9.1 | 8.8.2
+  --|--|--|--|--
+  <img src="https://coq-community.github.io/coq-performance-tests/master/rewrite-repeated-app-ssrrewrite-noop.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.11.2/rewrite-repeated-app-ssrrewrite-noop.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.10.2/rewrite-repeated-app-ssrrewrite-noop.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.9.1/rewrite-repeated-app-ssrrewrite-noop.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.8.2/rewrite-repeated-app-ssrrewrite-noop.svg" height=100px />
+
+- [`rewrite_repeated_app_rewrite_strat`](./PerformanceExperiments/rewrite_repeated_app_rewrite_strat.v)
+
+  master | 8.11.2 | 8.10.2 | 8.9.1 | 8.8.2
+  --|--|--|--|--
+  <img src="https://coq-community.github.io/coq-performance-tests/master/rewrite-repeated-app-rewrite-strat.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.11.2/rewrite-repeated-app-rewrite-strat.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.10.2/rewrite-repeated-app-rewrite-strat.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.9.1/rewrite-repeated-app-rewrite-strat.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.8.2/rewrite-repeated-app-rewrite-strat.svg" height=100px />
+
+- [`rewrite_repeated_app_fast_rewrite`](./PerformanceExperiments/rewrite_repeated_app_fast_rewrite.v)
+
+  master | 8.11.2 | 8.10.2 | 8.9.1 | 8.8.2
+  --|--|--|--|--
+  <img src="https://coq-community.github.io/coq-performance-tests/master/rewrite-repeated-app-fast-rewrite.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.11.2/rewrite-repeated-app-fast-rewrite.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.10.2/rewrite-repeated-app-fast-rewrite.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.9.1/rewrite-repeated-app-fast-rewrite.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.8.2/rewrite-repeated-app-fast-rewrite.svg" height=100px />
+
+- [`rewrite_repeated_app_fast_rewrite_no_abstract`](./PerformanceExperiments/rewrite_repeated_app_fast_rewrite_no_abstract.v)
+
+  master | 8.11.2 | 8.10.2 | 8.9.1 | 8.8.2
+  --|--|--|--|--
+  <img src="https://coq-community.github.io/coq-performance-tests/master/rewrite-repeated-app-fast-rewrite-no-abstract.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.11.2/rewrite-repeated-app-fast-rewrite-no-abstract.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.10.2/rewrite-repeated-app-fast-rewrite-no-abstract.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.9.1/rewrite-repeated-app-fast-rewrite-no-abstract.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.8.2/rewrite-repeated-app-fast-rewrite-no-abstract.svg" height=100px />
+
+- [`rewrite_repeated_app_fast_rewrite_ltac2`](./PerformanceExperiments/rewrite_repeated_app_fast_rewrite_ltac2.v)
+
+  master | 8.11.2 | 8.10.2 | 8.9.1 | 8.8.2
+  --|--|--|--|--
+  <img src="https://coq-community.github.io/coq-performance-tests/master/rewrite-repeated-app-fast-rewrite-ltac2.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.11.2/rewrite-repeated-app-fast-rewrite-ltac2.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.10.2/rewrite-repeated-app-fast-rewrite-ltac2.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.9.1/rewrite-repeated-app-fast-rewrite-ltac2.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.8.2/rewrite-repeated-app-fast-rewrite-ltac2.svg" height=100px />

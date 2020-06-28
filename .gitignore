@@ -339,6 +339,9 @@ TSWLatexianTemp*
 *.pgf-plot.gnuplot
 *.pgf-plot.table
 *-parameters.dat
+PerformanceExperiments/Ltac2Compat/Array.v
+PerformanceExperiments/Ltac2Compat/Constr.v
+PerformanceExperiments/Ltac2Compat/Init.v
 plots/generated/
 plots/*.log
 plots/*.svg

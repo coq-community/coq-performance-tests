@@ -15,6 +15,9 @@ ifneq ($(COQ_EXTENDED_VERSION),$(COQ_EXTENDED_VERSION_OLD))
 $(COQ_VERSION_FILE)::
 	$(SHOW)'echo $$COQ_VERSION_INFO ($(COQ_VERSION)) > $@'
 	$(HIDE)echo "$(COQ_EXTENDED_VERSION)" > $@
+else
+$(COQ_VERSION_FILE): ;
+endif
 
 $(COQ_VERSION_SHORT_FILE)::
 	$(SHOW)'echo $$COQ_VERSION_INFO ($(COQ_VERSION)) > $@'
@@ -40,11 +43,6 @@ $(COQ_VERSION_OCAML_CONFIG_FILE)::
 	$(SHOW)'echo $$COQ_VERSION_INFO ($(COQ_VERSION), <ocaml config>) > $@'
 	$(HIDE)$(COQ_VERSION_OCAML_CONFIG_CMD) > $@
 
-else
-$(VERSION_FILES) : ;
-endif
-
-
 ETC_DIR := ../etc
 
 $(MACHINE_FILE)::
@@ -59,4 +57,9 @@ ifneq ($(strip $(COMPATIBILITY_FILES)),)
 $(COMPATIBILITY_FILES) : % : %$(EXPECTED_EXT) $(COQ_VERSION_FILE)
 	$(SHOW)'CP $@{$(EXPECTED_EXT),}'
 	$(HIDE)cp $< $@
+
+clean::
+	$(SHOW)'CLEAN COMPATIBILITY_FILES'
+	$(HIDE)rm -f $(COMPATIBILITY_FILES)
+.PHONY: clean
 endif
