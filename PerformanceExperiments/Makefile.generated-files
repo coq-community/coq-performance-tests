@@ -35,10 +35,11 @@ perf.csv:
 	$(SHOW)'PYTHON3 aggregate.py -o $@'
 	$(HIDE)$(PYTHON3) $(PERF_DIR)/aggregate.py -o $@ $(wildcard $(ALL_PERF_LOGS))
 
+# the find trick is from https://stackoverflow.com/a/4264351/377022
 .PHONY: copy-perf
 copy-perf::
 	cp -t $(OUTPUT) perf.csv $(wildcard *.txt)
-	for d in */; do mkdir -p $(OUTPUT)/$$d; cp -t $(OUTPUT)/$$d $$d/*.log; done
+	for d in */; do if test -n "$$(find "$$d" -maxdepth 1 -name '*.log' -print -quit)"; then mkdir -p $(OUTPUT)/$$d; cp -t $(OUTPUT)/$$d $$d/*.log; fi; done
 
 perf-txts: perf.csv
 	$(PYTHON3) $(PERF_DIR)/csv_to_txt.py $<

@@ -6,7 +6,7 @@ Require Export Coq.Lists.List.
 Require Export Coq.ZArith.ZArith.
 Export ListNotations.
 
-Global Set Printing Width 200.
+Global Set Printing Width 1000.
 Global Open Scope Z_scope.
 Global Open Scope nat_scope.
 Global Open Scope list_scope.

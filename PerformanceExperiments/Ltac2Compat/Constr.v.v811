@@ -1,0 +1,52 @@
+Require Import Ltac2.Init.
+Require Import Ltac2.Constr.
+Require Import PerformanceExperiments.Ltac2Compat.Init.
+Require PerformanceExperiments.Ltac2Compat.Array.
+
+Module Binder.
+  Ltac2 make (name : ident option) (ty : constr) :=
+    ({ binder_name := name ; binder_relevance := Relevant }, ty).
+  Ltac2 name (b : binder) :=
+    let (name, ty) := b in name.(binder_name).
+  Ltac2 type (b : binder) :=
+    let (name, ty) := b in ty.
+End Binder.
+
+Module Unsafe.
+  Ltac2 mkProd (b : binder) (c : constr) :=
+    let (name, ty) := b in
+    Unsafe.Prod name ty c.
+  Ltac2 mkLambda (b : binder) (c : constr) :=
+    let (name, ty) := b in
+    Unsafe.Lambda name ty c.
+  Ltac2 mkLetIn (b : binder) (val : constr) (bod : constr) :=
+    let (name, ty) := b in
+    Unsafe.LetIn name val ty bod.
+  Ltac2 mkFix (recindxs : int array) (i : int) (names : binder array) (bods : constr array) :=
+    Unsafe.Fix
+      recindxs i
+      (Array.map (fun b => let (name, ty) := b in name) names)
+      (Array.map (fun b => let (name, ty) := b in ty) names)
+      bods.
+  Ltac2 mkCoFix (i : int) (names : binder array) (bods : constr array) :=
+    Unsafe.CoFix
+      i
+      (Array.map (fun b => let (name, ty) := b in name) names)
+      (Array.map (fun b => let (name, ty) := b in ty) names)
+      bods.
+  Ltac2 match_Prod (k : Unsafe.kind) :=
+    match k with
+    | Unsafe.Prod name ty c => Some ((name, ty), c)
+    | _ => None
+    end.
+  Ltac2 match_Lambda (k : Unsafe.kind) :=
+    match k with
+    | Unsafe.Lambda name ty c => Some ((name, ty), c)
+    | _ => None
+    end.
+  Ltac2 match_LetIn (k : Unsafe.kind) :=
+    match k with
+    | Unsafe.LetIn name val ty bod => Some ((name, ty), val, bod)
+    | _ => None
+    end.
+End Unsafe.

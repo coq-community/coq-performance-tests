@@ -1,0 +1,4 @@
+Require Import Ltac2.Init.
+Require Import Ltac2.Constr.
+
+Ltac2 Type binder := ident option binder_annot * constr.
