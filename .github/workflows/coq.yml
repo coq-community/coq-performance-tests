@@ -23,6 +23,15 @@ jobs:
     env: ${{ matrix.env }}
 
     steps:
+    - name: test
+      run: |
+        mkdir -p foo/$COQ_VERSION
+        touch foo/$COQ_VERSION/bar
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: doc-build-test-${{ matrix.env.COQ_VERSION }}
+        path: foo
     - name: install Coq and deps
       run: |
         if [ ! -z "$PPA" ]; then sudo add-apt-repository "$PPA" -y; fi
@@ -89,8 +98,8 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
-        name: doc-build-${COQ_VERSION}
-        path: doc-build/${COQ_VERSION}
+        name: doc-build-${{ matrix.env.COQ_VERSION }}
+        path: doc-build
 
   deploy:
 
