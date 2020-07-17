@@ -1,11 +1,7 @@
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 PERF_ABS_DIR := $(patsubst %/,%,$(dir $(mkfile_path)))
 
-ifneq (,$(wildcard $(PERF_ABS_DIR)/Makefile.coq.conf))
-include $(PERF_ABS_DIR)/Makefile.coq-versions
-else
-$(warning Could not find Makefile.coq.conf, disabling optional tests)
-endif
+include $(PERF_ABS_DIR)/Makefile.coq-versions-lite
 
 KINDS := \
 	pattern \
