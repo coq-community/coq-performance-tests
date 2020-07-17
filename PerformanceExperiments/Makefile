@@ -30,7 +30,7 @@ else
 $(warning Not a git clone, using find instead)
 FILE_FINDER := find -name
 endif
-SORT_COQPROJECT = sed 's,[^/]*/,~&,g' | env LC_COLLATE=C sort | sed 's,~,,g' | uniq
+SORT_COQPROJECT = sed 's,^\./,,g; s,[^/]*/,~&,g' | env LC_COLLATE=C sort | sed 's,~,,g' | uniq
 OLD_COQPROJECT_CONTENTS:=$(shell cat _CoqProject 2>/dev/null)
 COQPROJECT_CONTENTS_CMD:=(echo '-R . $(PERF_LIB)'; echo '-arg -w -arg $(WARNINGS)'; ((echo '$(COMPATIBILITY_FILES) $(filter-out $(DISABLED_FILES),$(shell $(FILE_FINDER) "*.v"))' | tr ' ' '\n') | $(SORT_COQPROJECT)))
 COQPROJECT_CONTENTS:=$(shell $(COQPROJECT_CONTENTS_CMD))
