@@ -22,7 +22,7 @@ install clean:
 	+$(MAKE) -C PerformanceExperiments $@
 
 .PHONY: perf
-perf:
+perf: | PerformanceExperiments
 	+$(MAKE) --no-print-directory -C PerformanceExperiments perf-Sanity perf-SuperFast perf-Fast
 	+$(MAKE) --no-print-directory -C PerformanceExperiments perf-csv
 
@@ -58,7 +58,7 @@ copy-doc:
 include PerformanceExperiments/Makefile.variables
 PERF_KINDS := $(addprefix perf-,$(SIZES))
 .PHONY: $(PERF_KINDS)
-$(PERF_KINDS):
+$(PERF_KINDS): | PerformanceExperiments
 	+$(MAKE) --no-print-directory -C PerformanceExperiments $@
 
 .PHONY: update-README
