@@ -9,6 +9,7 @@ KNOWNFILES   := \
 	Makefile.variables \
 	Makefile.characters \
 	Makefile.coq-versions \
+	Makefile.coq-versions-lite \
 	Makefile.coq-versions-files \
 	Makefile.timing
 
@@ -16,7 +17,7 @@ KNOWNFILES   := \
 
 include Makefile.characters
 include Makefile.timing
-include Makefile.coq-versions
+include Makefile.coq-versions-lite
 include Makefile.variables
 
 all:: invoke-coqmakefile
