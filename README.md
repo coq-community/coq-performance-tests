@@ -98,6 +98,12 @@ You can use `make update-README` to regenerate the tables for this README.
   --|--|--|--|--
   <img src="https://coq-community.github.io/coq-performance-tests/master/typeclass-reification-let-in-HOAS.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.11.2/typeclass-reification-let-in-HOAS.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.10.2/typeclass-reification-let-in-HOAS.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.9.1/typeclass-reification-let-in-HOAS.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.8.2/typeclass-reification-let-in-HOAS.svg" height=100px />
 
+- [`typeclass_reification_let_in_PHOAS`](./PerformanceExperiments/typeclass_reification_let_in_PHOAS.v)
+
+  master | 8.11.2 | 8.10.2 | 8.9.1 | 8.8.2
+  --|--|--|--|--
+  <img src="https://coq-community.github.io/coq-performance-tests/master/typeclass-reification-let-in-PHOAS.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.11.2/typeclass-reification-let-in-PHOAS.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.10.2/typeclass-reification-let-in-PHOAS.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.9.1/typeclass-reification-let-in-PHOAS.svg" height=100px /> | <img src="https://coq-community.github.io/coq-performance-tests/8.8.2/typeclass-reification-let-in-PHOAS.svg" height=100px />
+
 - [`rewrite_repeated_app_fast_rewrite_ltac2`](./PerformanceExperiments/rewrite_repeated_app_fast_rewrite_ltac2.v)
 
   master | 8.11.2 | 8.10.2 | 8.9.1 | 8.8.2
