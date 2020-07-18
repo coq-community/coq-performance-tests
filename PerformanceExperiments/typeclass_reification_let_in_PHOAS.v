@@ -51,7 +51,7 @@ Ltac redgoal _ := idtac.
 Ltac time_solve_goal0 n :=
   restart_timer;
   assert (goal n);
-  [ finish_timing ("Tactic call reify-regression-quadratic");
+  [ finish_timing ("Tactic call reify-regression-cubic");
     time "abstract-regression-linear" abstract solve_P
   | ].
 
