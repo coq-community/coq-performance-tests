@@ -19,5 +19,5 @@ for stem in $stems; do
     echo -n '  '
     echo $coq_versions | sed 's/[^ ]\+/--/g; s/ /|/g; s/$/'"$extra_bar"'/g'
     echo -n '  '
-    echo $coq_versions | sed 's/ / | /g; s,\([^ |]\+\),<a href="https://coq-community.github.io/coq-performance-tests/\1/'"${stem_dash}"'.svg">"<img src="https://coq-community.github.io/coq-performance-tests/\1/'"${stem_dash}"'.svg" height=100px /></a>,g; s/$/'"$extra_bar_space"'/g'
+    echo $coq_versions | sed 's/ / | /g; s,\([^ |]\+\),<a href="https://coq-community.github.io/coq-performance-tests/\1/'"${stem_dash}"'.svg"><img src="https://coq-community.github.io/coq-performance-tests/\1/'"${stem_dash}"'.svg" height=100px /></a>,g; s/$/'"$extra_bar_space"'/g'
 done
