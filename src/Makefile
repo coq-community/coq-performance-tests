@@ -6,6 +6,9 @@ TIMING?=1
 export TIMED
 export TIMING
 
+SHOW := $(if $(VERBOSE),@true "",@echo "")
+HIDE := $(if $(VERBOSE),,@)
+
 ifneq ($(wildcard ../.git),)
 FILE_FINDER := git ls-files
 else
@@ -43,13 +46,13 @@ endif
 endif
 
 ifneq (,$(SKIP_FILES))
-GREP_INVOCATION:=| grep -v $(foreach f,$(SKIP_FILES),-f $(i))
+GREP_INVOCATION:=| grep -v $(foreach f,$(SKIP_FILES),-f $(f))
 else
 GREP_INVOCATION:=
 endif
 
 _CoqProject::
-	@(echo "-Q . CoqPerformanceTests"; ($(FILE_FINDER) "*.v" $(GREP_INVOCATION))) > $@
+	$(HIDE)(echo "-Q . CoqPerformanceTests"; ($(FILE_FINDER) "*.v" $(GREP_INVOCATION))) > $@
 
 Makefile.coq: _CoqProject
 	$(COQBIN)coq_makefile -f $< -o $@
