@@ -16,15 +16,26 @@ KINDS := \
 	rewrite_repeated_app_rewrite_strat \
 	rewrite_repeated_app_fast_rewrite \
 	rewrite_repeated_app_fast_rewrite_no_abstract \
-	typeclass_reification_let_in_HOAS \
-	typeclass_reification_let_in_PHOAS \
 	# end of list
 
 LTAC2_KINDS := \
 	rewrite_repeated_app_fast_rewrite_ltac2 \
 	# end of list
 
+VERSION_8_9_OR_NEWER_KINDS := \
+	typeclass_reification_let_in_HOAS \
+	typeclass_reification_let_in_PHOAS \
+	# end of list
+
+
 DISABLED_FILES?=
+
+ifneq (,$(IS_8_9_OR_NEWER))
+KINDS += $(VERSION_8_9_OR_NEWER_KINDS)
+else
+DISABLED_FILES += $(addsuffix .v,$(VERSION_8_9_OR_NEWER_KINDS))
+endif
+
 ifneq (,$(HAS_LTAC2))
 KINDS += $(LTAC2_KINDS)
 else
