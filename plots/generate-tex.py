@@ -4,6 +4,8 @@ import os, sys, itertools
 COLORS = 'red green blue cyan magenta yellow black gray brown lime olive orange pink purple teal violet darkgray lightgray'.split(' ')
 MARKS = 'o asterisk star oplus otimes square square* triangle triangle* diamond diamond* pentagon pentagon* - | oplus* otimes*'.split(' ')
 
+SKIP_SUFFIXES = ('-sys', '-user')
+
 def to_valid_tex_cmd(s):
     numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
     for n, v in enumerate(numbers):
@@ -78,7 +80,8 @@ def generate_tex(name, txt_lines):
              for mark, color, ylabel
              in zip(itertools.cycle(MARKS),
                     itertools.cycle(COLORS),
-                    reversed(sorted(ylabels, key=ylabels_dict.get)))]
+                    reversed(sorted(ylabels, key=ylabels_dict.get)))
+             if not any(ylabel.endswith(suffix) for suffix in SKIP_SUFFIXES)]
     plots_txt = '\n'.join(plots)
     return r'''
 \begin{figure*}
