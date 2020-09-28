@@ -1,3 +1,4 @@
+Require Import Coq.QArith.QArith.
 Require Import Coq.Structures.Orders.
 Require Import Coq.micromega.Lia.
 Require Import Coq.Bool.Bool.
@@ -20,6 +21,26 @@ Global Open Scope list_scope.
 - The [VerySlow] tests may take longer than 10 minutes each *)
 
 Inductive size := Sanity | SuperFast | Fast | Medium | Slow | VerySlow.
+
+Definition seconds_of_size (sz : size) : nat
+  := match sz with
+     | Sanity => 1
+     | SuperFast => 10
+     | Fast => 60
+     | Medium => 600
+     | Slow => 3600
+     | VerySlow => 3600 * 10
+     end.
+
+Definition Zseconds_of_size (sz : size) : Z
+  := Z.of_nat (seconds_of_size sz).
+
+Definition Qseconds_of_size (sz : size) : Q
+  := inject_Z (Zseconds_of_size sz).
+
+Definition standard_max_seconds : nat := 10.
+Definition Zstandard_max_seconds : Z := Z.of_nat standard_max_seconds.
+Definition Qstandard_max_seconds : Q := inject_Z Zstandard_max_seconds.
 
 Definition nat_of_size (sz : size) : nat
   := match sz with
@@ -220,11 +241,35 @@ Definition reflect_rel_of_beq_iff {T} {beq : T -> T -> bool} {R : T -> T -> Prop
   : reflect_rel R beq
   := reflect_rel_of_beq (fun x y => proj1 (bp x y)) (fun x y => proj2 (bp x y)).
 
+Definition reflect_rel_to_beq_iff {T} {beq : T -> T -> bool} {R : T -> T -> Prop}
+           (Hr : reflect_rel R beq)
+  : forall x y, beq x y = true <-> R x y.
+Proof.
+  intros x y; specialize (Hr x y); destruct Hr; intuition (eauto; congruence).
+Qed.
+
 Instance reflect_eq_nat : reflect_rel (@eq nat) Nat.eqb
   := reflect_rel_of_beq_iff Nat.eqb_eq.
 
 Instance reflect_eq_Z : reflect_rel (@eq Z) Z.eqb
   := reflect_rel_of_beq_iff Z.eqb_eq.
+
+Local Set Implicit Arguments.
+Scheme Equality for prod.
+
+Definition prod_beq_iff {A B eqA eqB}
+           (A_iff : forall x y : A, eqA x y = true <-> x = y)
+           (B_iff : forall x y : B, eqB x y = true <-> x = y)
+  : forall x y, prod_beq eqA eqB x y = true <-> x = y.
+Proof.
+  split; [ apply internal_prod_dec_bl | apply internal_prod_dec_lb ];
+    first [ apply A_iff | apply B_iff ].
+Defined.
+Local Unset Implicit Arguments.
+
+Instance reflect_eq_prod {A B eqA eqB} {_ : reflect_rel (@eq A) eqA} {_ : reflect_rel (@eq B) eqB}
+  : reflect_rel (@eq (A * B)) (prod_beq eqA eqB)
+  := reflect_rel_of_beq_iff (prod_beq_iff (reflect_rel_to_beq_iff _) (reflect_rel_to_beq_iff _)).
 
 Class has_sub T := sub : T -> T -> T.
 Instance: has_sub nat := Nat.sub.
@@ -267,6 +312,16 @@ Ltac runtests args_of_size describe_goal mkgoal redgoal time_solve_goal sz :=
            iter xs
       end in
   iter args.
+
+Ltac runtests_verify_sanity args_of_size describe_goal mkgoal redgoal time_solve_goal do_verify sz :=
+  let time_solve_goal'
+      := lazymatch sz with
+         | Sanity
+           => fun x => time_solve_goal x; do_verify ()
+         | _
+           => fun x => time_solve_goal x
+         end in
+  runtests args_of_size describe_goal mkgoal redgoal time_solve_goal' sz.
 
 Ltac step_goal_from_to_constr step_goal cur_n target_n G :=
   let test := match constr:(Set) with
