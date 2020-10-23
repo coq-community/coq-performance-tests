@@ -18,11 +18,68 @@ Definition default_max_points := 1000%N.
 Definition precision_binary_digits := 32%N.
 Definition smallest_time_Q := 1E-5%Q. (* don't allow times smaller than this *)
 Definition min_fractional_change_for_nonlinear_sample : Q := 1%Q. (* if going from [a] to [b] increases by less than this number times the size at [a], just distribute points uniformly *)
+Definition max_subdivisions := 8%nat.
+Definition continued_fraction_precision := 4%nat.
 
 Definition Qround (v : Q) : Z (* away from 0 *)
   := if Qle_bool 0 v
      then Qfloor (v + 1/2)
      else Qceiling (v - 1/2).
+
+Local Set Warnings Append "-ambiguous-paths".
+Local Coercion N.of_nat : nat >-> N.
+Local Coercion N.to_nat : N >-> nat.
+Local Coercion Z.of_N : N >-> Z.
+Local Coercion inject_Z : Z >-> Q.
+Local Coercion Npos : positive >-> N.
+
+Fixpoint continued_fraction (v : Q) (count : nat) : list Z * Q (* 1/remainder *)
+  := if Qeq_bool 0 v
+     then ([], 0)
+     else match count with
+          | O => ([], v)
+          | S count
+            => let a0 := Qfloor v in
+               let rem := 1 / (v - a0) in
+               let '(rest, rem) := continued_fraction rem count in
+               (a0 :: rest, rem)
+          end.
+
+Fixpoint eval_continued_fraction' (cfrac : list Z) (rem : Q) : Q
+  := match cfrac with
+     | [] => rem
+     | a0 :: rest
+       => a0 + 1 / (eval_continued_fraction' rest rem)
+     end.
+Definition eval_continued_fraction (v : list Z * Q) : Q
+  := eval_continued_fraction' (fst v) (snd v).
+
+Lemma continued_fraction_correct v n
+  : eval_continued_fraction (continued_fraction v n) == v.
+Proof.
+  cbv [eval_continued_fraction].
+  revert v; induction n; intro; cbn; destruct (Qeq_bool 0 v) eqn:H; cbn.
+  all: rewrite ?Qeq_bool_iff in H; rewrite <- ?H.
+  all: try reflexivity.
+  { rewrite (surjective_pairing (continued_fraction _ _)); cbn.
+    rewrite IHn.
+    cbv [Qdiv]; rewrite !Qmult_1_l, Qinv_involutive.
+    ring. }
+Qed.
+
+Definition Qround_cfrac_gen (v : Q) (digits : nat) : Q
+  := let '(cfrac, _) := continued_fraction v digits in
+     eval_continued_fraction (cfrac, 0).
+
+Definition Qround_cfrac (v : Q) : Q := Qround_cfrac_gen v continued_fraction_precision.
+
+Definition lift_1op_cfrac {A} (f : A -> Q) (x : A) := Qround_cfrac (f x).
+Definition lift_2op_cfrac {A B} (f : A -> B -> Q) (x : A) (y : B) := Qround_cfrac (f x y).
+Definition Qplus_cfrac := lift_2op_cfrac Qplus.
+Definition Qminus_cfrac := lift_2op_cfrac Qminus.
+Definition Qmult_cfrac := lift_2op_cfrac Qmult.
+Definition Qdiv_cfrac := lift_2op_cfrac Qdiv.
+Definition Qpower_cfrac := lift_2op_cfrac Qpower.
 
 Module QOrder <: TotalLeBool.
   Local Open Scope Q_scope.
@@ -94,13 +151,6 @@ Class has_double_avg T := { double_T : T -> T ; avg_T : T -> T -> T }.
 
 Class has_min T := min_T : T -> T -> T.
 
-Local Set Warnings Append "-ambiguous-paths".
-Local Coercion N.of_nat : nat >-> N.
-Local Coercion N.to_nat : N >-> nat.
-Local Coercion Z.of_N : N >-> Z.
-Local Coercion inject_Z : Z >-> Q.
-Local Coercion Npos : positive >-> N.
-
 Definition Qred_to_precision (v : Q) (max_lg2_denominator : N) : Q
   := let v := Qred v in
      if (max_lg2_denominator <? N.log2 (Qden v))%N
@@ -125,36 +175,38 @@ Fixpoint binary_alloc_QT_fueled
   : list ((T * T (* min * max *)) * N) * (Q (* allocation used *) * N (* points allocated *))
   := let allocation := Qmax 0 allocation in
      let empty := (nil, (0, 0%N)) in
-     match fuel with
-     | O => empty
-     | S fuel
-       => let count := count_elems min max in
-          if (count =? 0)%N
-          then empty
-          else
-            let time_per_elem := total_time_all_elems min max / count in
-            let n_elem := N.min max_point_count (Z.to_N (Qfloor (allocation / time_per_elem))) in
-            if (n_elem =? 0)%N
-            then empty
-            else
-              let '(min_sz, max_sz) := (size min, size max) in
-              if ((n_elem <=? cutoff_elem_count)%N
-                  || (count <=? 2 * n_elem)%N
-                  || (Qle_bool ((max_sz - min_sz) / min_sz) min_fractional_change_for_nonlinear_sample))
-                   (* if there are few enough elements left, or if the number of elements that we want is nearly all of them, or we're not changing all that much from [min] to [max], we just distribute the points uniformly *)
-              then ([((min, max), n_elem)], (time_per_elem * n_elem, n_elem))
-              else
-                let mid := avg_T min max in
-                let mid_sz := size mid in
-                if Qeq_bool min_sz max_sz || Qeq_bool min_sz mid_sz || Qeq_bool mid_sz max_sz
-                then
-                  ([((min, max), n_elem)], (time_per_elem * n_elem, n_elem))
-                else
-                  let alloc_hi := allocation * (max_sz - mid_sz) / (max_sz - min_sz) in
-                  let '(ret_hi, (alloc_hi, n_hi)) := binary_alloc_QT_fueled size count_elems total_time_all_elems (Qred alloc_hi) mid max cutoff_elem_count ((1 + max_point_count) / 2) min_fractional_change_for_nonlinear_sample fuel in
-                let '(ret_lo, (alloc_lo, n_lo)) := binary_alloc_QT_fueled size count_elems total_time_all_elems (Qred (allocation - alloc_hi)) min mid cutoff_elem_count (max_point_count- n_hi) min_fractional_change_for_nonlinear_sample fuel in
-                (ret_lo ++ ret_hi, (Qred (alloc_lo + alloc_hi), (n_lo + n_hi)%N))
-     end.
+     let count := count_elems min max in
+     if (count =? 0)%N
+     then empty
+     else
+       let time_per_elem := total_time_all_elems min max / count in
+       let n_elem := N.min max_point_count (Z.to_N (Qfloor (allocation / time_per_elem))) in
+       if (n_elem =? 0)%N
+       then empty
+       else
+         let uniform_result := ([((min, max), n_elem)], (time_per_elem * n_elem, n_elem)) in
+         match fuel with
+         | O => uniform_result
+         | S fuel
+           =>
+           let '(min_sz, max_sz) := (size min, size max) in
+           if ((n_elem <=? cutoff_elem_count)%N
+               || (count <=? 2 * n_elem)%N
+               || (Qle_bool ((max_sz - min_sz) / min_sz) min_fractional_change_for_nonlinear_sample))
+                (* if there are few enough elements left, or if the number of elements that we want is nearly all of them, or we're not changing all that much from [min] to [max], we just distribute the points uniformly *)
+           then uniform_result
+           else
+             let mid := avg_T min max in
+             let mid_sz := size mid in
+             if Qeq_bool min_sz max_sz || Qeq_bool min_sz mid_sz || Qeq_bool mid_sz max_sz
+             then
+               ([((min, max), n_elem)], (time_per_elem * n_elem, n_elem))
+             else
+               let alloc_hi := allocation * (max_sz - mid_sz) / (max_sz - min_sz) in
+               let '(ret_hi, (alloc_hi, n_hi)) := binary_alloc_QT_fueled size count_elems total_time_all_elems (Qred alloc_hi) mid max cutoff_elem_count ((1 + max_point_count) / 2) min_fractional_change_for_nonlinear_sample fuel in
+               let '(ret_lo, (alloc_lo, n_lo)) := binary_alloc_QT_fueled size count_elems total_time_all_elems (Qred (allocation - alloc_hi)) min mid cutoff_elem_count (max_point_count- n_hi) min_fractional_change_for_nonlinear_sample fuel in
+               (ret_lo ++ ret_hi, (Qred (alloc_lo + alloc_hi), (n_lo + n_hi)%N))
+         end.
 
 Definition binary_alloc
            {T} {_ : has_double_avg T}
@@ -170,7 +222,10 @@ Definition binary_alloc
   : list T
   := List.flat_map
        (fun '((min, max), n) => alloc min max n)
-       (fst (binary_alloc_QT_fueled size count_elems total_time_all_elems allocation min max cutoff_elem_count max_point_count min_fractional_change_for_nonlinear_sample (100 + N.to_nat (N.min 1000 (* we don't want to go too much above 1000, because that would make the nat very big *) max_point_count) + N.to_nat (N.log2_up (count_elems min max))))).
+       (fst (binary_alloc_QT_fueled
+               size count_elems total_time_all_elems allocation min max cutoff_elem_count max_point_count min_fractional_change_for_nonlinear_sample
+               (Nat.min (Nat.log2_up max_subdivisions)
+                        (100 + N.to_nat (N.min 1000 (* we don't want to go too much above 1000, because that would make the nat very big *) max_point_count) + N.to_nat (N.log2_up (count_elems min max)))))).
 
 Class has_count T :=
   { count_elems_T : forall min max : T, N }.
@@ -314,6 +369,8 @@ Definition eval_poly_gen {T}
 
 Definition eval_poly (p : polynomial) (x : Q) : Q
   := eval_poly_gen Qplus Qpower Qmult 0%Z p x.
+Definition eval_poly_cfrac (p : polynomial) (x : Q) : Q
+  := eval_poly_gen Qplus_cfrac Qpower_cfrac Qmult_cfrac 0%Z p x.
 Definition compose_poly (f : polynomial) (x : polynomial) : polynomial
   := eval_poly_gen poly_add
                    (fun p e => poly_power p (Z.to_N e) (* UNSAFE!!! *))
@@ -464,6 +521,14 @@ Definition Qln (x : Q) : Q
              else Qlog2 x in
     let q := x / (2^k)%Z - 1 in
     k / log2_e_Q + if Qeq_bool q 0 then 0 else eval_poly taylor_series_ln1px_for_ln q.
+
+Definition Qln_cfrac (x : Q) : Q
+  := (* let x = 2^k * (1+q), so that either k:=log2_up(x) or k:=log2(x) and q:=x/2^k-1; then ln(x) = k/log2(e) + ln(1+q) *)
+    let k := if Qle_bool ((2^Qlog2_up x)%Z - x) (x - (2^Qlog2 x)%Z)
+             then Qlog2_up x
+             else Qlog2 x in
+    let q := x / (2^k)%Z - 1 in
+    Qround_cfrac (k / log2_e_Q + if Qeq_bool q 0 then 0 else eval_poly_cfrac taylor_series_ln1px_for_ln q).
 
 Definition Qexp (x : Q) : Q
   := let (int_part, rest)
@@ -667,7 +732,7 @@ Global Instance Z_prod_has_alloc : has_alloc (Z * Z)
                    nil)
                   ++ let min := Z.max min 6 in
                      let max := Z.max max 6 in
-                     if Z.sqrt max - Z.sqrt min <=? (n+1)/3
+                     if max - min <=? (n+1)/3
                      then
                        List.flat_map
                          (fun vals:list Z
@@ -714,8 +779,8 @@ Definition total_time_of_Zpoly
   := fun min max
      => let '(p_int, ln_coef) := integrate_poly p in
         let f_int := if Qeq_bool ln_coef 0
-                     then fun x => eval_poly p_int x
-                     else fun x => eval_poly p_int x + ln_coef * Qln x in
+                     then fun x => eval_poly_cfrac p_int x
+                     else fun x => Qround_cfrac (eval_poly_cfrac p_int x + ln_coef * Qln_cfrac x) in
         if (max - min <=? 25)%Z
         then ∑_{i=min}^{max} (size i)
         else f_int max - f_int min.
@@ -785,8 +850,8 @@ Definition total_time_of_N_prod_poly_cached
        let p' := poly_mul p (poly_mul [(1%Q, 1%Z)] (compose_poly (taylor_series_ln1px deg_series) [(1%Q, (-1)%Z)])) (* p * x * (series(ln(1+k),k))(k:=1/x); N.B. We don't hit the UNSAFE case of [compose_poly] because [taylor_series_ln1px] has only non-negative exponents *) in
        let '(p_int, ln_coef) := integrate_poly p' in
        let f_int := if Qeq_bool ln_coef 0
-                    then fun x => eval_poly p_int x
-                    else fun x => eval_poly p_int x + ln_coef * Qln x in
+                    then fun x => eval_poly_cfrac p_int x
+                    else fun x => eval_poly_cfrac p_int x + ln_coef * Qln_cfrac x in
        let minv := (fst min * snd min)%N in
        let maxv := (fst max * snd max)%N in
        if (maxv - minv <=? cutoff)%N

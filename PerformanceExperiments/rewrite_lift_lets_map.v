@@ -242,8 +242,42 @@ Goal True.
   set (k := (N.of_nat _)) in (value of v) at 1.
   Time vm_compute in k; subst k.
   set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
   clear v.
-  cbv [Sample.generate_inputs] in k.
+  cbv [Sample.generate_inputs Sample.binary_alloc] in k.
+
+
+  Time vm_compute fst in k.
+  cbv [flat_map] in k.
+  set (v := Sample.alloc_T _ _ _) in (value of k) at 1.
+  vm_compute in v.
+  subst v.
+  set (v := Sample.alloc_T _ _ _) in (value of k) at 1.
+  clear k.
+  Time vm_compute in v.
+  cbv [Sample.alloc_T]
+  vm_compute in v.
+
+  cbv [Sample.alloc_T] in k.
+  cbv [Sample.Z_prod_has_alloc] in k.
+  Time progress repeat (set (v := Z.leb _ _) in (value of k) at 1; vm_compute in v; subst v).
+  cbv beta iota zeta in k.
+  vm_compute filter in k.
+  vm_compute Sample.alloc_T in k.
+  vm_compute Sample.group_by in k.
+  cbn [flat_map] in k.
+  cbn [List.length] in k.
+  vm_compute Nat.mul in k.
+  vm_compute Z.leb in k.
   (*set (attae := Sample.adjusted_total_time_all_elems_T) in (value of k).*)
   cbv [Sample.total_time_of_Z_prod_poly] in k.
   set (tbl := Sample.small_table_rev_cached) in (value of k).
@@ -253,9 +287,9 @@ Goal True.
   vm_compute option_map in k.
   cbv beta iota in k.
   cbv [Sample.binary_alloc] in k.
-  set (fuel := Nat.add _ _) in (value of k).
+  set (fuel := Nat.min _ _) in (value of k).
   vm_compute in fuel.
-  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); subst fuel; rename fuel' into fuel.
+  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); unfold fuel at 1 in (value of k); let f := fresh "fuel" in rename fuel into f; rename fuel' into fuel.
   cbn [Sample.binary_alloc_QT_fueled] in k.
   set (v := Sample.count_elems_T _ _) in (value of k) at 1.
   Time vm_compute in v.
@@ -276,7 +310,7 @@ Goal True.
   Time vm_compute in v; subst v; cbv beta iota zeta in k.
   set (v := Qred _) in (value of k); vm_compute in v; subst v.
   vm_compute Sample.avg_T in k.
-  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); subst fuel; rename fuel' into fuel.
+  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); unfold fuel at 1 in (value of k); let f := fresh "fuel" in rename fuel into f; rename fuel' into fuel.
   cbn [Sample.binary_alloc_QT_fueled] in k.
   set (v := Sample.count_elems_T _ _) in (value of k) at 1.
   Time vm_compute in v.
@@ -295,15 +329,85 @@ Goal True.
   Time do 1 match (eval cbv delta [k] in k) with
          | context[if ?e then _ else _] => set (v := e) in (value of k); vm_compute in v; subst v; cbv beta iota zeta in k
   end.
-  Time do 1 match (eval cbv delta [k] in k) with
-         | context[if ?e then _ else _] => set (v := e) in (value of k); vm_compute in v; subst v; cbv beta iota zeta in k
-  end.
-  Time do 1 match (eval cbv delta [k] in k) with
-         | context[if ?e then _ else _] => set (v := e) in (value of k); vm_compute in v; subst v; cbv beta iota zeta in k
-  end.
   set (v := Qred _) in (value of k); vm_compute in v; subst v.
   vm_compute Sample.avg_T in k.
-  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); subst fuel; rename fuel' into fuel.
+  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); unfold fuel at 1 in (value of k); let f := fresh "fuel" in rename fuel into f; rename fuel' into fuel.
+  subst fuel; rename fuel2 into fuel.
+  cbn [Sample.binary_alloc_QT_fueled] in k.
+  set (v := Sample.count_elems_T _ _) in (value of k) at 1.
+  Time vm_compute in v; subst v.
+  Time do 1 match (eval cbv delta [k] in k) with
+         | context[if ?e then _ else _] => set (v := e) in (value of k); vm_compute in v; subst v; cbv beta iota zeta in k
+          end.
+  Time do 1 match (eval cbv delta [k] in k) with
+         | context[if ?e then _ else _] => (time set (v := e) in (value of k)); vm_compute in v; subst v; cbv beta iota zeta in k
+          end.
+  Time do 1 match (eval cbv delta [k] in k) with
+         | context[if ?e then _ else _] => (time set (v := e) in (value of k)); vm_compute in v; subst v; cbv beta iota zeta in k
+          end.
+  set (v := Qred _) in (value of k); vm_compute in v; subst v.
+  repeat (set (v := (_ - _)%N) in (value of k) at 1; vm_compute in v; subst v).
+  progress repeat (set (v := N.min _ _) in (value of k) at 1; vm_compute in v; subst v).
+  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); unfold fuel at 1 in (value of k); let f := fresh "fuel" in rename fuel into f; rename fuel' into fuel.
+  cbn [Sample.binary_alloc_QT_fueled] in k.
+  set (v := Sample.count_elems_T _ _) in (value of k) at 1.
+  Time vm_compute in v; subst v.
+  vm_compute Sample.avg_T in k.
+  Time repeat match (eval cbv delta [k] in k) with
+         | context[if ?e then _ else _] => (time "set" set (v := e) in (value of k) at 1); time "vm" vm_compute in v; time "subst" subst v; time "cbv" cbv beta iota zeta in k
+          end.
+          progress repeat (set (v := Qred _) in (value of k) at 1; vm_compute in v; subst v).
+  progress repeat (set (v := (_ - _)%N) in (value of k) at 1; vm_compute in v; subst v).
+  progress repeat (set (v := N.min _ _) in (value of k) at 1; vm_compute in v; subst v).
+  subst fuel0.
+  subst fuel1.
+  subst fuel.
+  rename fuel2 into fuel.
+  cbn [Sample.binary_alloc_QT_fueled] in k.
+  set (v := Sample.count_elems_T _ _) in (value of k) at 1.
+  Time vm_compute in v; subst v.
+  vm_compute Sample.avg_T in k.
+  Time repeat match (eval cbv delta [k] in k) with
+         | context[if ?e then _ else _] => (time "set" set (v := e) in (value of k) at 1); time "vm" vm_compute in v; time "subst" subst v; time "cbv" cbv beta iota zeta in k
+          end.
+          progress repeat (set (v := Qred _) in (value of k) at 1; vm_compute in v; subst v).
+  set (v := Sample.binary_alloc_QT_fueled _ _ _ _ _ _ _ _ _ _) in (value of k) at 1.
+  Time vm_compute in v; subst v; cbv beta iota zeta in k.
+  set (v := Sample.binary_alloc_QT_fueled _ _ _ _ _ _ _ _ _ _) in (value of k) at 1.
+  Time vm_compute in v; subst v; cbv beta iota zeta in k.
+          Time vm_compute fst in k.
+          Time vm_compute in k.
+  progress repeat (set (v := (_ - _)%N) in (value of k) at 1; vm_compute in v; subst v).
+  progress repeat (set (v := N.min _ _) in (value of k) at 1; vm_compute in v; subst v).
+
+
+  Time do 1 match (eval cbv delta [k] in k) with
+         | context[if ?e then _ else _] => (time "set" set (v := e) in (value of k) at 1); time "vm" vm_compute in v; time "subst" subst v; time "cbv" cbv beta iota zeta in k
+          end.
+  Time do 1 match (eval cbv delta [k] in k) with
+         | context[if ?e then _ else _] => (time "set" set (v := e) in (value of k) at 1); time "vm" vm_compute in v; time "subst" subst v; time "cbv" cbv beta iota zeta in k
+          end.
+  Time do 1 match (eval cbv delta [k] in k) with
+         | context[if ?e then _ else _] => (time "set" set (v := e) in (value of k) at 1); time "vm" vm_compute in v; time "subst" subst v; time "cbv" cbv beta iota zeta in k
+          end.
+  Time do 1 match (eval cbv delta [k] in k) with
+         | context[if ?e then _ else _] => (time "set" set (v := e) in (value of k) at 1); time "vm" vm_compute in v; time "subst" subst v; time "cbv" cbv beta iota zeta in k
+          end.
+  Time do 1 match (eval cbv delta [k] in k) with
+         | context[if ?e then _ else _] => (time "set" set (v := e) in (value of k) at 1); time "vm" vm_compute in v; time "subst" subst v; time "cbv" cbv beta iota zeta in k
+          end.
+  Time do 1 match (eval cbv delta [k] in k) with
+         | context[if ?e then _ else _] => (time "set" set (v := e) in (value of k) at 1); time "vm" vm_compute in v; time "subst" subst v; time "cbv" cbv beta iota zeta in k
+          end.
+  Time do 1 match (eval cbv delta [k] in k) with
+         | context[if ?e then _ else _] => (time "set" set (v := e) in (value of k) at 1); time "vm" vm_compute in v; time "subst" subst v; time "cbv" cbv beta iota zeta in k
+          end.
+          Time vm_compute in k.
+  Time do 1 match (eval cbv delta [k] in k) with
+         | context[if ?e then _ else _] => set (v := e) in (value of k); vm_compute in v; subst v; cbv beta iota zeta in k
+  end.
+
+  Time vm_compute in k.
   Compute (fun x => Qround.Qfloor (1/2 + x*1000) # 1000)
           (Qred ((@Sample.adjusted_size_T
                     (Z * Z)
@@ -446,7 +550,7 @@ Goal True.
   cbv beta iota in k.
   vm_compute Sample.min_T in k.
   Time vm_compute in k; subst k.
-
+*)
 Ltac mkgoal kind nm
   := lazymatch nm with
      | (?n, ?m)
@@ -595,5 +699,4 @@ Goal True.
 
   rewrite_strat
   repeat (cbn [nat_rect]; rewrite_strat ((try repeat topdown hints mydb1); (try repeat bottomup hints mydb2))).
-*)
 *)
