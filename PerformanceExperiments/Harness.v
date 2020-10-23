@@ -32,6 +32,22 @@ Definition seconds_of_size (sz : size) : nat
      | VerySlow => 3600 * 10
      end.
 
+Notation "'subst!' x 'for' y 'in' f"
+  := (match x return _ with y => f end) (only parsing, at level 200, x at level 200, y ident, f at level 200).
+
+Notation "'eta_size' ( sz' => f ) sz"
+  := match sz with
+     | Sanity => subst! Sanity for sz' in f
+     | SuperFast => subst! SuperFast for sz' in f
+     | Fast => subst! Fast for sz' in f
+     | Medium => subst! Medium for sz' in f
+     | Slow => subst! Slow for sz' in f
+     | VerySlow => subst! VerySlow for sz' in f
+     end (only parsing, at level 70, sz' ident).
+
+Local Lemma eta_size_sanity : forall T f k, eta_size (k => f k) k = f k :> T.
+Proof. intros; repeat match goal with |- context[match ?e with _ => _ end] => destruct e end; reflexivity. Qed.
+
 Definition Zseconds_of_size (sz : size) : Z
   := Z.of_nat (seconds_of_size sz).
 

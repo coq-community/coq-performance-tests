@@ -100,8 +100,6 @@ Inductive red_kind := vm | native | cbv | lazy | cbn | simpl.
 Inductive rewrite_strat_kind := topdown_bottomup | bottomup_bottomup.
 Inductive kind_of_rewrite := kind_rewrite_strat (_ : rewrite_strat_kind) | kind_setoid_rewrite | kind_red (_ : red_kind).
 
-Local Notation "'subst!' x 'for' y 'in' f"
-  := (match x return _ with y => f end) (only parsing, at level 30, y ident).
 Local Notation "'eta_kind' ( k' => f ) k"
   := match k with
      | kind_rewrite_strat topdown_bottomup
@@ -122,6 +120,7 @@ Local Lemma sanity : forall T f k, eta_kind (k => f k) k = f k :> T.
 Proof. intros; repeat match goal with |- context[match ?e with _ => _ end] => destruct e end; reflexivity. Qed.
 
 Local Existing Instance Sample.Z_prod_has_double_avg.
+Local Existing Instance Sample.Z_prod_has_min.
 
 Definition size_of_arg (arg : Z * Z) : Z
   := fst arg * snd arg.
@@ -149,241 +148,304 @@ Definition size_of_kind (k : kind_of_rewrite) (arg : Z * Z) : Q
   := let termsize := size_of_arg arg in
      let x := inject_Z termsize in
      match k with
-     | kind_rewrite_strat _
-       => x / 30 * 10
+     | kind_rewrite_strat bottomup_bottomup
+       => 1.69E-03 + -2.38E-03*x + 4.42E-03*x^2
+     | kind_rewrite_strat topdown_bottomup
+       => -4.52E-03 + -7.08E-03*x + 6.03E-03*x^2
      | kind_setoid_rewrite
-       => x / 30 * 10
+       => 1.07 + -0.667*x + 0.0946*x^2
      | kind_red vm
-       => x / (150 * 150) * 10
+       => 5.02E-04 + 3.53E-06*x + 3.44E-10*x^2
      | kind_red native
-       => x / (150 * 150) * 10
+       => 0.113 + -7.58E-06*x + 8.72E-10*x^2
      | kind_red cbv
-       => x / (150 * 150) * 10
+       => -9.57E-04 + 3.73E-06*x + 4.99E-11*x^2
      | kind_red lazy
-       => x / (150 * 150) * 10
+       => -1.57E-04 + 2.67E-06*x + 2.34E-10*x^2
      | kind_red cbn
-       => x / (150 * 150) * 10
+       => -0.0378 + 3.86E-04*x + 5.35E-07*x^2
      | kind_red simpl
-       => x / (150 * 150) * 10
+       => 2.42E-03 + -1.81E-03*x + 3.23E-04*x^2
      end%Q.
+
+
+Definition max_input_of_kind (k : kind_of_rewrite) : option (Z * Z)
+  := match k with
+     | kind_rewrite_strat _
+       => None
+     | kind_setoid_rewrite
+       => None
+     | kind_red vm
+       => Some (110, 110) (* stack overflows on things much larger than this *)
+     | kind_red native
+       => Some (130, 130) (* stack overflows on (20880, 1) *)
+     | kind_red cbv
+       => Some (140, 140) (* stack overflows on (25760, 1) *)
+     | kind_red lazy
+       => Some (140, 140) (* stack overflows on (22052, 1) *)
+     | kind_red cbn
+       => None
+     | kind_red simpl
+       => None
+     end%Z.
 
 Local Hint Unfold size_of_kind size_of_arg : solve_factors_through_prod.
 
-Definition args_of_size (k : kind_of_rewrite) (s : size) : list (Z * Z)
-  := if match s with Sanity => true | _ => false end
-     then [(1, 1); (1, 2); (2, 1); (1, 3); (3, 1); (2, 2); (4, 1); (1, 4)]
-     else eta_kind
-            (k'
-             => Sample.generate_inputs
-                  (T:=Z*Z)
-                  (1, 1)
-                  (size_of_kind k')
-                  (Qseconds_of_size s)
-                  Qstandard_max_seconds)
-            k.
-
+Definition args_of_size' (k : kind_of_rewrite) (s : size) : list (Z * Z)
+  := Eval cbv beta iota in
+      eta_size
+        (s'
+         => if match s' with Sanity => true | _ => false end
+            then [(1, 1); (1, 2); (2, 1); (1, 3); (3, 1); (2, 2); (4, 1); (1, 4)]
+            else eta_kind
+                   (k'
+                    => Sample.generate_inputs
+                         (T:=Z*Z)
+                         (1, 1)
+                         (size_of_kind k')
+                         (Qseconds_of_size s')
+                         Qstandard_max_seconds
+                         Sample.default_max_points
+                         (max_input_of_kind k'))
+                   k)
+        s.
+Local Set NativeCompute Profiling.
+Local Set NativeCompute Timing.
+Time Definition args_of_size := args_of_size' (*(k : kind_of_rewrite) (s : size)
+  := Eval native_compute in eta_size (s' => eta_kind (k' => N.of_nat (List.length (args_of_size' k' s'))) k) s*).
+(*
 Goal True.
-  pose (args_of_size (kind_red vm) SuperFast) as x.
-  cbv [args_of_size] in x.
-  cbv [Qseconds_of_size Qstandard_max_seconds size_of_kind] in x.
-  cbv [Zseconds_of_size inject_Z] in x.
-  cbv [Zstandard_max_seconds seconds_of_size] in x.
-  cbn -[Sample.generate_inputs] in x.
-  cbv [Sample.generate_inputs] in x.
-  set (k := Sample.find_max _ _ _ _ _) in (value of x).
-  vm_compute in k.
-  subst k.
-  cbv [Sample.cutoff_elem_count] in x.
-  cbv [Sample.binary_alloc] in x.
-  set (k:= Sample.count_elems_T _ _) in (value of x) at 1; vm_compute in k; subst k.
-  set (k:=(100 + _)%nat) in (value of x); vm_compute in k; subst k.
-  set (fuel := 117%nat) in (value of x).
-  cbn [Sample.binary_alloc_QT_fueled] in x.
-  set (k := Sample.count_elems_T _ _) in (value of x) at 1; vm_compute in k; subst k.
-  set (k := Sample.total_time_all_elems_T _ _) in (value of x) at 1.
-  Time vm_compute in k.
-  subst k.
-  set (k := (_ =? _)%N) in (value of x) at 1.
-  vm_compute in k; subst k.
-  cbv beta iota zeta in x.
-  set (k := (_ =? _)%N) in (value of x) at 1.
-  vm_compute in k; subst k.
-  cbv beta iota zeta in x.
-  set (k := (_ <=? _)%N) in (value of x) at 1.
-  vm_compute in k.
-  vm_compute in k; subst k.
-  cbv beta iota zeta in x.
-  vm_compute orb in x.
-  cbv beta iota zeta in x.
-  set (k := Qred _) in (value of x) at 1; vm_compute in k; subst k.
-  pose 116%nat as fuel'.
-  change fuel with (S fuel') in (value of x) at 1.
-  cbn [Sample.binary_alloc_QT_fueled] in x.
-  vm_compute N.eqb in x.
-  cbv beta iota zeta in x.
-  vm_compute N.leb in x.
-  cbv beta iota zeta in x.
-  vm_compute orb in x.
-  cbv beta iota zeta in x.
-  set (k := Qred _) in (value of x) at 1; vm_compute in k; subst k.
-  vm_compute Sample.avg_T in x.
-  pose 115%nat as fuel''.
-  change fuel' with (S fuel'') in (value of x) at 1.
-  cbn [Sample.binary_alloc_QT_fueled] in x.
-  vm_compute N.eqb in x.
-  cbv beta iota zeta in x.
-  vm_compute N.leb in x.
-  cbv beta iota zeta in x.
-  set (k := Qred _) in (value of x) at 1; vm_compute in k; subst k.
-  vm_compute Z.to_N in x.
-  set (k := (_ / _)%Q) in (value of x) at 1; vm_compute in k; subst k.
-  change fuel' with (S fuel'') in (value of x) at 1.
-  cbn [Sample.binary_alloc_QT_fueled] in x.
-  vm_compute N.eqb in x.
-  cbv beta iota zeta in x.
-  vm_compute N.leb in x.
-  cbv beta iota zeta in x.
-  set (k := Qred _) in (value of x) at 1; vm_compute in k; subst k.
-  vm_compute Z.to_N in x.
-  set (k := Qred _) in (value of x) at 1; vm_compute in k; subst k.
-  change fuel with (S fuel') in (value of x) at 1.
-  cbn [Sample.binary_alloc_QT_fueled] in x.
-  vm_compute N.eqb in x.
-  cbv beta iota zeta in x.
-  vm_compute N.leb in x.
-  cbv beta iota zeta in x.
-  vm_compute orb in x.
-  cbv beta iota zeta in x.
-  set (k := Qred _) in (value of x) at 1; vm_compute in k; subst k.
-  vm_compute Sample.avg_T in x.
-  change fuel' with (S fuel'') in (value of x) at 1.
-  cbn [Sample.binary_alloc_QT_fueled] in x.
-  vm_compute N.eqb in x.
-  cbv beta iota zeta in x.
-  vm_compute N.leb in x.
-  cbv beta iota zeta in x.
-  set (k := Qred _) in (value of x) at 1; vm_compute in k; subst k.
-  vm_compute Z.to_N in x.
-  vm_compute orb in x.
-  cbv beta iota zeta in x.
-  vm_compute Sample.avg_T in x.
-  pose 114%nat as fuel'''.
-  change fuel'' with (S fuel''') in (value of x) at 1.
-  cbn [Sample.binary_alloc_QT_fueled] in x.
-  vm_compute N.eqb in x.
-  cbv beta iota zeta in x.
-  vm_compute N.leb in x.
-  cbv beta iota zeta in x.
-  set (k := Qred _) in (value of x) at 1; vm_compute in k; subst k.
-  vm_compute Z.to_N in x.
-  set (k := (_ / _)%Q) in (value of x) at 1; vm_compute in k; subst k.
-  change fuel'' with (S fuel''') in (value of x) at 1.
-  cbn [Sample.binary_alloc_QT_fueled] in x.
-  vm_compute N.eqb in x.
-  cbv beta iota zeta in x.
-  vm_compute N.leb in x.
-  cbv beta iota zeta in x.
-  set (k := Qred _) in (value of x) at 1; vm_compute in k; subst k.
-  vm_compute Z.to_N in x.
-  set (k := (_ / _)%Q) in (value of x) at 1; vm_compute in k; subst k.
-  set (k := Qred _) in (value of x) at 1; vm_compute in k; subst k.
-  change fuel' with (S fuel'') in (value of x) at 1.
-  cbn [Sample.binary_alloc_QT_fueled] in x.
-  vm_compute N.eqb in x.
-  cbv beta iota zeta in x.
-  vm_compute N.leb in x.
-  cbv beta iota zeta in x.
-  set (k := Qred _) in (value of x) at 1; vm_compute in k; subst k.
-  vm_compute Z.to_N in x.
-  vm_compute orb in x.
-  cbv beta iota zeta in x.
-  vm_compute Sample.avg_T in x.
-  change fuel'' with (S fuel''') in (value of x) at 1.
-  cbn [Sample.binary_alloc_QT_fueled] in x.
-  vm_compute N.eqb in x.
-  cbv beta iota zeta in x.
-  vm_compute N.leb in x.
-  cbv beta iota zeta in x.
-  vm_compute orb in x.
-  cbv beta iota zeta in x.
-  repeat (set (k := Qred _) in (value of x) at 1; vm_compute in k; subst k).
-  vm_compute Sample.avg_T in x.
-  (** HERE TODO: set a maximum number of points to sample *)
-
-  vm_compute Sample.binary_alloc_QT_fueled in x.
-  vm_compute in x.
-
-
-  set (k := (_ / _)%Q) in (value of x) at 1; vm_compute in k; subst k.
-  set (k := (_ + _)%Q) in (value of x) at 1; vm_compute in k; subst k.
-
-  vm_compute Sample.total_time_all_elems_T in x.
-  vm_compute Sample.avg_T in x.
-  vm_compute Qred in x.
-  vm_compute in x.
-  change fuel
-  vm_compute in x.
-  set k
-  set (k := (_ - _)%Q) in (value of x) at 1; vm_compute in k; subst k.
-  set (k := (_ - _)%Q) in (value of x) at 1; vm_compute in k; subst k.
-  cbv [Sample.total_time_all_elems_T] in k.
+  pose (fun k s => eta_size (s' => eta_kind (k' => N.of_nat (List.length (args_of_size' k' s'))) k) s) as v.
+  cbv [args_of_size'] in v.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  clear v.
+  cbv [Sample.generate_inputs] in k.
+  (*set (attae := Sample.adjusted_total_time_all_elems_T) in (value of k).*)
   cbv [Sample.total_time_of_Z_prod_poly] in k.
-  cbn [Z.to_N] in k.
-  cbv [Sample.total_time_of_N_prod_poly] in k.
-  cbn [fst snd] in k.
-  vm_compute Sample.degree in k.
-  vm_compute Nat.max in k.
-  vm_compute Sample.taylor_series_ln1px in k.
-  vm_compute Sample.compose_poly in k.
-  vm_compute Sample.poly_mul in k.
-  vm_compute Sample.integrate_poly in k.
+  set (tbl := Sample.small_table_rev_cached) in (value of k).
+  vm_compute in tbl.
+  set (z := max_input_of_kind _) in (value of k).
+  vm_compute in z; subst z.
+  vm_compute option_map in k.
+  cbv beta iota in k.
+  cbv [Sample.binary_alloc] in k.
+  set (fuel := Nat.add _ _) in (value of k).
+  vm_compute in fuel.
+  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); subst fuel; rename fuel' into fuel.
+  cbn [Sample.binary_alloc_QT_fueled] in k.
+  set (v := Sample.count_elems_T _ _) in (value of k) at 1.
+  Time vm_compute in v.
+  subst v.
+  set (v := N.eqb _ _) in (value of k) at 1.
+  Time vm_compute in v.
+  subst v.
   cbv beta iota zeta in k.
-  vm_compute N.leb in k.
+  set (v := N.eqb _ _) in (value of k) at 1.
+  Time vm_compute in v.
+  subst v.
   cbv beta iota zeta in k.
-  vm_compute Qeq_bool in k.
-  set (c := Qeq_bool _ _) in (value of k); vm_compute in c; subst c.
+  set (v := orb _ _) in (value of k) at 1.
+  Time vm_compute in v.
+  subst v.
   cbv beta iota zeta in k.
-  cbv [Sample.eval_poly] in k.
-  cbv [Sample.eval_poly_gen] in k.
-  cbn [map] in k.
-  cbn [fold_right] in k.
-  vm_compute inject_Z in k.
-  vm_compute Qpower in k.
-  vm_compute Sample.Qln in k.
-  cbv [size_of_arg] in k.
-  cbn [fst snd] in k.
-  pose (Qred k) as k'.
-  Time vm_compute in k'.
-  Time vm_compute in k'.
-  Time native_compute in k'.
-  Time native_compute in k'.
-  pose
-  Time
+  set (v := orb _ _) in (value of k) at 1.
+  Time vm_compute in v; subst v; cbv beta iota zeta in k.
+  set (v := Qred _) in (value of k); vm_compute in v; subst v.
+  vm_compute Sample.avg_T in k.
+  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); subst fuel; rename fuel' into fuel.
+  cbn [Sample.binary_alloc_QT_fueled] in k.
+  set (v := Sample.count_elems_T _ _) in (value of k) at 1.
+  Time vm_compute in v.
+  subst v.
+  Time do 1 match (eval cbv delta [k] in k) with
+         | context[if ?e then _ else _] => set (v := e) in (value of k); vm_compute in v; subst v; cbv beta iota zeta in k
+  end.
+  set (v := N.eqb _ _) in (value of k) at 1.
+  Time vm_compute in v.
+  subst v.
+  cbv beta iota zeta in k.
+  set (v := orb _ _) in (value of k) at 1.
+  Time vm_compute in v.
+  subst v.
+  cbv beta iota zeta in k.
+  Time do 1 match (eval cbv delta [k] in k) with
+         | context[if ?e then _ else _] => set (v := e) in (value of k); vm_compute in v; subst v; cbv beta iota zeta in k
+  end.
+  Time do 1 match (eval cbv delta [k] in k) with
+         | context[if ?e then _ else _] => set (v := e) in (value of k); vm_compute in v; subst v; cbv beta iota zeta in k
+  end.
+  Time do 1 match (eval cbv delta [k] in k) with
+         | context[if ?e then _ else _] => set (v := e) in (value of k); vm_compute in v; subst v; cbv beta iota zeta in k
+  end.
+  set (v := Qred _) in (value of k); vm_compute in v; subst v.
+  vm_compute Sample.avg_T in k.
+  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); subst fuel; rename fuel' into fuel.
+  Compute (fun x => Qround.Qfloor (1/2 + x*1000) # 1000)
+          (Qred ((@Sample.adjusted_size_T
+                    (Z * Z)
+                    (size_of_kind (kind_red vm))) (95,96))).
+  Set Printing Implicit.
+  cbn [Sample.binary_alloc_QT_fueled] in k.
+  set (v := Sample.count_elems_T _ _) in (value of k) at 1.
+  Time vm_compute in v.
+  subst v.
+  Time do 2 match (eval cbv delta [k] in k) with
+         | context[if ?e then _ else _] => set (v := e) in (value of k); vm_compute in v; subst v; cbv beta iota zeta in k
+  end.
+  set (v := Sample.binary_alloc_QT_fueled _ _ _ _ _ _ _ _ _) in (value of k) at 1.
+  time vm_compute in v.
   Time vm_compute in k.
-  native_compute in k.
-  vm_compute in k.
-  vm_compute Sample.poly_mul in k.
-  Time vm_compute in k.
-  vm_compute in k.
-  vm_compute in x.
-  cbv [Sample.binary_alloc_QT_fueled] in x.
-  cbv [Sample.count_elems_T] in k.
-  vm_compu
-  clear x.
-  cbv [Sample.Z_prod_has_count] in k.
-  cbv [Sample.Zsum_from_to] in k.
-  cbn [fst snd] in k.
-  vm_compute in k.
-  set (v := Z.mul _ _) in (value of k) at 1; vm_compute in v; subst v.
-  set (v := Z.mul _ _) in (value of k) at 1; vm_compute in v; subst v.
-  set (v := Z.mul _ _) in (value of k) at 1; vm_compute in v; subst v.
-  cbv [Sample.op_from_to] in k.
-  cbn [inject_Z] in k.
-  vm_compute in k.
-  cbv [Sample.alloc_T Sample.total_time_all_elems_T Sample.count_elems_T] in x.
-  cbv [Sample.Z_prod_has_alloc
-  set (k :=
-  cbv [Sample.sort_by_size_and_alloc]
+  set (v := Sample.adjusted_total_time_all_elems_T _ _) in (value of k) at 1.
+
+  Time vm_compute in v.
+  cbv [Sample.adjusted_total_time_all_elems_T] in v.
+  cbv [Sample.total_time_all_elems_T] in v.
+  cbv [Let_In Sample.total_time_of_Z_prod_poly_cached] in v.
+  cbv [Sample.total_time_of_N_prod_poly_cached] in v.
+  vm_compute Z.to_N in v.
+  vm_compute Sample.integrate_poly in v.
+  cbv beta iota zeta in v.
+  Time vm_compute N.leb in v.
+  cbv beta iota zeta in v.
+  Time vm_compute (Qeq_bool _ _) in v.
+  cbv beta iota zeta in v.
+  Time vm_compute Sample.total_time_of_cached_table in v.
+  time vm_compute Sample.Qln in v.
+  Time vm_compute Sample.eval_poly in v.
+  clear -v.
+  Ltac redify x :=
+    let recr2 op x y := let x := redify x in let y := redify y in constr:(Qred (op x y)) in
+    lazymatch x with
+    | ?x # ?y => constr:(Qred (x # y))
+    | Qplus ?x ?y => recr2 Qplus x y
+    | Qminus ?x ?y => recr2 Qminus x y
+    | Qmult ?x ?y => recr2 Qmult x y
+    | ?f ?x => let f := redify f in let x := redify x in constr:(f x)
+    | _ => x
+    end.
+  let v := (eval cbv delta [v] in v) in
+  let v := redify v in
+  pose v as v'.
+  Time vm_compute in v'.
+  Time vm_compute in v.
+  Time vm_compute in v.
+  Time vm_compute in v.
+  pose (Qred v) as v'.
+  Time vm_compute in v'.
+  Time vm_compute in v.
+  pose (Qred v) as v'.
+  Time vm_compute in v'.
+  subst v.
+  clear -v'.
+  cbv [Sample.adjusted_total_time_all_elems_T] in v'.
+  cbv [Sample.total_time_all_elems_T] in v'.
+  cbv [Sample.total_time_of_Z_prod_poly] in v'.
+  cbv [Sample.total_time_of_N_prod_poly] in v'.
+  Time vm_compute Sample.integrate_poly in v'.
+  cbv beta iota zeta in v'.
+  Time vm_compute N.leb in v'.
+  Time vm_compute Qeq_bool in v'.
+  cbv beta iota zeta in v'.
+  Time vm_compute Qeq_bool in v'.
+  cbv beta iota zeta in v'.
+  set (v'' := Qeq_bool _ _) in (value of v') at 1; vm_compute in v''; subst v''.
+  set (v'' := Qeq_bool _ _) in (value of v') at 1; vm_compute in v''; subst v''.
+  cbv beta iota zeta in v'.
+  set (v'' := fold_right _ _ _) in (value of v') at 1.
+  vm_compute Z.to_nat in v''.
+  Time vm_compute in v''.
+  subst v''.
+  Time vm_compute in v'.
+  pose (Qred (fold_right (fun x y => Qred (Qplus (x) (y))) 0%Q
+           (map
+              (fun '(i, count) =>
+               ((inject_Z count * Sample.adjusted_size_T (size:=(fun '(x, y) => size_of_kind (kind_red vm) (Z.of_N x, Z.of_N y))) (1%N, i)))%Q)
+              (skipn 1 Sample.small_table)))) as v'''.
+  Time vm_compute in v'''.
+  subst v''.
+  vm_compute
+  Time vm_compute in v'.
+  Time vm_compute in v'.
+  Time vm_compute in v.
+  Time repeat match (eval cbv delta [k] in k) with
+         | context[if ?e then _ else _] => set (v := e) in (value of k); vm_compute in v; subst v; cbv beta iota zeta in k
+  end.
+
+  cbn [Sample.find_above_max_size] in z.
+  vm_compute Qle_bool in z.
+  cbv beta iota in z.
+  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); subst fuel; rename fuel' into fuel.
+  cbn [Sample.find_above_max_size] in z.
+  vm_compute Qle_bool in z.
+  cbv beta iota in z.
+  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); subst fuel; rename fuel' into fuel.
+  cbn [Sample.find_above_max_size] in z.
+  vm_compute Qle_bool in z.
+  cbv beta iota in z.
+  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); subst fuel; rename fuel' into fuel.
+  cbn [Sample.find_above_max_size] in z.
+  vm_compute Qle_bool in z.
+  cbv beta iota in z.
+  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); subst fuel; rename fuel' into fuel.
+  cbn [Sample.find_above_max_size] in z.
+  vm_compute Qle_bool in z.
+  cbv beta iota in z.
+  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); subst fuel; rename fuel' into fuel.
+  cbn [Sample.find_above_max_size] in z.
+  vm_compute Qle_bool in z.
+  cbv beta iota in z.
+  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); subst fuel; rename fuel' into fuel.
+  cbn [Sample.find_above_max_size] in z.
+  vm_compute Qle_bool in z.
+  cbv beta iota in z.
+  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); subst fuel; rename fuel' into fuel.
+  cbn [Sample.find_above_max_size] in z.
+  vm_compute Qle_bool in z.
+  cbv beta iota in z.
+  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); subst fuel; rename fuel' into fuel.
+  cbn [Sample.find_above_max_size] in z.
+  vm_compute Qle_bool in z.
+  cbv beta iota in z.
+  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); subst fuel; rename fuel' into fuel.
+  cbn [Sample.find_above_max_size] in z.
+  vm_compute Qle_bool in z.
+  cbv beta iota in z.
+  set (w := Sample.double_T _) in (value of z) at 1; vm_compute in w; subst w.
+  set (w := Sample.double_T _) in (value of z) at 1; vm_compute in w; subst w.
+  vm_compute Qstandard_max_seconds in z.
+
+  vm_compute size_of_kind in z.
+
+  set (fuel' :=
+  cbv [Sample.find_above_max_size] in z.
+  vm_compute in z; subst z.
+  cbv beta iota in k.
+  vm_compute Sample.min_T in k.
+  Time vm_compute in k; subst k.
 
 Ltac mkgoal kind nm
   := lazymatch nm with
@@ -515,7 +577,8 @@ Global Instance : forall A x, Proper (eq ==> eq) (@cons A x) := _.
 Global Instance : Transitive (Basics.flip Basics.impl) := _.
 
 Global Set NativeCompute Timing.
-
+Global Open Scope Z_scope.
+(*
 Goal True.
 
   run8 SuperFast.
@@ -532,3 +595,5 @@ Goal True.
 
   rewrite_strat
   repeat (cbn [nat_rect]; rewrite_strat ((try repeat topdown hints mydb1); (try repeat bottomup hints mydb2))).
+*)
+*)

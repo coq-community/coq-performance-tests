@@ -8,11 +8,21 @@ Require Import Coq.NArith.NArith.
 Require Import Coq.ZArith.ZArith.
 Require Import Coq.Arith.Arith.
 Require Import Coq.Lists.List.
+Require Import PerformanceExperiments.LetIn.
 Import ListNotations.
 Local Open Scope list_scope.
 
 Definition extra_fuel : nat := 100%nat.
 Definition cutoff_elem_count := 6%N.
+Definition default_max_points := 1000%N.
+Definition precision_binary_digits := 32%N.
+Definition smallest_time_Q := 1E-5%Q. (* don't allow times smaller than this *)
+Definition min_fractional_change_for_nonlinear_sample : Q := 1%Q. (* if going from [a] to [b] increases by less than this number times the size at [a], just distribute points uniformly *)
+
+Definition Qround (v : Q) : Z (* away from 0 *)
+  := if Qle_bool 0 v
+     then Qfloor (v + 1/2)
+     else Qceiling (v - 1/2).
 
 Module QOrder <: TotalLeBool.
   Local Open Scope Q_scope.
@@ -82,20 +92,7 @@ Definition find_max {T} (double : T -> T) (avg : T -> T -> T) (size : T -> Q) (m
 
 Class has_double_avg T := { double_T : T -> T ; avg_T : T -> T -> T }.
 
-Definition nat_prod_has_double_avg : has_double_avg (nat * nat)
-  := let make v := (Nat.sqrt v, Nat.sqrt_up v) in
-     {| double_T := fun '(x, y) => make (2 * x * y)%nat
-        ; avg_T := fun '(x, y) '(x', y') => make ((x * y + x' * y') / 2)%nat |}.
-
-Definition N_prod_has_double_avg : has_double_avg (N * N)
-  := let make v := (N.sqrt v, N.sqrt_up v) in
-     {| double_T := fun '(x, y) => make (2 * x * y)%N
-        ; avg_T := fun '(x, y) '(x', y') => make ((x * y + x' * y') / 2)%N |}.
-
-Definition Z_prod_has_double_avg : has_double_avg (Z * Z)
-  := let make v := (Z.sqrt v, Z.sqrt_up v) in
-     {| double_T := fun '(x, y) => make (2 * x * y)%Z
-        ; avg_T := fun '(x, y) '(x', y') => make ((x * y + x' * y') / 2)%Z |}.
+Class has_min T := min_T : T -> T -> T.
 
 Local Set Warnings Append "-ambiguous-paths".
 Local Coercion N.of_nat : nat >-> N.
@@ -103,6 +100,15 @@ Local Coercion N.to_nat : N >-> nat.
 Local Coercion Z.of_N : N >-> Z.
 Local Coercion inject_Z : Z >-> Q.
 Local Coercion Npos : positive >-> N.
+
+Definition Qred_to_precision (v : Q) (max_lg2_denominator : N) : Q
+  := let v := Qred v in
+     if (max_lg2_denominator <? N.log2 (Qden v))%N
+     then Qred (Qround (v * 2^max_lg2_denominator) / 2^max_lg2_denominator)
+     else v.
+
+Definition Qred_to_default_precision (v : Q) : Q
+  := Qred_to_precision v precision_binary_digits.
 
 (** Allocate 1/n time to each 1/n of the codomain *)
 Fixpoint binary_alloc_QT_fueled
@@ -113,33 +119,41 @@ Fixpoint binary_alloc_QT_fueled
          (allocation : Q)
          (min : T) (max : T)
          (cutoff_elem_count : N)
+         (max_point_count : N)
+         (min_fractional_change_for_nonlinear_sample : Q)
          (fuel : nat)
-  : list ((T * T (* min * max *)) * N) * Q (* allocation used *)
+  : list ((T * T (* min * max *)) * N) * (Q (* allocation used *) * N (* points allocated *))
   := let allocation := Qmax 0 allocation in
+     let empty := (nil, (0, 0%N)) in
      match fuel with
-     | O => (nil, 0)
+     | O => empty
      | S fuel
-       => if (count_elems min max =? 0)%N
-          then (nil, 0)
+       => let count := count_elems min max in
+          if (count =? 0)%N
+          then empty
           else
-            let time_per_elem := total_time_all_elems min max / count_elems min max in
-            let n_elem := Z.to_N (Qfloor (allocation / time_per_elem)) in
+            let time_per_elem := total_time_all_elems min max / count in
+            let n_elem := N.min max_point_count (Z.to_N (Qfloor (allocation / time_per_elem))) in
             if (n_elem =? 0)%N
-            then (nil, 0)
+            then empty
             else
-              if (n_elem <=? cutoff_elem_count)%N
-              then ([((min, max), n_elem)], time_per_elem * n_elem)
+              let '(min_sz, max_sz) := (size min, size max) in
+              if ((n_elem <=? cutoff_elem_count)%N
+                  || (count <=? 2 * n_elem)%N
+                  || (Qle_bool ((max_sz - min_sz) / min_sz) min_fractional_change_for_nonlinear_sample))
+                   (* if there are few enough elements left, or if the number of elements that we want is nearly all of them, or we're not changing all that much from [min] to [max], we just distribute the points uniformly *)
+              then ([((min, max), n_elem)], (time_per_elem * n_elem, n_elem))
               else
                 let mid := avg_T min max in
-                let '(min_sz, mid_sz, max_sz) := (size min, size mid, size max) in
+                let mid_sz := size mid in
                 if Qeq_bool min_sz max_sz || Qeq_bool min_sz mid_sz || Qeq_bool mid_sz max_sz
                 then
-                  ([((min, max), n_elem)], time_per_elem * n_elem)
+                  ([((min, max), n_elem)], (time_per_elem * n_elem, n_elem))
                 else
                   let alloc_hi := allocation * (max_sz - mid_sz) / (max_sz - min_sz) in
-                  let '(ret_hi, alloc_hi) := binary_alloc_QT_fueled size count_elems total_time_all_elems (Qred alloc_hi) mid max cutoff_elem_count fuel in
-                let '(ret_lo, alloc_lo) := binary_alloc_QT_fueled size count_elems total_time_all_elems (Qred (allocation - alloc_hi)) min mid cutoff_elem_count fuel in
-                (ret_lo ++ ret_hi, Qred (alloc_lo + alloc_hi))
+                  let '(ret_hi, (alloc_hi, n_hi)) := binary_alloc_QT_fueled size count_elems total_time_all_elems (Qred alloc_hi) mid max cutoff_elem_count ((1 + max_point_count) / 2) min_fractional_change_for_nonlinear_sample fuel in
+                let '(ret_lo, (alloc_lo, n_lo)) := binary_alloc_QT_fueled size count_elems total_time_all_elems (Qred (allocation - alloc_hi)) min mid cutoff_elem_count (max_point_count- n_hi) min_fractional_change_for_nonlinear_sample fuel in
+                (ret_lo ++ ret_hi, (Qred (alloc_lo + alloc_hi), (n_lo + n_hi)%N))
      end.
 
 Definition binary_alloc
@@ -150,11 +164,13 @@ Definition binary_alloc
            (allocation : Q)
            (min : T) (max : T)
            (cutoff_elem_count : N)
+           (max_point_count : N)
+           (min_fractional_change_for_nonlinear_sample : Q)
            (alloc : forall min max : T, N -> list T)
   : list T
   := List.flat_map
        (fun '((min, max), n) => alloc min max n)
-       (fst (binary_alloc_QT_fueled size count_elems total_time_all_elems allocation min max cutoff_elem_count (100 + N.to_nat (N.log2_up (count_elems min max))))).
+       (fst (binary_alloc_QT_fueled size count_elems total_time_all_elems allocation min max cutoff_elem_count max_point_count min_fractional_change_for_nonlinear_sample (100 + N.to_nat (N.min 1000 (* we don't want to go too much above 1000, because that would make the nat very big *) max_point_count) + N.to_nat (N.log2_up (count_elems min max))))).
 
 Class has_count T :=
   { count_elems_T : forall min max : T, N }.
@@ -164,8 +180,17 @@ Class has_alloc T :=
 
 Class has_size T := size_T : T -> Q.
 
+Definition adjust_time (t : Q) : Q
+  := Qmax t smallest_time_Q.
+
+Definition adjusted_size_T {T} {size : has_size T} (v : T) : Q
+  := adjust_time (size v).
+
 Class has_total_time T :=
   total_time_all_elems_T : forall min max : T, Q.
+
+Definition adjusted_total_time_all_elems_T {T} {_ : has_total_time T} (min max : T) : Q
+  := adjust_time (total_time_all_elems_T min max).
 
 Definition op_from_to {T} (op : T -> T -> T) (id : T)
            (lower upper : Z) (f : Z -> T) : T
@@ -232,10 +257,18 @@ Fixpoint take_uniform_n' {T} (ls : list T) (len : nat) (n : nat) : list T
 
 Definition take_uniform_n {T} ls n := @take_uniform_n' T ls (List.length ls) n.
 
-Definition Zrange (min max : Z) : list Z
-  := if (min <=? max)%Z
-     then List.map Z.of_nat (seq (Z.to_nat min) (1 + Z.to_nat (max - min)))
+
+Definition Qrange (min step max : Q) : list Q
+  := if Qle_bool min max
+     then List.map (fun n:nat => min + step * n)
+                   (seq 0 (1 + Z.to_nat (Qfloor ((max - min) / step))))
      else [].
+
+Definition Zrange (min : Z) (step : Q) (max : Z) : list Z
+  := List.map Qround (Qrange min step max).
+
+Definition Zrange_max_points (min max : Z) (max_points : N) : list Z
+  := Zrange min (Qceiling (Qmax 1 ((max - min) / (max_points - 1)))) max.
 
 Class integrable (f : Z -> Q) {fint : Z -> Q} := {}.
 
@@ -317,6 +350,10 @@ Ltac reify_to_poly fx x :=
        | Z.add ?fx ?gx => rec_binop poly_add fx gx
        | N.add ?fx ?gx => rec_binop poly_add fx gx
        | Nat.add ?fx ?gx => rec_binop poly_add fx gx
+       | Qminus ?fx ?gx => rec_binop poly_sub fx gx
+       | Z.sub ?fx ?gx => rec_binop poly_sub fx gx
+       | N.sub ?fx ?gx => rec_binop poly_sub fx gx
+       | Nat.sub ?fx ?gx => rec_binop poly_sub fx gx
        | Qmult ?fx ?gx => rec_binop poly_mul fx gx
        | Z.mul ?fx ?gx => rec_binop poly_mul fx gx
        | N.mul ?fx ?gx => rec_binop poly_mul fx gx
@@ -324,14 +361,16 @@ Ltac reify_to_poly fx x :=
        | Qdiv ?fx ?gx => reify_to_poly (fx * / gx) x
        | Qpower ?fx ?gx
          => lazymatch gx with
-            | context[x] => fail 0 "non-constant exponent" gx "in" x "(" orig
+            | context[x] => idtac "non-constant exponent" gx "in" x "(" orig;
+                            fail 0 "non-constant exponent" gx "in" x "(" orig
             | _ => let fp := reify_to_poly fx x in
                    constr:(poly_power fp (Z.to_N gx))
             end
        | Z.pow ?fx ?gx => reify_to_poly (Qpower (inject_Z fx) gx) x
        | N.pow ?fx ?gx
          => lazymatch gx with
-            | context[x] => fail 0 "non-constant exponent" gx "in" x "(" orig
+            | context[x] => idtac "non-constant exponent" gx "in" x "(" orig;
+                            fail 0 "non-constant exponent" gx "in" x "(" orig
             | _ => let fp := reify_to_poly fx x in
                    constr:(poly_power fp gx)
             end
@@ -345,7 +384,8 @@ Ltac reify_to_poly fx x :=
        | Z.to_N ?fx => reify_to_poly fx x
        | N.to_nat ?fx => reify_to_poly fx x
        | N.of_nat ?fx => reify_to_poly fx x
-       | ?v => fail 0 "unrecognized:" v
+       | ?v => idtac "unrecognized:" v;
+               fail 0 "unrecognized:" v
        end
   | _ => let fx := lazymatch type of fx with
                    | Q => fx
@@ -484,7 +524,8 @@ Ltac reify_poly f :=
   let f := (eval cbv [factor_through_prod has_size] in f) in
   lazymatch constr:(fun x : Z => ltac:(let r := reify_to_poly (f x) x in exact r)) with
   | fun _ => ?v => v
-  | ?v => fail 0 "failed to eliminate functional dependencies of" v
+  | ?v => idtac "failed to eliminate functional dependencies of" v;
+          fail 0 "failed to eliminate functional dependencies of" v
   end.
 
 Ltac solve_factors_through_prod :=
@@ -528,7 +569,7 @@ Definition total_time_of_N_prod_exact
      => let min := (fst min * snd min)%N in
         let max := (fst max * snd max)%N in
         (* ∑_{i=1}^max ∑_{j=⌈min/i⌉}^{⌊max/i⌋} 1*)
-        ∑_{i=1}^{max} (∑_{j=Qceiling (min/i)}^{Qfloor (max/i)} (size (Z.to_N i, Z.to_N j))).
+        ∑_{i=1}^{max} (∑_{j=Qceiling (min/i)}^{Qfloor (max/i)} (adjusted_size_T (Z.to_N i, Z.to_N j))).
 
 Definition cutoff := 50%N.
 
@@ -552,6 +593,10 @@ Global Instance N_has_double_avg : has_double_avg N
 
 Global Instance Z_has_double_avg : has_double_avg Z
   := { double_T := Z.mul 2 ; avg_T x y := ((x + y) / 2)%Z }.
+
+Global Instance nat_has_min : has_min nat := Nat.min.
+Global Instance N_has_min : has_min N := N.min.
+Global Instance Z_has_min : has_min Z := Z.min.
 
 Global Instance Q_has_alloc : has_alloc Q
   := { alloc_T min max n
@@ -615,23 +660,43 @@ Global Instance Z_prod_has_alloc : has_alloc (Z * Z)
           | _
             => (let min := fst min * snd min in
                 let max := fst max * snd max in
-                List.flat_map
-                  (fun vals:list Z
-                   => match vals with
-                      | v::_
-                        => let n := List.length vals in
-                           (*∑_{i=1}^max ∑_{j=⌈min/i⌉}^{⌊max/i⌋} 1*)
-                           take_uniform_n
-                             (List.flat_map
-                                (fun i:Z
-                                 => List.map
-                                      (fun j:Z => (i, j))
-                                      (Zrange (Qceiling (v/i)) (Qfloor (v/i))))
-                                (Zrange 1 v))
-                             (3*n)
-                      | [] => []
-                      end)
-                  (group_by Z.eqb (alloc_T min max ((n+1)/3))))%Z
+                (if min <=? 5
+                 then
+                   List.filter (fun '(x, y) => x*y <=? max) [(1, 1); (1, 2); (2, 1); (1, 3); (3, 1); (1, 4); (2, 2); (4, 1); (1, 5); (5, 1)]
+                 else
+                   nil)
+                  ++ let min := Z.max min 6 in
+                     let max := Z.max max 6 in
+                     if Z.sqrt max - Z.sqrt min <=? (n+1)/3
+                     then
+                       List.flat_map
+                         (fun vals:list Z
+                          => match vals with
+                             | v::_
+                               => let n := List.length vals in
+                                  (*∑_{i=1}^max ∑_{j=⌈min/i⌉}^{⌊max/i⌋} 1*)
+                                  take_uniform_n
+                                    (List.flat_map
+                                       (fun i:Z
+                                        => List.map
+                                             (fun j:Z => (i, j))
+                                             (Zrange (Qceiling (v/i)) 1 (Qfloor (v/i))))
+                                       (Zrange 1 1 v))
+                                    (3*n)
+                             | [] => []
+                             end)
+                         (group_by Z.eqb (alloc_T min max ((n+1)/3)))
+                     else
+                       List.flat_map
+                         (fun v
+                          => let mid := (Z.sqrt v, Z.sqrt_up v) in
+                             let midv := fst mid * snd mid in
+                             if midv <? v
+                             then [mid; (1, v); (v, 1)]
+                             else if midv =? v
+                                  then [(1, v); mid; (v, 1)]
+                                  else [(1, v); (v, 1); mid])
+                         (alloc_T min max ((n+1)/3)))%Z
           end }.
 
 Global Instance N_prod_has_alloc : has_alloc (N * N)
@@ -670,10 +735,47 @@ Definition total_time_of_nat_poly
   := fun min max => @total_time_of_Zpoly _ p min max.
 Hint Extern 0 (has_total_time nat) => simple eapply @total_time_of_nat_poly : typeclass_instances.
 
-Definition total_time_of_N_prod_poly
+Fixpoint make_cumulants'
+         {T} (add : T -> T -> T) (acc : T) (ls : list T)
+  : list T
+  := match ls with
+     | [] => []
+     | x :: xs
+       => let acc := add acc x in
+          acc :: make_cumulants' add acc xs
+     end.
+
+Definition make_cumulants {T} (add : T -> T -> T) (ls : list T) : list T
+  := match ls with
+     | [] => []
+     | x :: xs => x :: make_cumulants' add x xs
+     end.
+
+(** Element [n] holds the sum of the times from element [n] of [small_table] up through the end *)
+Definition small_table_rev_cached
+           {size : has_size (N * N)}
+  : list Q
+  := List.rev
+       (List.map
+          Qred
+          (make_cumulants
+             Qplus
+             (List.rev
+                (List.map
+                   (fun '((i, count) : N*Z) => count * (adjusted_size_T (1, i)%N))
+                   small_table)))).
+
+(** Get the total time from [minv] to the end of the table *)
+Definition total_time_of_cached_table
+           (cached_table : list Q)
+  : forall (minv : nat), Q
+  := fun minv => nth_default 0%Q cached_table minv.
+
+Definition total_time_of_N_prod_poly_cached
        {size : has_size (N * N)}
        {_ : factors_through_prod size}
        {p : reified (fun x:Z => factor_through_prod size (Z.to_N x))}
+       (cached_table : list Q)
   : has_total_time (N * N)
   := fun min max
      => (* If we look at all the products up to [V], we are approximately integrating under the curve [x y = V], so we have ∫_1^V (V/x) dx = V ln(V) *)
@@ -693,42 +795,113 @@ Definition total_time_of_N_prod_poly
        else
          if (minv <=? cutoff)%N
          then (* compute the exact of the first ones *)
-           List.fold_right Qplus 0 (List.map (fun '((i, count) : N*Z) => count * (size (1, i)%N)) (skipn (Z.to_nat minv) small_table))
-           + f_int maxv - f_int cutoff
+           total_time_of_cached_table cached_table minv
+           (* same as:
+                 List.fold_right
+                   (fun x y => Qred (Qplus x y)) (* Qred here for speed; empirically this seems to be the best place to put it *)
+                   0
+                   (List.map
+                      (fun '((i, count) : N*Z) => count * (adjusted_size_T (1, i)%N))
+                      (skipn (Z.to_nat minv) small_table))
+            *)
+           + adjust_time (f_int maxv - f_int cutoff)
          else
-           f_int maxv - f_int minv.
+           adjust_time (f_int maxv - f_int minv).
+Definition total_time_of_N_prod_poly
+       {size : has_size (N * N)}
+       {_ : factors_through_prod size}
+       {p : reified (fun x:Z => factor_through_prod size (Z.to_N x))}
+  : has_total_time (N * N)
+  := dlet cached_table := small_table_rev_cached in total_time_of_N_prod_poly_cached cached_table.
 Hint Extern 0 (has_total_time (N * N)) => simple eapply @total_time_of_N_prod_poly : typeclass_instances.
 
+Definition total_time_of_Z_prod_poly_cached
+       {size : has_size (Z * Z)}
+       (size' := fun '((x, y) : N*N) => size (x:Z, y:Z))
+       {_ : factors_through_prod size'}
+       {p : reified (fun x => factor_through_prod size' (Z.to_N x))}
+       (cached_table : list Q)
+  : has_total_time (Z * Z)
+  := fun '(x1, x2) '(y1, y2) => @total_time_of_N_prod_poly_cached _ _ p cached_table (Z.to_N x1, Z.to_N x2) (Z.to_N y1, Z.to_N y2).
 Definition total_time_of_Z_prod_poly
        {size : has_size (Z * Z)}
        (size' := fun '((x, y) : N*N) => size (x:Z, y:Z))
        {_ : factors_through_prod size'}
        {p : reified (fun x => factor_through_prod size' (Z.to_N x))}
   : has_total_time (Z * Z)
-  := fun '(x1, x2) '(y1, y2) => @total_time_of_N_prod_poly _ _ p (Z.to_N x1, Z.to_N x2) (Z.to_N y1, Z.to_N y2).
+  := dlet cached_table := @small_table_rev_cached size' in total_time_of_Z_prod_poly_cached cached_table.
 Hint Extern 0 (has_total_time (Z * Z)) => simple eapply @total_time_of_Z_prod_poly : typeclass_instances.
 
+Definition total_time_of_nat_prod_poly_cached
+       {size : has_size (nat * nat)}
+       (size' := fun '((x, y) : N*N) => size (x:nat, y:nat))
+       {_ : factors_through_prod size'}
+       {p : reified (fun x => factor_through_prod size' (Z.to_nat x))}
+       (cached_table : list Q)
+  : has_total_time (nat * nat)
+  := fun '(x1, x2) '(y1, y2) => @total_time_of_N_prod_poly_cached size' _ p cached_table (x1:N, x2:N) (y1:N, y2:N).
 Definition total_time_of_nat_prod_poly
        {size : has_size (nat * nat)}
        (size' := fun '((x, y) : N*N) => size (x:nat, y:nat))
        {_ : factors_through_prod size'}
        {p : reified (fun x => factor_through_prod size' (Z.to_nat x))}
   : has_total_time (nat * nat)
-  := fun '(x1, x2) '(y1, y2) => @total_time_of_N_prod_poly size' _ p (x1:N, x2:N) (y1:N, y2:N).
+  := dlet cached_table := @small_table_rev_cached size' in total_time_of_nat_prod_poly_cached cached_table.
 Hint Extern 0 (has_total_time (nat * nat)) => simple eapply @total_time_of_nat_prod_poly : typeclass_instances.
 
 Class with_assum {T} (v : T) (T' : Type) := val : T'.
 
 Hint Extern 0 (@with_assum ?T ?v ?T') => pose (v : T); change T' : typeclass_instances.
 
+Definition Z_prod_has_double_avg : has_double_avg (Z * Z)
+  := let make v := (Z.sqrt v, Z.sqrt_up v) in
+     let compress := fun '(x, y) => (x * y)%Z in
+     {| double_T := fun x => make (double_T (compress x))
+        ; avg_T := fun x y => make (avg_T (compress x) (compress y)) |}.
+
+Definition N_prod_has_double_avg : has_double_avg (N * N)
+  := let make v := (N.sqrt v, N.sqrt_up v) in
+     let compress := fun '(x, y) => (x * y)%N in
+     {| double_T := fun x => make (double_T (compress x))
+        ; avg_T := fun x y => make (avg_T (compress x) (compress y)) |}.
+
+Definition nat_prod_has_double_avg : has_double_avg (nat * nat)
+  := let make v := (Nat.sqrt v, Nat.sqrt_up v) in
+     let compress := fun '(x, y) => (x * y)%nat in
+     {| double_T := fun x => make (double_T (compress x))
+        ; avg_T := fun x y => make (avg_T (compress x) (compress y)) |}.
+
+Definition Z_prod_has_min : has_min (Z * Z)
+  := let make v := (Z.sqrt v, Z.sqrt_up v) in
+     let compress := fun '(x, y) => (x * y)%Z in
+     fun x y => make (min_T (compress x) (compress y)).
+
+Definition N_prod_has_min : has_min (N * N)
+  := let make v := (N.sqrt v, N.sqrt_up v) in
+     let compress := fun '(x, y) => (x * y)%N in
+     fun x y => make (min_T (compress x) (compress y)).
+
+Definition nat_prod_has_min : has_min (nat * nat)
+  := let make v := (Nat.sqrt v, Nat.sqrt_up v) in
+     let compress := fun '(x, y) => (x * y)%nat in
+     fun x y => make (min_T (compress x) (compress y)).
+
 Definition generate_inputs
-           {T} {_ : has_double_avg T} {_ : has_count T} {_ : has_alloc T}
+           {T} {_ : has_double_avg T} {_ : has_count T} {_ : has_alloc T} {_ : has_min T}
            (init : T)
            (size : has_size T)
            {HTT : with_assum size (has_total_time T)}
            (HTT' : has_total_time T := HTT)
            (allocation : Q)
            (max_size : Q)
+           (max_points : N)
+           (max_input : option T)
   : list T
-  := let max := find_max double_T avg_T size max_size init in
-     binary_alloc size count_elems_T total_time_all_elems_T allocation init max cutoff_elem_count alloc_T.
+  := let use_max_input := option_map (fun max_input => Qle_bool (size max_input) max_size) max_input in
+     let max
+         := match max_input, use_max_input with
+            | Some max_input, Some true
+              => max_input
+            | _, _ => find_max double_T avg_T size max_size init
+            end in
+     binary_alloc adjusted_size_T count_elems_T adjusted_total_time_all_elems_T allocation init max cutoff_elem_count max_points min_fractional_change_for_nonlinear_sample alloc_T.
