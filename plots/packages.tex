@@ -215,6 +215,7 @@
         % Set reasonable starting values here
         a=\@addplotexponentialregression@inita;
         b=\@addplotexponentialregression@initb;
+        set datafile separator ",";
         fit f(x) '#3' u \@addplotexponentialregression@colx:\@addplotexponentialregression@coly\space via a,b; % Select the file
         stats '#3' u \@addplotexponentialregression@colx;
         plot [x=STATS_min:STATS_max] f(x);    % Specify the range to plot
@@ -244,6 +245,7 @@
         a=\@addplotquadraticregression@inita;
         b=\@addplotquadraticregression@initb;
         c=\@addplotquadraticregression@initc;
+        set datafile separator ",";
         fit f(x) '#3' u \@addplotquadraticregression@colx:\@addplotquadraticregression@coly\space via a,b,c; % Select the file
         stats '#3' u \@addplotquadraticregression@colx;
         plot [x=STATS_min:STATS_max] f(x);    % Specify the range to plot
@@ -277,6 +279,7 @@
         b=\@addplotcubicregression@initb;
         c=\@addplotcubicregression@initc;
         d=\@addplotcubicregression@initd;
+        set datafile separator ",";
         fit f(x) '#3' u \@addplotcubicregression@colx:\@addplotcubicregression@coly\space via a,b,c,d; % Select the file
         stats '#3' u \@addplotcubicregression@colx;
         plot [x=STATS_min:STATS_max] f(x);    % Specify the range to plot
@@ -303,6 +306,7 @@
         f(x) = a*gamma(x+1);     % Define the function to fit
         % Set reasonable starting values here
         a=\@addplotquadraticregression@inita;
+        set datafile separator ",";
         fit f(x) '#3' u \@addplotquadraticregression@colx:\@addplotquadraticregression@coly\space via a; % Select the file
         stats '#3' u \@addplotquadraticregression@colx;
         plot [x=STATS_min:STATS_max] f(x);    % Specify the range to plot
