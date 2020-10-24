@@ -1,4 +1,5 @@
 (** Utility file for subsampling large distributions *)
+Require Import Coq.Strings.String.
 Require Import Coq.Structures.Orders.
 Require Import Coq.micromega.Lia.
 Require Import Coq.Bool.Bool.
@@ -16,15 +17,10 @@ Definition extra_fuel : nat := 100%nat.
 Definition cutoff_elem_count := 6%N.
 Definition default_max_points := 1000%N.
 Definition precision_binary_digits := 32%N.
-Definition smallest_time_Q := 1E-5%Q. (* don't allow times smaller than this *)
+Definition smallest_time_Q := Qpower (10#1) (-5). (* don't allow times smaller than this *)
 Definition min_fractional_change_for_nonlinear_sample : Q := 1%Q. (* if going from [a] to [b] increases by less than this number times the size at [a], just distribute points uniformly *)
 Definition max_subdivisions := 8%nat.
 Definition continued_fraction_precision := 4%nat.
-
-Definition Qround (v : Q) : Z (* away from 0 *)
-  := if Qle_bool 0 v
-     then Qfloor (v + 1/2)
-     else Qceiling (v - 1/2).
 
 Local Set Warnings Append "-ambiguous-paths".
 Local Coercion N.of_nat : nat >-> N.
@@ -32,6 +28,11 @@ Local Coercion N.to_nat : N >-> nat.
 Local Coercion Z.of_N : N >-> Z.
 Local Coercion inject_Z : Z >-> Q.
 Local Coercion Npos : positive >-> N.
+
+Definition Qround (v : Q) : Z (* away from 0 *)
+  := if Qle_bool 0 v
+     then Qfloor (v + 1/2)
+     else Qceiling (v - 1/2).
 
 Fixpoint continued_fraction (v : Q) (count : nat) : list Z * Q (* 1/remainder *)
   := if Qeq_bool 0 v
@@ -483,8 +484,8 @@ Definition integrate_poly (p : polynomial) : polynomial * Q (* logarithmic facto
 Definition diff_poly (p : polynomial) : polynomial
   := List.map (fun '(coeff, exp) => (coeff * (exp:Z), (exp - 1)%Z)) p.
 
-Definition e_Q : Q := 2.7182818284590452353602874713526624977572470936999595749669676277.
-Definition log2_e_Q : Q := 1.4426950408889634073599246810018921374266459541529859341354494069.
+Definition e_Q : Q := Eval compute in 2 + (7182818284590452353602874713526624977572470936999595749669676277 # (10^Pos.of_nat (String.length "7182818284590452353602874713526624977572470936999595749669676277"))).
+Definition log2_e_Q : Q := Eval compute in 1 + 4426950408889634073599246810018921374266459541529859341354494069 # (10^Pos.of_nat (String.length "4426950408889634073599246810018921374266459541529859341354494069")).
 
 Fixpoint fact (n : nat) : N
   := match n with
@@ -795,7 +796,7 @@ Definition Z_prod_count_exact (min max : Z * Z) : N
       (*∑_{i=1}^max 1 + ⌊max/i⌋-⌈min/i⌉ *)
       Z.to_N (∑_{i=1}^{max} (1 + Qfloor (max/i) + Qceiling (min/i))))%Z.
 
-Definition EulerMascheroni_γ : Q := 0.5772156649015328606065120900824024310421593359399235988057672348.
+Definition EulerMascheroni_γ : Q := 0 + 5772156649015328606065120900824024310421593359399235988057672348 # (10^Pos.of_nat (String.length "5772156649015328606065120900824024310421593359399235988057672348")).
 
 Global Instance Z_prod_has_count : has_count (Z * Z)
   := { count_elems_T min max
