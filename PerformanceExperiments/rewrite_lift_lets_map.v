@@ -147,27 +147,27 @@ Definition size_of_arg (arg : Z * Z) : Z
 Definition size_of_kind (k : kind_of_rewrite) (arg : Z * Z) : Q
   := let termsize := size_of_arg arg in
      let x := inject_Z termsize in
+     (* N.B. vm,cbv,lazy,native are expressions for all the data; the others are for when n=1, and are upper bounds in other cases *)
      match k with
      | kind_rewrite_strat bottomup_bottomup
-       => 1.69E-03 + -2.38E-03*x + 4.42E-03*x^2
+       => 0.0144 * Sample.Qexp (0.415 * x)
      | kind_rewrite_strat topdown_bottomup
-       => -4.52E-03 + -7.08E-03*x + 6.03E-03*x^2
+       => 0.0176 * Sample.Qexp (0.407 * x)
      | kind_setoid_rewrite
-       => 1.07 + -0.667*x + 0.0946*x^2
+       => -9.89E-03 + 0.0529*x + -0.016*x^2 + 2.61E-03*x^3
      | kind_red vm
-       => 5.02E-04 + 3.53E-06*x + 3.44E-10*x^2
+       => 5.19E-05 + 5.01E-06*x + 3.5E-10*x^2
      | kind_red native
-       => 0.113 + -7.58E-06*x + 8.72E-10*x^2
+       => 0.0685 + 1.09E-05*x + 1.71E-10*x^2
      | kind_red cbv
-       => -9.57E-04 + 3.73E-06*x + 4.99E-11*x^2
+       => -6.28E-04 + 3.01E-06*x + 1.23E-10*x^2
      | kind_red lazy
-       => -1.57E-04 + 2.67E-06*x + 2.34E-10*x^2
+       => -2.68E-03 + 4.72E-06*x + 1.39E-10*x^2
      | kind_red cbn
-       => -0.0378 + 3.86E-04*x + 5.35E-07*x^2
+       => 0.0183 + 6.42E-04*x + 8.04E-06*x^2
      | kind_red simpl
-       => 2.42E-03 + -1.81E-03*x + 3.23E-04*x^2
+       => -0.0116 + 2.8E-04*x + 2.28E-06*x^2
      end%Q.
-
 
 Definition max_input_of_kind (k : kind_of_rewrite) : option (Z * Z)
   := match k with
@@ -213,10 +213,11 @@ Local Set NativeCompute Profiling.
 Local Set NativeCompute Timing.
 Time Definition args_of_size := args_of_size' (*(k : kind_of_rewrite) (s : size)
   := Eval native_compute in eta_size (s' => eta_kind (k' => N.of_nat (List.length (args_of_size' k' s'))) k) s*).
-(*
+
 Goal True.
   pose (fun k s => eta_size (s' => eta_kind (k' => N.of_nat (List.length (args_of_size' k' s'))) k) s) as v.
   cbv [args_of_size'] in v.
+  Time vm_compute in v.
   set (k := (N.of_nat _)) in (value of v) at 1.
   Time vm_compute in k; subst k.
   set (k := (N.of_nat _)) in (value of v) at 1.
@@ -236,6 +237,155 @@ Goal True.
   set (k := (N.of_nat _)) in (value of v) at 1.
   Time vm_compute in k; subst k.
   set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  vm_compute max_input_of_kind in k.
+  clear -k.
+  cbv [Sample.generate_inputs] in k.
+  Time vm_compute Sample.find_max in k.
+  Time vm_compute Sample.piecewise_uniform_alloc in k.
+  Time vm_compute in k.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  Time vm_compute in k; subst k.
+  Time cbv [Sample.generate_inputs] in k; vm_compute in k; subst k.
+  clear -k.
+  cbv [Sample.generate_inputs] in k.
+  vm_compute max_input_of_kind in k.
+  cbv beta iota in k.
+  Time vm_compute Sample.find_max in k.
+  cbv [Sample.piecewise_uniform_alloc] in k.
+  cm
+  Time vm_compute in k.
+  Time vm_compute Sample.piecewise_uniform_prealloc in k.
+  Set Printing Implicit.
+  cbv beta iota zeta in k.
+  vm_compute Nat.add in k.
+  set (fuel := 108%nat) in k.
+  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); unfold fuel at 1 in (value of k); let f := fresh "fuel" in rename fuel into f; rename fuel' into fuel.
+  cbn [Sample.find_just_below_max_size] in k.
+  vm_compute Qeq_bool in k.
+  vm_compute Qle_bool in k.
+  set (v := Sample.avg_T _ _) in (value of k); vm_compute in v; subst v.
+  cbv beta iota zeta in k.
+  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); unfold fuel at 1 in (value of k); let f := fresh "fuel" in rename fuel into f; rename fuel' into fuel.
+  cbn [Sample.find_just_below_max_size] in k.
+  vm_compute Qeq_bool in k.
+  vm_compute Qle_bool in k.
+  set (v := Sample.avg_T _ _) in (value of k); vm_compute in v; subst v.
+  cbv beta iota zeta in k.
+  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); unfold fuel at 1 in (value of k); let f := fresh "fuel" in rename fuel into f; rename fuel' into fuel.
+  cbn [Sample.find_just_below_max_size] in k.
+  vm_compute Qeq_bool in k.
+  vm_compute Qle_bool in k.
+  vm_compute orb in k.
+  set (v := Sample.avg_T _ _) in (value of k); vm_compute in v; subst v.
+  cbv beta iota zeta in k.
+  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); unfold fuel at 1 in (value of k); let f := fresh "fuel" in rename fuel into f; rename fuel' into fuel.
+  cbn [Sample.find_just_below_max_size] in k.
+  vm_compute Qeq_bool in k.
+  vm_compute Qle_bool in k.
+  vm_compute orb in k.
+  set (v := Sample.avg_T _ _) in (value of k); vm_compute in v; subst v.
+  cbv beta iota zeta in k.
+  let f := (eval vm_compute in (pred fuel)) in set (fuel' := f) in (value of fuel); unfold fuel at 1 in (value of k); let f := fresh "fuel" in rename fuel into f; rename fuel' into fuel.
+  cbn [Sample.find_just_below_max_size] in k.
+  vm_compute Qeq_bool in k.
+  vm_compute Qle_bool in k.
+  set (v := Sample.avg_T _ _) in (value of k); vm_compute in v; subst v.
+  cbv beta iota zeta in k.
+
+  vm_compute Sample.avg_T in k.
+
+  cbv [
+  vm_compute Sample.find_just_below_max_size in k.
+  vm_compute in k.
+  vm_compute Sample.find_max in k.
+  cbv [
+  Time vm_compute in k; subst k.
+  set (k := (N.of_nat _)) in (value of v) at 1.
+  clear -k.
+  cbv[Sample.generate_inputs] in k.
+  cbv [Sample.binary_alloc]in k.
+  Time vm_compute fst in k.
   Time vm_compute in k; subst k.
   set (k := (N.of_nat _)) in (value of v) at 1.
   Time vm_compute in k; subst k.
@@ -552,10 +702,11 @@ Goal True.
   Time vm_compute in k; subst k.
 *)
 Ltac mkgoal kind nm
-  := lazymatch nm with
+  := let Z_to_nat := (eval cbv in Z.to_nat) in
+     lazymatch nm with
      | (?n, ?m)
-       => let n := (eval vm_compute in (Z.to_nat n)) in
-          let m := (eval vm_compute in (Z.to_nat m)) in
+       => let n := constr:(id Z_to_nat n) in
+          let m := constr:(id Z_to_nat m) in
           lazymatch kind with
           | kind_red _ => constr:(goal_cps n m)
           | _ => constr:(goal n m)
@@ -573,41 +724,41 @@ Ltac time_solve_goal kind
   := lazymatch kind with
      | kind_rewrite_strat topdown_bottomup
        => fun nm
-          => time "rewrite_strat(topdown,bottomup)-regression-quadratic"
-                  ((cbv [nat_rect List.repeat]);
+          => time "rewrite_strat(topdown,bottomup)-regression-exponential"
+                  ((cbv [nat_rect List.repeat id]);
                    repeat (cbn [list_rect];
                            (rewrite_strat ((try repeat topdown hints mydb1); (try repeat bottomup hints mydb2)))))
      | kind_rewrite_strat bottomup_bottomup
        => fun nm
-          => time "rewrite_strat(bottomup,bottomup)"
-                  ((cbv [nat_rect List.repeat]);
+          => time "rewrite_strat(bottomup,bottomup)-regression-exponential"
+                  ((cbv [nat_rect List.repeat id]);
                    repeat (cbn [list_rect];
                            (rewrite_strat ((try repeat bottomup hints mydb1); (try repeat bottomup hints mydb2)))))
      | kind_setoid_rewrite
        => fun nm
-          => time "setoid_rewrite"
-                  (cbv [nat_rect List.repeat];
+          => time "setoid_rewrite-regression-cubic"
+                  (cbv [nat_rect List.repeat id];
                    repeat (cbn [list_rect];
                            repeat setoid_rewrite lift_let_cons;
                            repeat setoid_rewrite lift_let_list_rect))
      | kind_red vm
        => fun nm
-          => time "cps+vm_compute" vm_compute
+          => time "cps+vm_compute-regression-quadratic" vm_compute
      | kind_red native
        => fun nm
-          => time "cps+native_compute" native_compute
+          => time "cps+native_compute-regression-quadratic" native_compute
      | kind_red cbv
        => fun nm
-          => time "cps+cbv" cbv
+          => time "cps+cbv-regression-quadratic" cbv
      | kind_red lazy
        => fun nm
-          => time "cps+lazy" lazy
+          => time "cps+lazy-regression-quadratic" lazy
      | kind_red cbn
        => fun nm
-          => time "cps+cbn" cbn
+          => time "cps+cbn-regression-quadratic" (cbv delta [id]; cbn)
      | kind_red simpl
        => fun nm
-          => time "cps+simpl" simpl
+          => time "cps+simpl-regression-quadratic" (cbv delta [id]; simpl)
      end.
 
 (**

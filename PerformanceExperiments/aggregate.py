@@ -24,12 +24,15 @@ def process_file(f, data):
         except ValueError:
             return (k, v)
     reg = re.compile(r'(?:Tactic call|Finished) (.*?) (?:ran for|in) ([0-9\.]+) secs \(([0-9\.]+)u,([0-9\.]+)s\)(?: \(success\)| \(successful\))?')
+    native_reg = re.compile(r'native_compute: (.*?) done in ([0-9\.]+)')
     fdir, fname = os.path.split(f.name)
     fbase, kind = os.path.split(fdir)
     curparams = None
+    cur_native_data = {}
     cur_replacements = {}
     for line in f.readlines():
         r = reg.match(line.strip())
+        nr = native_reg.match(line.strip())
         if line.startswith('Params: '):
             curparams = tuple([('kind', kind)] + [param_to_tuple(p) for p in line[len('Params: '):].strip().replace(' ', '').split(',')])
             cur_replacements = {k[len(REPLACE_KEY):]: v for k, v in curparams if k.startswith(REPLACE_KEY)}
@@ -47,7 +50,19 @@ def process_file(f, data):
                 ('%s real' % descr, realt),
                 ('%s user' % descr, usert),
                 ('%s sys' % descr, syst)
+            ] + [
+                ('%s %s real' % (re.sub(r'-regression-.*', '', descr), k), v)
+                for k, v in cur_native_data.items()
             ]))
+            cur_native_data = {}
+        elif nr:
+            native_descr, realt = nr.groups()
+            native_descr = 'native_compute ' + native_descr.lower()
+            if len(cur_replacements.get(native_descr, [])) > 0:
+                native_descr = cur_replacements[native_descr].pop(0)
+            if native_descr in cur_native_data.keys():
+                print('WARNING: overwriting key %s (value %s) with %s' % (native_descr, cur_native_data[native_descr], realt), file=sys.stderr)
+            cur_native_data[native_descr] = realt
         else:
             print('WARNING: unrecognized line:\n' + line, file=sys.stderr)
 

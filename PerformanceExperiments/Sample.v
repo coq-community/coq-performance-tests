@@ -136,11 +136,14 @@ Fixpoint find_just_below_max_size {T} (avg : T -> T -> T) (size : T -> Q) (max_s
           then t_lo
           else let t_mid := avg t_lo t_hi in
                let sz_mid := size t_mid in
-               let '(t_lo, t_hi) :=
-                   if Qle_bool max_size sz_mid
-                   then (t_lo, t_mid)
-                   else (t_mid, t_hi) in
-               find_just_below_max_size avg size max_size t_lo t_hi fuel
+               if (Qeq_bool sz_lo sz_mid || Qeq_bool sz_mid sz_hi)
+               then t_lo
+               else
+                 let '(t_lo, t_hi) :=
+                     if Qle_bool max_size sz_mid
+                     then (t_lo, t_mid)
+                     else (t_mid, t_hi) in
+                 find_just_below_max_size avg size max_size t_lo t_hi fuel
      end.
 
 Definition find_max {T} (double : T -> T) (avg : T -> T -> T) (size : T -> Q) (max_size : Q) (init : T) : T
@@ -226,6 +229,97 @@ Definition binary_alloc
                size count_elems total_time_all_elems allocation min max cutoff_elem_count max_point_count min_fractional_change_for_nonlinear_sample
                (Nat.min (Nat.log2_up max_subdivisions)
                         (100 + N.to_nat (N.min 1000 (* we don't want to go too much above 1000, because that would make the nat very big *) max_point_count) + N.to_nat (N.log2_up (count_elems min max)))))).
+
+Fixpoint subdivide
+         {T} {HDA : has_double_avg T}
+         (min : T) (max : T)
+         (lg2_n_parts : nat)
+  : list (T * T)
+  := match lg2_n_parts with
+     | O => [(min, max)]
+     | S lg2_n_parts
+       => let mid := avg_T min max in
+          subdivide min mid lg2_n_parts ++ subdivide mid max lg2_n_parts
+     end.
+
+Inductive surplus_state {T} :=
+| surplus
+| deficit (waiting_max : T).
+
+(** Divide the region up into [2^lg2_n_parts] parts, and allocate
+    [1/2^lg2_n_parts] time to each of these parts by assuming that
+    every point in each part costs as much as the upper-bound on the
+    part; if there is not enough allocation for one of the intervals,
+    then we allocate nothing to the intervals before it until we
+    recover enough allocation.  Each interval has at least
+    [min_point_count] elements, and we allocate at most
+    [max_point_count] points total *)
+Fixpoint piecewise_uniform_alloc_helper
+         {T} {HDA : has_double_avg T}
+         (size : T -> Q)
+         (allocation_per_subdivision : Q)
+         (min_point_count : N)
+         (max_point_count_per_subdivision : N)
+         (surplus_allocation : Q)
+         (extra_unallocated_points : N)
+         (st : @surplus_state T)
+         (subdivisions : list (T * T))
+  : list ((T * T (* min * max *)) * N)
+  := match subdivisions, st with
+     | [], _ => []
+     | (min, max) :: rest, surplus
+     | (min, _):: rest, deficit max
+       => let max_sz := size max in
+          let cur_allocation := allocation_per_subdivision + surplus_allocation in
+          let cur_unallocated_points := (max_point_count_per_subdivision + extra_unallocated_points)%N in
+          let '(cur_alloc, st, surplus_allocation, extra_unallocated_points)
+              := if Qle_bool cur_allocation (min_point_count * max_sz)
+                 then ([], deficit max, cur_allocation, cur_unallocated_points)
+                 else
+                   let n_points := N.min
+                                     cur_unallocated_points
+                                     (Z.to_N (Qfloor (cur_allocation / max_sz))) in
+                   ([((min, max), n_points)],
+                    surplus,
+                    cur_allocation - n_points * max_sz,
+                    (extra_unallocated_points - n_points)%N) in
+          cur_alloc
+            ++ (piecewise_uniform_alloc_helper
+                  size allocation_per_subdivision min_point_count max_point_count_per_subdivision
+                  surplus_allocation extra_unallocated_points st
+                  rest)
+     end.
+
+Definition piecewise_uniform_prealloc
+           {T} {HDA : has_double_avg T}
+           (size : T -> Q)
+           (allocation : Q)
+           (min : T) (max : T)
+           (min_point_count : N)
+           (max_point_count : N)
+           (lg2_n_parts : nat)
+  := let subdivisions := subdivide min max lg2_n_parts in
+     let allocation_per_subdivision := allocation / List.length subdivisions in
+     let allocations
+         := piecewise_uniform_alloc_helper
+              size allocation_per_subdivision min_point_count
+              (max_point_count / List.length subdivisions)%N
+              0 0 surplus
+              (List.rev subdivisions) in
+     List.rev allocations.
+
+Definition piecewise_uniform_alloc
+           {T} {_ : has_double_avg T}
+           (size : T -> Q)
+           (allocation : Q)
+           (min : T) (max : T)
+           (min_points : N)
+           (max_points : N)
+           (alloc : forall min max : T, N -> list T)
+  : list T
+  := List.flat_map
+       (fun '((min, max), n) => alloc min max n)
+       (piecewise_uniform_prealloc size allocation min max min_points max_points (Nat.log2_up max_subdivisions)).
 
 Class has_count T :=
   { count_elems_T : forall min max : T, N }.
@@ -389,74 +483,6 @@ Definition integrate_poly (p : polynomial) : polynomial * Q (* logarithmic facto
 Definition diff_poly (p : polynomial) : polynomial
   := List.map (fun '(coeff, exp) => (coeff * (exp:Z), (exp - 1)%Z)) p.
 
-Ltac reify_to_poly fx x :=
-  let fx := (eval cbv beta in fx) in
-  let orig := fx in
-  let rec_binop binop fx gx :=
-      let fp := reify_to_poly fx x in
-      let gp := reify_to_poly gx x in
-      constr:(binop fp gp) in
-  let rec_unop unop fx :=
-      let fp := reify_to_poly fx x in
-      constr:(unop fp) in
-  lazymatch fx with
-  | x => constr:([(1%Q, 1%Z)])
-  | context[x]
-    => lazymatch fx with
-       | Qplus ?fx ?gx => rec_binop poly_add fx gx
-       | Z.add ?fx ?gx => rec_binop poly_add fx gx
-       | N.add ?fx ?gx => rec_binop poly_add fx gx
-       | Nat.add ?fx ?gx => rec_binop poly_add fx gx
-       | Qminus ?fx ?gx => rec_binop poly_sub fx gx
-       | Z.sub ?fx ?gx => rec_binop poly_sub fx gx
-       | N.sub ?fx ?gx => rec_binop poly_sub fx gx
-       | Nat.sub ?fx ?gx => rec_binop poly_sub fx gx
-       | Qmult ?fx ?gx => rec_binop poly_mul fx gx
-       | Z.mul ?fx ?gx => rec_binop poly_mul fx gx
-       | N.mul ?fx ?gx => rec_binop poly_mul fx gx
-       | Nat.mul ?fx ?gx => rec_binop poly_mul fx gx
-       | Qdiv ?fx ?gx => reify_to_poly (fx * / gx) x
-       | Qpower ?fx ?gx
-         => lazymatch gx with
-            | context[x] => idtac "non-constant exponent" gx "in" x "(" orig;
-                            fail 0 "non-constant exponent" gx "in" x "(" orig
-            | _ => let fp := reify_to_poly fx x in
-                   constr:(poly_power fp (Z.to_N gx))
-            end
-       | Z.pow ?fx ?gx => reify_to_poly (Qpower (inject_Z fx) gx) x
-       | N.pow ?fx ?gx
-         => lazymatch gx with
-            | context[x] => idtac "non-constant exponent" gx "in" x "(" orig;
-                            fail 0 "non-constant exponent" gx "in" x "(" orig
-            | _ => let fp := reify_to_poly fx x in
-                   constr:(poly_power fp gx)
-            end
-       | Nat.pow ?fx ?gx => reify_to_poly (N.pow (N.of_nat fx) (N.of_nat gx)) x
-       | / / ?fx => reify_to_poly fx x
-       | / (?fx * ?gx) => reify_to_poly (/ fx * / gx) x
-       | inject_Z ?fx => reify_to_poly fx x
-       | Z.to_nat ?fx => reify_to_poly fx x
-       | Z.of_nat ?fx => reify_to_poly fx x
-       | Z.of_N ?fx => reify_to_poly fx x
-       | Z.to_N ?fx => reify_to_poly fx x
-       | N.to_nat ?fx => reify_to_poly fx x
-       | N.of_nat ?fx => reify_to_poly fx x
-       | ?v => idtac "unrecognized:" v;
-               fail 0 "unrecognized:" v
-       end
-  | _ => let fx := lazymatch type of fx with
-                   | Q => fx
-                   | Z => constr:(inject_Z fx)
-                   | N => constr:(inject_Z (Z.of_N fx))
-                   | nat => constr:(inject_Z (Z.of_nat fx))
-                   | _ => constr:(fx : Q)
-                   end in
-         constr:([(fx, 0%Z)])
-  end.
-
-Class reified (f : Z -> Q) := reify : polynomial.
-Arguments reify _ {_}.
-
 Definition e_Q : Q := 2.7182818284590452353602874713526624977572470936999595749669676277.
 Definition log2_e_Q : Q := 1.4426950408889634073599246810018921374266459541529859341354494069.
 
@@ -563,6 +589,80 @@ Definition Qsqrt (x : Q)
        (fun x => (Z.sqrt_up (Qnum x)) # (Pos.sqrt (Qden x)))
        (fun x => (Z.sqrt (Qnum x)) # (Z.to_pos (Z.sqrt_up (Qden x))))
        x.
+
+Ltac reify_to_poly fx x :=
+  let fx := (eval cbv beta in fx) in
+  let orig := fx in
+  let rec_binop binop fx gx :=
+      let fp := reify_to_poly fx x in
+      let gp := reify_to_poly gx x in
+      constr:(binop fp gp) in
+  let rec_unop unop fx :=
+      let fp := reify_to_poly fx x in
+      constr:(unop fp) in
+  lazymatch fx with
+  | x => constr:([(1%Q, 1%Z)])
+  | context[x]
+    => lazymatch fx with
+       | Qplus ?fx ?gx => rec_binop poly_add fx gx
+       | Z.add ?fx ?gx => rec_binop poly_add fx gx
+       | N.add ?fx ?gx => rec_binop poly_add fx gx
+       | Nat.add ?fx ?gx => rec_binop poly_add fx gx
+       | Qminus ?fx ?gx => rec_binop poly_sub fx gx
+       | Z.sub ?fx ?gx => rec_binop poly_sub fx gx
+       | N.sub ?fx ?gx => rec_binop poly_sub fx gx
+       | Nat.sub ?fx ?gx => rec_binop poly_sub fx gx
+       | Qmult ?fx ?gx => rec_binop poly_mul fx gx
+       | Z.mul ?fx ?gx => rec_binop poly_mul fx gx
+       | N.mul ?fx ?gx => rec_binop poly_mul fx gx
+       | Nat.mul ?fx ?gx => rec_binop poly_mul fx gx
+       | Qdiv ?fx ?gx => reify_to_poly (fx * / gx) x
+       | Qpower ?fx ?gx
+         => lazymatch gx with
+            | context[x] => idtac "non-constant exponent" gx "in" x "(" orig;
+                            fail 0 "non-constant exponent" gx "in" x "(" orig
+            | _ => let fp := reify_to_poly fx x in
+                   constr:(poly_power fp (Z.to_N gx))
+            end
+       | Z.pow ?fx ?gx => reify_to_poly (Qpower (inject_Z fx) gx) x
+       | N.pow ?fx ?gx
+         => lazymatch gx with
+            | context[x] => idtac "non-constant exponent" gx "in" x "(" orig;
+                            fail 0 "non-constant exponent" gx "in" x "(" orig
+            | _ => let fp := reify_to_poly fx x in
+                   constr:(poly_power fp gx)
+            end
+       | Nat.pow ?fx ?gx => reify_to_poly (N.pow (N.of_nat fx) (N.of_nat gx)) x
+       | / / ?fx => reify_to_poly fx x
+       | / (?fx * ?gx) => reify_to_poly (/ fx * / gx) x
+       | Qexp ?fx
+         => let fp := reify_to_poly fx x in
+            constr:(compose_poly taylor_series_exp_for_exp fp)
+       | Qln ?fx
+         => let fp := reify_to_poly (Qminus fx 1) x in
+            constr:(compose_poly taylor_series_ln1px_for_ln fp)
+       | inject_Z ?fx => reify_to_poly fx x
+       | Z.to_nat ?fx => reify_to_poly fx x
+       | Z.of_nat ?fx => reify_to_poly fx x
+       | Z.of_N ?fx => reify_to_poly fx x
+       | Z.to_N ?fx => reify_to_poly fx x
+       | N.to_nat ?fx => reify_to_poly fx x
+       | N.of_nat ?fx => reify_to_poly fx x
+       | ?v => idtac "unrecognized:" v;
+               fail 0 "unrecognized:" v
+       end
+  | _ => let fx := lazymatch type of fx with
+                   | Q => fx
+                   | Z => constr:(inject_Z fx)
+                   | N => constr:(inject_Z (Z.of_N fx))
+                   | nat => constr:(inject_Z (Z.of_nat fx))
+                   | _ => constr:(fx : Q)
+                   end in
+         constr:([(fx, 0%Z)])
+  end.
+
+Class reified (f : Z -> Q) := reify : polynomial.
+Arguments reify _ {_}.
 
 Class factors_through_prod {T} (f : N * N -> T) :=
   { factor_through_prod : N -> T
@@ -750,7 +850,7 @@ Global Instance Z_prod_has_alloc : has_alloc (Z * Z)
                                     (3*n)
                              | [] => []
                              end)
-                         (group_by Z.eqb (alloc_T min max ((n+1)/3)))
+                         (tl (group_by Z.eqb (alloc_T min max (1 + (n+1)/3))))
                      else
                        List.flat_map
                          (fun v
@@ -761,7 +861,7 @@ Global Instance Z_prod_has_alloc : has_alloc (Z * Z)
                              else if midv =? v
                                   then [(1, v); mid; (v, 1)]
                                   else [(1, v); (v, 1); mid])
-                         (alloc_T min max ((n+1)/3)))%Z
+                         (tl (alloc_T min max (1 + (n+1)/3))))%Z
           end }.
 
 Global Instance N_prod_has_alloc : has_alloc (N * N)
@@ -918,55 +1018,59 @@ Class with_assum {T} (v : T) (T' : Type) := val : T'.
 
 Hint Extern 0 (@with_assum ?T ?v ?T') => pose (v : T); change T' : typeclass_instances.
 
-Definition Z_prod_has_double_avg : has_double_avg (Z * Z)
-  := let make v := (Z.sqrt v, Z.sqrt_up v) in
-     let compress := fun '(x, y) => (x * y)%Z in
-     {| double_T := fun x => make (double_T (compress x))
-        ; avg_T := fun x y => make (avg_T (compress x) (compress y)) |}.
-
 Definition N_prod_has_double_avg : has_double_avg (N * N)
-  := let make v := (N.sqrt v, N.sqrt_up v) in
+  := let make v := (v, 1%N) (* (N.sqrt v, N.sqrt_up v)*) in
      let compress := fun '(x, y) => (x * y)%N in
      {| double_T := fun x => make (double_T (compress x))
         ; avg_T := fun x y => make (avg_T (compress x) (compress y)) |}.
+Local Existing Instance N_prod_has_double_avg.
+Definition N_prod_has_min : has_min (N * N)
+  := let compress := fun '(x, y) => (x * y)%N in
+     fun x y => if (compress x <=? compress y)%N
+                then x
+                else y.
+Local Existing Instance N_prod_has_min.
+
+Definition Z_prod_has_double_avg : has_double_avg (Z * Z)
+  := let to_N := fun '((x, y) : Z*Z) => (Z.to_N x, Z.to_N y) in
+     let of_N := fun '((x, y) : N*N) => (x:Z, y:Z) in
+     {| double_T x := of_N (double_T (to_N x))
+        ; avg_T x y := of_N (avg_T (to_N x) (to_N y)) |}.
 
 Definition nat_prod_has_double_avg : has_double_avg (nat * nat)
-  := let make v := (Nat.sqrt v, Nat.sqrt_up v) in
-     let compress := fun '(x, y) => (x * y)%nat in
-     {| double_T := fun x => make (double_T (compress x))
-        ; avg_T := fun x y => make (avg_T (compress x) (compress y)) |}.
+  := let to_N := fun '((x, y) : nat*nat) => (x:N, y:N) in
+     let of_N := fun '((x, y) : N*N) => (x:nat, y:nat) in
+     {| double_T x := of_N (double_T (to_N x))
+        ; avg_T x y := of_N (avg_T (to_N x) (to_N y)) |}.
 
 Definition Z_prod_has_min : has_min (Z * Z)
-  := let make v := (Z.sqrt v, Z.sqrt_up v) in
-     let compress := fun '(x, y) => (x * y)%Z in
-     fun x y => make (min_T (compress x) (compress y)).
-
-Definition N_prod_has_min : has_min (N * N)
-  := let make v := (N.sqrt v, N.sqrt_up v) in
-     let compress := fun '(x, y) => (x * y)%N in
-     fun x y => make (min_T (compress x) (compress y)).
+  := let to_N := fun '((x, y) : Z*Z) => (Z.to_N x, Z.to_N y) in
+     let of_N := fun '((x, y) : N*N) => (x:Z, y:Z) in
+     fun x y => of_N (min_T (to_N x) (to_N y)).
 
 Definition nat_prod_has_min : has_min (nat * nat)
-  := let make v := (Nat.sqrt v, Nat.sqrt_up v) in
-     let compress := fun '(x, y) => (x * y)%nat in
-     fun x y => make (min_T (compress x) (compress y)).
+  := let to_N := fun '((x, y) : nat*nat) => (x:N, y:N) in
+     let of_N := fun '((x, y) : N*N) => (x:nat, y:nat) in
+     fun x y => of_N (min_T (to_N x) (to_N y)).
 
 Definition generate_inputs
-           {T} {_ : has_double_avg T} {_ : has_count T} {_ : has_alloc T} {_ : has_min T}
+           {T} {_ : has_double_avg T} (*{_ : has_count T}*) {_ : has_alloc T} (*{_ : has_min T}*)
            (init : T)
            (size : has_size T)
-           {HTT : with_assum size (has_total_time T)}
-           (HTT' : has_total_time T := HTT)
+           (*{HTT : with_assum size (has_total_time T)}
+           (HTT' : has_total_time T := HTT)*)
            (allocation : Q)
            (max_size : Q)
            (max_points : N)
            (max_input : option T)
   : list T
-  := let use_max_input := option_map (fun max_input => Qle_bool (size max_input) max_size) max_input in
+  := let max_size := Qmin max_size (allocation / cutoff_elem_count) in
+     let use_max_input := option_map (fun max_input => Qle_bool (size max_input) max_size) max_input in
      let max
          := match max_input, use_max_input with
             | Some max_input, Some true
               => max_input
             | _, _ => find_max double_T avg_T size max_size init
             end in
-     binary_alloc adjusted_size_T count_elems_T adjusted_total_time_all_elems_T allocation init max cutoff_elem_count max_points min_fractional_change_for_nonlinear_sample alloc_T.
+     (*let noop 'tt := binary_alloc adjusted_size_T count_elems_T adjusted_total_time_all_elems_T allocation init max cutoff_elem_count max_points min_fractional_change_for_nonlinear_sample alloc_T in*)
+     piecewise_uniform_alloc adjusted_size_T allocation init max cutoff_elem_count max_points alloc_T.

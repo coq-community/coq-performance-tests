@@ -26,7 +26,7 @@ Definition seconds_of_size (sz : size) : nat
   := match sz with
      | Sanity => 1
      | SuperFast => 10
-     | Fast => 60
+     | Fast => 120
      | Medium => 600
      | Slow => 3600
      | VerySlow => 3600 * 10
