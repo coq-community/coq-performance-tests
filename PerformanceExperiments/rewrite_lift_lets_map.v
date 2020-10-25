@@ -213,7 +213,7 @@ Definition args_of_size' (k : kind_of_rewrite) (s : size) : list (Z * Z)
                          (1, 1)
                          (size_of_kind k')
                          (Qseconds_of_size s')
-                         Qstandard_max_seconds
+                         (Qstandard_max_seconds_of_size s')
                          Sample.default_max_points
                          (max_input_of_kind k'))
                    k)

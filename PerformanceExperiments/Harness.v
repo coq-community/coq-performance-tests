@@ -54,7 +54,21 @@ Definition Zseconds_of_size (sz : size) : Z
 Definition Qseconds_of_size (sz : size) : Q
   := inject_Z (Zseconds_of_size sz).
 
-Definition standard_max_seconds : nat := 10.
+Definition standard_max_seconds_of_size (sz : size) : nat
+  := match sz with
+     | Sanity => 10
+     | SuperFast => 10
+     | Fast => 10
+     | Medium => 60
+     | Slow => 60
+     | VerySlow => 60
+     end%nat.
+Definition Zstandard_max_seconds_of_size (sz : size) : Z
+  := Z.of_nat (standard_max_seconds_of_size sz).
+Definition Qstandard_max_seconds_of_size (sz : size) : Q
+  := inject_Z (Zstandard_max_seconds_of_size sz).
+
+Definition standard_max_seconds : nat := standard_max_seconds_of_size Fast.
 Definition Zstandard_max_seconds : Z := Z.of_nat standard_max_seconds.
 Definition Qstandard_max_seconds : Q := inject_Z Zstandard_max_seconds.
 
