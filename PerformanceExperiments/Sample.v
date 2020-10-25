@@ -1052,9 +1052,9 @@ Global Instance has_double_avg_of_make
 
 Global Instance has_leb_of_compress
        {A B} {_ : has_compress A B}
-       {_ : has_leb B}
+       {leb : has_leb B}
   : has_leb A
-  := fun x y => leb_T (compress_T x) (compress_T y).
+  := fun x y => leb (compress_T x) (compress_T y).
 
 Definition generate_inputs
            {T} {_ : has_double_avg T} (*{_ : has_count T}*) {_ : has_alloc T} (*{_ : has_min T}*)
