@@ -1,3 +1,4 @@
+Require Import Coq.micromega.Lia.
 Require Import Coq.ZArith.ZArith.
 Require Import Coq.QArith.QArith.
 Require Import Coq.Classes.Morphisms.
@@ -119,11 +120,18 @@ Local Notation "'eta_kind' ( k' => f ) k"
 Local Lemma sanity : forall T f k, eta_kind (k => f k) k = f k :> T.
 Proof. intros; repeat match goal with |- context[match ?e with _ => _ end] => destruct e end; reflexivity. Qed.
 
-Local Existing Instance Sample.Z_prod_has_double_avg.
-Local Existing Instance Sample.Z_prod_has_min.
-
 Definition size_of_arg (arg : Z * Z) : Z
   := fst arg * snd arg.
+
+Definition invert_size_of_arg_dumb (v : Z) : Z * Z
+  := (1%Z, v).
+
+Local Lemma invert_size_of_arg_dumb_correct v
+  : size_of_arg (invert_size_of_arg_dumb v) = v.
+Proof. cbv [size_of_arg invert_size_of_arg_dumb]; cbn [fst snd]; lia. Qed.
+
+Local Instance Z_prod_has_compress : Sample.has_compress (Z * Z) Z := size_of_arg.
+Local Instance Z_prod_has_make : Sample.has_make (Z * Z) Z := { make_T := invert_size_of_arg_dumb ; make_T_correct := invert_size_of_arg_dumb_correct }.
 
 (*
            := match test_tac_n, s with
@@ -190,6 +198,7 @@ Definition max_input_of_kind (k : kind_of_rewrite) : option (Z * Z)
      end%Z.
 
 Local Hint Unfold size_of_kind size_of_arg : solve_factors_through_prod.
+Local Existing Instance Sample.Z_prod_has_alloc.
 
 Definition args_of_size' (k : kind_of_rewrite) (s : size) : list (Z * Z)
   := Eval cbv beta iota in

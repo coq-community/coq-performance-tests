@@ -354,3 +354,4 @@ doc-build/*/*.pdf
 doc-build/*/*.txt
 doc-build/*/*.csv
 doc-build/*/*.svg
+native_compute_profile_*.data

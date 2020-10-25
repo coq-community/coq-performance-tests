@@ -12,6 +12,7 @@ Require Import Coq.Lists.List.
 Require Import PerformanceExperiments.LetIn.
 Import ListNotations.
 Local Open Scope list_scope.
+Local Set Implicit Arguments.
 
 Definition extra_fuel : nat := 100%nat.
 Definition cutoff_elem_count := 6%N.
@@ -153,7 +154,13 @@ Definition find_max {T} (double : T -> T) (avg : T -> T -> T) (size : T -> Q) (m
 
 Class has_double_avg T := { double_T : T -> T ; avg_T : T -> T -> T }.
 
+Class has_leb T := leb_T : T -> T -> bool.
 Class has_min T := min_T : T -> T -> T.
+
+Global Instance min_of_leb {T} {leb : has_leb T} : has_min T
+  := fun x y => if leb x y
+                then x
+                else y.
 
 Definition Qred_to_precision (v : Q) (max_lg2_denominator : N) : Q
   := let v := Qred v in
@@ -764,6 +771,10 @@ Global Instance nat_has_min : has_min nat := Nat.min.
 Global Instance N_has_min : has_min N := N.min.
 Global Instance Z_has_min : has_min Z := Z.min.
 
+Global Instance nat_has_leb : has_leb nat := Nat.leb.
+Global Instance N_has_leb : has_leb N := N.leb.
+Global Instance Z_has_leb : has_leb Z := Z.leb.
+
 Global Instance Q_has_alloc : has_alloc Q
   := { alloc_T min max n
        := let step := (max - min) / (n - 1) in
@@ -817,7 +828,7 @@ Global Instance N_prod_has_count : has_count (N * N)
 Global Instance nat_prod_has_count : has_count (nat * nat)
   := { count_elems_T '(x1, x2) '(y1, y2) := count_elems_T (x1:N, x2:N) (y1:N, y2:N) }.
 
-Global Instance Z_prod_has_alloc : has_alloc (Z * Z)
+Local Instance Z_prod_has_alloc : has_alloc (Z * Z)
   := { alloc_T min max n
        := match n with
           | 0%N => []
@@ -865,10 +876,10 @@ Global Instance Z_prod_has_alloc : has_alloc (Z * Z)
                          (tl (alloc_T min max (1 + (n+1)/3))))%Z
           end }.
 
-Global Instance N_prod_has_alloc : has_alloc (N * N)
+Local Instance N_prod_has_alloc : has_alloc (N * N)
   := { alloc_T '(x1, x2) '(y1, y2) n
        := List.map (fun '(x, y) => (Z.to_N x, Z.to_N y)) (alloc_T (x1:Z, x2:Z) (y1:Z, y2:Z) n) }.
-Global Instance nat_prod_has_alloc : has_alloc (nat * nat)
+Local Instance nat_prod_has_alloc : has_alloc (nat * nat)
   := { alloc_T '(x1, x2) '(y1, y2) n
        := List.map (fun '(x, y) => (N.to_nat x, N.to_nat y)) (alloc_T (x1:N, x2:N) (y1:N, y2:N) n) }.
 
@@ -1019,40 +1030,31 @@ Class with_assum {T} (v : T) (T' : Type) := val : T'.
 
 Hint Extern 0 (@with_assum ?T ?v ?T') => pose (v : T); change T' : typeclass_instances.
 
-Definition N_prod_has_double_avg : has_double_avg (N * N)
-  := let make v := (v, 1%N) (* (N.sqrt v, N.sqrt_up v)*) in
-     let compress := fun '(x, y) => (x * y)%N in
-     {| double_T := fun x => make (double_T (compress x))
-        ; avg_T := fun x y => make (avg_T (compress x) (compress y)) |}.
-Local Existing Instance N_prod_has_double_avg.
-Definition N_prod_has_min : has_min (N * N)
-  := let compress := fun '(x, y) => (x * y)%N in
-     fun x y => if (compress x <=? compress y)%N
-                then x
-                else y.
-Local Existing Instance N_prod_has_min.
+Class has_compress {A B} := compress_T : A -> B.
+Global Arguments has_compress : clear implicits.
 
-Definition Z_prod_has_double_avg : has_double_avg (Z * Z)
-  := let to_N := fun '((x, y) : Z*Z) => (Z.to_N x, Z.to_N y) in
-     let of_N := fun '((x, y) : N*N) => (x:Z, y:Z) in
-     {| double_T x := of_N (double_T (to_N x))
-        ; avg_T x y := of_N (avg_T (to_N x) (to_N y)) |}.
+Class has_make {A B} {HC : has_compress A B} :=
+  { make_T : B -> A
+    ; make_T_correct : forall v, compress_T (make_T v) = v }.
+Global Arguments has_make A B {_}.
 
-Definition nat_prod_has_double_avg : has_double_avg (nat * nat)
-  := let to_N := fun '((x, y) : nat*nat) => (x:N, y:N) in
-     let of_N := fun '((x, y) : N*N) => (x:nat, y:nat) in
-     {| double_T x := of_N (double_T (to_N x))
-        ; avg_T x y := of_N (avg_T (to_N x) (to_N y)) |}.
+Global Hint Mode has_double_avg + : typeclass_instances.
+Global Hint Mode has_leb + : typeclass_instances.
+Global Hint Mode has_min + : typeclass_instances.
 
-Definition Z_prod_has_min : has_min (Z * Z)
-  := let to_N := fun '((x, y) : Z*Z) => (Z.to_N x, Z.to_N y) in
-     let of_N := fun '((x, y) : N*N) => (x:Z, y:Z) in
-     fun x y => of_N (min_T (to_N x) (to_N y)).
+Global Instance has_double_avg_of_make
+       {A B}
+       {_ : has_compress A B} {_ : has_make A B}
+       {_ : has_double_avg B}
+  : has_double_avg A
+  := { double_T x := make_T (double_T (compress_T x))
+       ; avg_T x y := make_T (avg_T (compress_T x) (compress_T y)) }.
 
-Definition nat_prod_has_min : has_min (nat * nat)
-  := let to_N := fun '((x, y) : nat*nat) => (x:N, y:N) in
-     let of_N := fun '((x, y) : N*N) => (x:nat, y:nat) in
-     fun x y => of_N (min_T (to_N x) (to_N y)).
+Global Instance has_leb_of_compress
+       {A B} {_ : has_compress A B}
+       {_ : has_leb B}
+  : has_leb A
+  := fun x y => leb_T (compress_T x) (compress_T y).
 
 Definition generate_inputs
            {T} {_ : has_double_avg T} (*{_ : has_count T}*) {_ : has_alloc T} (*{_ : has_min T}*)

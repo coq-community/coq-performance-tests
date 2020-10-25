@@ -27,8 +27,15 @@ VERSION_8_9_OR_NEWER_KINDS := \
 	typeclass_reification_let_in_PHOAS \
 	# end of list
 
-VERSION_8_10_OR_NEWER_KINDS := \
+Q_DECIMAL_NOTATION_KINDS := \
 	rewrite_lift_lets_map \
+	rewrite_plus_0_tree \
+	sieve_of_eratosthenes \
+	rewrite_under_lets_plus_0 \
+	# end of list
+
+VERSION_8_10_OR_NEWER_KINDS := \
+	$(Q_DECIMAL_NOTATION_KINDS) \
 	# end of list
 
 DISABLED_FILES?=
