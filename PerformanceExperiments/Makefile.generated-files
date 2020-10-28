@@ -44,3 +44,17 @@ copy-perf::
 perf-txts: perf.csv
 	$(PYTHON3) $(PERF_DIR)/csv_to_txt.py $<
 .PHONY: perf-txts
+
+%.gnuplot: %.txt $(PERF_DIR)/txt_to_gnuplot.py
+	$(PYTHON3) $(PERF_DIR)/txt_to_gnuplot.py $< -o $@
+
+%.txt-fits.dat: %.gnuplot %.txt
+	gnuplot $<
+
+perf-gnuplots::
+	$(MAKE) $(patsubst %.txt,%.gnuplot,$(wildcard *.txt))
+.PHONY: perf-gnuplots
+
+perf-fits::
+	$(MAKE) $(addsuffix -fits.dat,$(wildcard *.txt))
+.PHONY: perf-fits
