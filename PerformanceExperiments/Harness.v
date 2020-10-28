@@ -249,9 +249,11 @@ End ZOrder.
 
 Module ZSort := Sort ZOrder.
 
-Definition reflect := reflect. (* a local copy *)
-Existing Class reflect.
-Notation reflect_rel R1 R2 := (forall x y, reflect (R1 x y) (R2 x y)).
+Module Import LocalReflect.
+  Definition reflect := reflect. (* a local copy *)
+  Existing Class reflect.
+  Notation reflect_rel R1 R2 := (forall x y, reflect (R1 x y) (R2 x y)).
+End LocalReflect.
 Global Hint Opaque reflect : typeclass_instances.
 
 Lemma reflect_of_beq {beq : bool} {R : Prop}
