@@ -1,4 +1,7 @@
-include Makefile.coq-versions
+mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+PERF_ABS_DIR := $(patsubst %/,%,$(dir $(mkfile_path)))
+
+include $(PERF_ABS_DIR)/Makefile.coq-versions
 
 .PHONY: clean
 clean::

@@ -52,7 +52,7 @@ def generate_legend_and_regression(color, mark, xlabel, ylabel, name):
         \addlegendentry{{${print_poly(regression_kind)}$}}'''
         elif regression_kind in ('quadratic', 'cubic', 'exponential'):
             ret += fr'''
-        \addplot{regression_kind}regression[no markers, color={color}, smooth][x=param-{xlabel},y={ylabel}]{{{name}.txt}};
+        \addplot{regression_kind}regression[no markers, color={color}, smooth][x=param-{xlabel},y={ylabel},col sep=comma]{{{name}.txt}};
 {variables_str}'''
             if regression_kind in ('quadratic', 'cubic'):
                 ret += fr'''

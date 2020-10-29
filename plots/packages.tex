@@ -198,6 +198,24 @@
     \edef#2{(column("\pgfkeysvalueof{#1}"))}%
 }%
 }
+\edef\@pgftognucolsepset@braces{\detokenize{{}}}
+\def\@pgftognucolsepset@rev#1#2{#2#1}
+\edef\@pgftognucolsepset@braces{\expandafter\@pgftognucolsepset@rev\@pgftognucolsepset@braces}
+\newcommand{\pgftognucolsepset}[2]{%
+    \edef\@pgftognucolsepset@value{\pgfkeysvalueof{#1}}%
+    \expandafter\IfEqCase\expandafter{\@pgftognucolsepset@value}{%
+        {space}    {\edef#2{whitespace}}%
+        {tab}      {\edef#2{"\string\t"}}%
+        {comma}    {\edef#2{","}}%
+        {semicolon}{\edef#2{";"}}%
+        {colon}    {\edef#2{":"}}%
+        {braces}   {\edef#2{"\@pgftognucolsepset@braces"}}%
+        {&}        {\edef#2{"&"}}%
+        {ampersand}{\edef#2{"&"}}%
+    }[%
+        \edef#2{"\@pgftognucolsepset@value"}%
+    ]%
+}
 \makeatletter
 % \addplotexponentialregression[params for \addplot][default settings for a and b, also for x and y columns]{table file}
 \NewDocumentCommand{\addplotexponentialregression}{ O{no markers} o m}{%
@@ -205,17 +223,19 @@
     \pgfkeyssetvalue{/addplotexponentialregression/y}{1}
     \pgfkeyssetvalue{/addplotexponentialregression/a}{1}
     \pgfkeyssetvalue{/addplotexponentialregression/b}{1}
+    \pgfkeyssetvalue{/addplotexponentialregression/col sep}{space}
     \pgfkeys{/addplotexponentialregression/.cd,#2}
     \pgftognucolumnset{/addplotexponentialregression/x}{\@addplotexponentialregression@colx}%
     \pgftognucolumnset{/addplotexponentialregression/y}{\@addplotexponentialregression@coly}%
     \edef\@addplotexponentialregression@inita{\pgfkeysvalueof{/addplotexponentialregression/a}}%
     \edef\@addplotexponentialregression@initb{\pgfkeysvalueof{/addplotexponentialregression/b}}%
+    \pgftognucolsepset{/addplotexponentialregression/col sep}{\@addplotexponentialregression@colsep}%
     \addplot [#1] gnuplot [raw gnuplot] { % allows arbitrary gnuplot commands
         f(x) = a*exp(b*x);     % Define the function to fit
         % Set reasonable starting values here
         a=\@addplotexponentialregression@inita;
         b=\@addplotexponentialregression@initb;
-        set datafile separator ",";
+        set datafile separator \@addplotexponentialregression@colsep;
         fit f(x) '#3' u \@addplotexponentialregression@colx:\@addplotexponentialregression@coly\space via a,b; % Select the file
         stats '#3' u \@addplotexponentialregression@colx:\@addplotexponentialregression@coly;
         plot [x=STATS_min_x:STATS_max_x][STATS_min_y:STATS_max_y] f(x);    % Specify the range to plot
@@ -233,19 +253,21 @@
     \pgfkeyssetvalue{/addplotquadraticregression/a}{1}
     \pgfkeyssetvalue{/addplotquadraticregression/b}{1}
     \pgfkeyssetvalue{/addplotquadraticregression/c}{1}
+    \pgfkeyssetvalue{/addplotquadraticregression/col sep}{space}
     \pgfkeys{/addplotquadraticregression/.cd,#2}
     \pgftognucolumnset{/addplotquadraticregression/x}{\@addplotquadraticregression@colx}%
     \pgftognucolumnset{/addplotquadraticregression/y}{\@addplotquadraticregression@coly}%
     \edef\@addplotquadraticregression@inita{\pgfkeysvalueof{/addplotquadraticregression/a}}%
     \edef\@addplotquadraticregression@initb{\pgfkeysvalueof{/addplotquadraticregression/b}}%
     \edef\@addplotquadraticregression@initc{\pgfkeysvalueof{/addplotquadraticregression/c}}%
+    \pgftognucolsepset{/addplotquadraticregression/col sep}{\@addplotquadraticregression@colsep}%
     \addplot [#1] gnuplot [raw gnuplot] { % allows arbitrary gnuplot commands
         f(x) = a*x**2+b*x+c;     % Define the function to fit
         % Set reasonable starting values here
         a=\@addplotquadraticregression@inita;
         b=\@addplotquadraticregression@initb;
         c=\@addplotquadraticregression@initc;
-        set datafile separator ",";
+        set datafile separator \@addplotquadraticregression@colsep;
         fit f(x) '#3' u \@addplotquadraticregression@colx:\@addplotquadraticregression@coly\space via a,b,c; % Select the file
         stats '#3' u \@addplotquadraticregression@colx:\@addplotquadraticregression@coly;
         plot [x=STATS_min_x:STATS_max_x][STATS_min_y:STATS_max_y] f(x);    % Specify the range to plot
@@ -265,6 +287,7 @@
     \pgfkeyssetvalue{/addplotcubicregression/b}{1}
     \pgfkeyssetvalue{/addplotcubicregression/c}{1}
     \pgfkeyssetvalue{/addplotcubicregression/d}{1}
+    \pgfkeyssetvalue{/addplotcubicregression/col sep}{space}
     \pgfkeys{/addplotcubicregression/.cd,#2}
     \pgftognucolumnset{/addplotcubicregression/x}{\@addplotcubicregression@colx}%
     \pgftognucolumnset{/addplotcubicregression/y}{\@addplotcubicregression@coly}%
@@ -272,6 +295,7 @@
     \edef\@addplotcubicregression@initb{\pgfkeysvalueof{/addplotcubicregression/b}}%
     \edef\@addplotcubicregression@initc{\pgfkeysvalueof{/addplotcubicregression/c}}%
     \edef\@addplotcubicregression@initd{\pgfkeysvalueof{/addplotcubicregression/d}}%
+    \pgftognucolsepset{/addplotcubicregression/col sep}{\@addplotcubicregression@colsep}%
     \addplot [#1] gnuplot [raw gnuplot] { % allows arbitrary gnuplot commands
         f(x) = a*x**3+b*x**2+c*x+d;     % Define the function to fit
         % Set reasonable starting values here
@@ -279,7 +303,7 @@
         b=\@addplotcubicregression@initb;
         c=\@addplotcubicregression@initc;
         d=\@addplotcubicregression@initd;
-        set datafile separator ",";
+        set datafile separator \@addplotcubicregression@colsep;
         fit f(x) '#3' u \@addplotcubicregression@colx:\@addplotcubicregression@coly\space via a,b,c,d; % Select the file
         stats '#3' u \@addplotcubicregression@colx:\@addplotcubicregression@coly;
         plot [x=STATS_min_x:STATS_max_x][STATS_min_y:STATS_max_y] f(x);    % Specify the range to plot
@@ -295,20 +319,22 @@
 % regress on y = a (x!)
 % \addplotfactorialregression[params for \addplot][default settings for a, also for x and y columns]{table file}
 \NewDocumentCommand{\addplotfactorialregression}{ O{no markers} o m}{%
-    \pgfkeyssetvalue{/addplotquadraticregression/x}{0}
-    \pgfkeyssetvalue{/addplotquadraticregression/y}{1}
-    \pgfkeyssetvalue{/addplotquadraticregression/a}{1}
-    \pgfkeys{/addplotquadraticregression/.cd,#2}
-    \pgftognucolumnset{/addplotquadraticregression/x}{\@addplotquadraticregression@colx}%
-    \pgftognucolumnset{/addplotquadraticregression/y}{\@addplotquadraticregression@coly}%
-    \edef\@addplotquadraticregression@inita{\pgfkeysvalueof{/addplotquadraticregression/a}}%
+    \pgfkeyssetvalue{/addplotfactorialregression/x}{0}
+    \pgfkeyssetvalue{/addplotfactorialregression/y}{1}
+    \pgfkeyssetvalue{/addplotfactorialregression/a}{1}
+    \pgfkeyssetvalue{/addplotfactorialregression/col sep}{space}
+    \pgfkeys{/addplotfactorialregression/.cd,#2}
+    \pgftognucolumnset{/addplotfactorialregression/x}{\@addplotfactorialregression@colx}%
+    \pgftognucolumnset{/addplotfactorialregression/y}{\@addplotfactorialregression@coly}%
+    \edef\@addplotfactorialregression@inita{\pgfkeysvalueof{/addplotfactorialregression/a}}%
+    \pgftognucolsepset{/addplotfactorialregression/col sep}{\@addplotfactorialregression@colsep}%
     \addplot [#1] gnuplot [raw gnuplot] { % allows arbitrary gnuplot commands
         f(x) = a*gamma(x+1);     % Define the function to fit
         % Set reasonable starting values here
-        a=\@addplotquadraticregression@inita;
-        set datafile separator ",";
-        fit f(x) '#3' u \@addplotquadraticregression@colx:\@addplotquadraticregression@coly\space via a; % Select the file
-        stats '#3' u \@addplotquadraticregression@colx:\@addplotquadraticregression@coly;
+        a=\@addplotfactorialregression@inita;
+        set datafile separator \@addplotfactorialregression@colsep;
+        fit f(x) '#3' u \@addplotfactorialregression@colx:\@addplotfactorialregression@coly\space via a; % Select the file
+        stats '#3' u \@addplotfactorialregression@colx:\@addplotfactorialregression@coly;
         plot [x=STATS_min_x:STATS_max_x][STATS_min_y:STATS_max_y] f(x);    % Specify the range to plot
         set print "#3-parameters.dat";  % Open a file to save the parameters
         print a;                  % Write the parameters to file

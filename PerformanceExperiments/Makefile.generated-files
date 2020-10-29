@@ -1,4 +1,7 @@
-include Makefile.variables
+mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+PERF_ABS_DIR := $(patsubst %/,%,$(dir $(mkfile_path)))
+
+include $(PERF_ABS_DIR)/Makefile.variables
 
 $(foreach size,$(SIZES),$(eval $(call makesize,$(size))))
 $(foreach kind,$(KINDS),$(eval $(call makekind,$(kind))))

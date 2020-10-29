@@ -1,7 +1,7 @@
 PERF_LIB:=CoqPerformanceTests.PerformanceExperiments
-PERF_DIR:=.
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 PERF_ABS_DIR := $(patsubst %/,%,$(dir $(mkfile_path)))
+PERF_DIR:=$(shell realpath --relative-to . $(PERF_ABS_DIR))
 
 include $(PERF_ABS_DIR)/Makefile.variables.kinds
 
@@ -44,8 +44,8 @@ define makekind
 $(eval $(1)_PERF_LOGS := $(filter $(PERF_DIR)/$(1)/%.log,$(ALL_PERF_LOGS)))
 $(eval $(1)_PERF_VFILES := $($(1)_PERF_LOGS:.log=.v))
 
-$$($(1)_PERF_VFILES) : $(PERF_DIR)/$(1)/_%.v : Template.v.in
-	$$(SHOW)'SED $$< > $$@'
+$$($(1)_PERF_VFILES) : $(PERF_DIR)/$(1)/_%.v : $(PERF_DIR)/Template.v.in
+	$$(SHOW)'SED $$(<:$(PERF_DIR)/%=%) > $$(@:$(PERF_DIR)/%=%)'
 	$$(HIDE)mkdir -p $$(dir $$@)
 	$$(HIDE)sed 's/@EXAMPLE@/$(1)/g; s/@ARGS@/$$(subst _, ,$$*)/g' $$< > $$@
 
@@ -74,7 +74,7 @@ define makekind_special
 $(eval $(1)_PERF_LOGS := $(filter $(PERF_DIR)/$(1)/%.log,$(ALL_PERF_LOGS)))
 $(eval $(1)_PERF_VFILES := $($(1)_PERF_LOGS:.log=.v))
 
-$$($(1)_PERF_VFILES) : $(PERF_DIR)/$(1)/_%.v : Template_$(1).v.in
+$$($(1)_PERF_VFILES) : $(PERF_DIR)/$(1)/_%.v : $(PERF_DIR)/Template_$(1).v.in
 	$$(SHOW)'SED $$< > $$@'
 	$$(HIDE)mkdir -p $$(dir $$@)
 	$$(HIDE)sed 's/@EXAMPLE@/$(1)/g; s/@ARGS@/$$(subst _, ,$$*)/g' $$< > $$@
