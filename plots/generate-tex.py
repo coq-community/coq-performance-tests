@@ -45,21 +45,23 @@ def generate_legend_and_regression(color, mark, xlabel, ylabel, name):
         return ret
     for regression_kind in regression_kinds:
         variables_str = '\n'.join(fr'        \expandafter\xdef\csname pgfplotstable{short_ylabel}-{regression_kind}regression{v}\endcsname{{\pgfplotstableregression{v}}}' for v in variables[regression_kind])
-        if regression_kind == 'linear':
-            ret += fr'''
-        \addplot[no markers, color={color}] table[x=param-{xlabel},y={{create col/linear regression={{y={ylabel}}}}},col sep=comma]{{{name}.txt}};
-{variables_str}
-        \addlegendentry{{${print_poly(regression_kind)}$}}'''
-        elif regression_kind in ('quadratic', 'cubic', 'exponential'):
-            ret += fr'''
-        \addplot{regression_kind}regression[no markers, color={color}, smooth][x=param-{xlabel},y={ylabel},col sep=comma]{{{name}.txt}};
-{variables_str}'''
-            if regression_kind in ('quadratic', 'cubic'):
+        if regression_kind in ('linear', 'quadratic', 'cubic', 'exponential'):
+            if regression_kind in ('linear',):# 'quadratic', 'cubic', 'exponential'):
                 ret += fr'''
-        \addlegendentry{{${print_poly(regression_kind)}$}}'''
-            elif regression_kind == 'exponential':
+        \addplot[no markers, color={color}] table[x=param-{xlabel},y={{create col/{regression_kind} regression={{y={ylabel}}}}},col sep=comma]{{{name}.txt}};
+{variables_str}'''
+            else:
+                assert(regression_kind in ('quadratic', 'cubic', 'exponential'))
+                ret += fr'''
+        \addplot{regression_kind}regression[no markers, color={color}, smooth][x=param-{xlabel},y={ylabel}][col sep=comma]{{{name}.txt}};
+{variables_str}'''
+
+            if regression_kind == 'exponential':
                 ret += fr'''
         \addlegendentry{{$\pgfmathprintnumber{{\csname pgfplotstable{short_ylabel}-{regression_kind}regressiona\endcsname}}\exp\left(\pgfmathprintnumber{{\csname pgfplotstable{short_ylabel}-{regression_kind}regressionb\endcsname}}\cdot\left(\text{{{xlabel}}}\right)\right)$}}'''
+            else:
+                ret += fr'''
+        \addlegendentry{{${print_poly(regression_kind)}$}}'''
         else:
             raise Exception('Invalid regression_kind: %s (not in %s)' % (regression_kind, ', '.join(sorted(variables.keys()))))
     return ret
@@ -145,7 +147,8 @@ def generate_tex(name, txt_lines):
         xmin=0,
         ymin=0,
         scaled x ticks=false,
-        scaled y ticks=false]
+        scaled y ticks=false,
+        filter discard warning=false]
 %(plots_txt)s
     \end{axis}
   \end{tikzpicture}

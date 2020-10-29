@@ -2,6 +2,7 @@
 \usepackage{pgfplots}
 \usepackage{gnuplottex}[2016/08/21]%must be before listings package; min date is for compat with tikzexternalize
 \usepackage{pgfkeys}
+\usepackage{pgffor}
 \usepackage{pgfplotstable}
 \pgfplotsset{compat=1.15}
 \usepackage{currfile}
@@ -178,168 +179,219 @@
 \makeatother
 
 
-\usepackage{xstring} % for \IfStrEq, \IfInteger
+\makeatletter
+\bgroup
+\catcode`\&=\active
+\gdef\@addplotregression@table@read#1#2\@addplotregression@table@read@end{%
+    \begingroup
+    \def\\{\noexpand\\}%
+    \xdef\@addplotregression@table{#2}%
+    \def\\{^^J}%
+    \catcode`\&=\active
+    \def&{,}%
+    \xdef\@addplotregression@table{\expandafter\scantokens\expandafter{\@addplotregression@table\noexpand}}% https://tex.stackexchange.com/a/9829/2066
+    \endgroup
+}%
 
+\def\@addplotregression@table@read#1#2\@addplotregression@table@read@end{%
+    \begingroup
+    \def\\{^^J}%
+    \xdef\@addplotregression@table{#2}%
+    \StrSubstitute{\@addplotregression@table}{&}{,}[\@addplotregression@table]%
+    \xdef\@addplotregression@table{\@addplotregression@table}%
+    \endgroup
+}%
+\egroup
+% table, x, y, table, output, opts
+\newcommand{\@addplotregression@table@to@gnu}[5]{%
+  \pgfplotstabletypeset[begin table=\@addplotregression@table@read,end table=\@addplotregression@table@read@end,
+      set thousands separator={},
+      sci e,
+      verbatim,
+      columns={#2,#3},
+      #5
+  ]{#1}%
+  \xdef#4{\@addplotregression@table}%
+}
+\newcommand{\pgfswaptwo}[3]{#1{#3}{#2}}
+\newcommand{\pgfkeysgetvaluecs}[2]{%
+  \expandafter\pgfswaptwo\expandafter\pgfkeysgetvalue\expandafter{\csname #2\endcsname}{#1}%
+}
+% \addplotfunctionalregression{regression kind}{default settings for a and b, also for x and y columns}{default settings for table}{comma-separated-variable-list}{f(x)}{params for \addplot}{table file}
+\newcounter{addplotfunctionalregression@var@count}
+\newcommand{\addplotfunctionalregression}[7]{%
+    \begingroup
+    \pgfqkeys{/pgfplots/table/create col/#1 regression}{#2}%
+    \pgfkeysgetvalue{/pgfplots/table/create col/#1 regression/x}{\pgfplotstable@xsrc}%
+    \pgfkeysgetvalue{/pgfplots/table/create col/#1 regression/y}{\pgfplotstable@ysrc}%
+    \def\pgfplotstable@regression@initcode{}%
+    \foreach \varname in {#4} {%
+      \pgfkeysgetvalue{/pgfplots/table/create col/#1 regression/\varname}{\pgfplotstable@varinit}%
+      \edef\pgfplotstable@regression@initcode{%
+        \pgfplotstable@regression@initcode\space
+        \varname=\pgfplotstable@varinit;
+      }%
+    }%
+    \def\pgfplotstable@table{#7}%
+    \ifx\pgfplotstable@table\pgfutil@empty
+          \pgfutil@ifundefined{pgfplotstablename}{}{% query the name of the actual table struct
+                \let\pgfplotstable@table=\pgfplotstablename
+          }%
+    \fi
+    \ifx\pgfplotstable@table\pgfutil@empty
+          \pgfplots@error{Sorry, I couldn't determine a value for create col/#1 regression/table. Which table should I load?}%
+    \fi
+    \ifx\pgfplotstable@xsrc\pgfutil@empty
+        \pgfplotsifinaddplottablestruct{%
+          \pgfutil@ifundefined{pgfplots@plot@tbl@x}{}{%
+            \let\pgfplotstable@xsrc=\pgfplots@plot@tbl@x
+            \ifx\pgfplotstable@ysrc\pgfutil@empty
+              \pgfplotstablegetcolsof\pgfplots@table
+              \ifnum\pgfplotsretval=2
+              \else
+                \pgfplotsthrow{invalid argument}{\pgfplotstable@ysrc}{Sorry, I don't which column should be used as `y' for the #1 regression. Please provide '#1 regression={y=<colname>}'}\pgfeov%
+              \fi
+            \fi
+          }%
+        }{}%
+    \fi
+    \ifx\pgfplotstable@xsrc\pgfutil@empty
+            \def\pgfplotstable@xsrc{[index]0}%
+    \fi
+    \ifx\pgfplotstable@ysrc\pgfutil@empty
+            \def\pgfplotstable@ysrc{[index]1}%
+    \fi
+    \expandafter\@addplotregression@table@to@gnu\expandafter{\pgfplotstable@table}{\pgfplotstable@xsrc}{\pgfplotstable@ysrc}{\pgfplotstable@gnu@table}{#3}%
+    \addplot [#6] gnuplot [raw gnuplot] { % allows arbitrary gnuplot commands
+        f(x) = #5;     % Define the function to fit
+        % Set reasonable starting values here
+        \pgfplotstable@regression@initcode\space
+        set datafile separator ",";
+        $Mydata << EOD^^J%
+        \pgfplotstable@gnu@table^^J%
+        EOD^^J
+        fit f(x) $Mydata u 1:2 via #4; % Select the file
+        stats $Mydata u 1:2;
+        plot [x=STATS_min_x:STATS_max_x][STATS_min_y:STATS_max_y] f(x);    % Specify the range to plot
+        set print "\jobname-parameters.dat";  % Open a file to save the parameters
+        print #4;                  % Write the parameters to file
+    };
+    \pgfplotstableread{\jobname-parameters.dat}\parameters % Open the file Gnuplot wrote
+    \setcounter{addplotfunctionalregression@var@count}{0}%
+    \foreach \varname in {#4} {%
+      \pgfplotstablegetelem{0}{\arabic{addplotfunctionalregression@var@count}}\of\parameters
+      \expandafter\xdef\csname pgfplotstableregression\varname\endcsname{\pgfplotsretval}
+      \stepcounter{addplotfunctionalregression@var@count}%
+    }%
+    \endgroup
+}
 %% exponential regression fit
-\makeatletter
-% https://tex.stackexchange.com/a/50113/2066
-\newcommand*{\IsInteger}[3]{%
-    \IfStrEq{#1}{ }{%
-        #3% is a blank string
-    }{%
-    \IfInteger{#1}{#2}{#3}%
-}%
-}%
-\newcommand{\pgftognucolumnset}[2]{%
-    \IsInteger{\pgfkeysvalueof{#1}}{%
-        % pgf 0-indexes columns, while gnuplot 1-indexes columns, so we add 1 to adjust
-        \edef#2{\the\numexpr\pgfkeysvalueof{#1}+1\relax}%
-    }{%
-    \edef#2{(column("\pgfkeysvalueof{#1}"))}%
-}%
+% \addplotexponentialregression[params for \addplot][default settings for a and b, also for x and y columns][table parameters]{table file}
+\NewDocumentCommand{\addplotexponentialregression}{ O{no markers} o o m}{%
+    \addplotfunctionalregression{exponential}%
+        {#2}%
+        {#3}%
+        {a,b}%
+        {a*exp(b*x)}%
+        {#1}%
+        {#4}%
 }
-\edef\@pgftognucolsepset@braces{\detokenize{{}}}
-\def\@pgftognucolsepset@rev#1#2{#2#1}
-\edef\@pgftognucolsepset@braces{\expandafter\@pgftognucolsepset@rev\@pgftognucolsepset@braces}
-\newcommand{\pgftognucolsepset}[2]{%
-    \edef\@pgftognucolsepset@value{\pgfkeysvalueof{#1}}%
-    \expandafter\IfEqCase\expandafter{\@pgftognucolsepset@value}{%
-        {space}    {\edef#2{whitespace}}%
-        {tab}      {\edef#2{"\string\t"}}%
-        {comma}    {\edef#2{","}}%
-        {semicolon}{\edef#2{";"}}%
-        {colon}    {\edef#2{":"}}%
-        {braces}   {\edef#2{"\@pgftognucolsepset@braces"}}%
-        {&}        {\edef#2{"&"}}%
-        {ampersand}{\edef#2{"&"}}%
-    }[%
-        \edef#2{"\@pgftognucolsepset@value"}%
-    ]%
+% \addplotquadraticregression[params for \addplot][default settings for a and b and c, also for x and y columns][table parameters]{table file}
+\NewDocumentCommand{\addplotquadraticregression}{ O{no markers} o o m}{%
+    \addplotfunctionalregression{quadratic}%
+        {#2}%
+        {#3}%
+        {a,b,c}%
+        {a*x**2+b*x+c}%
+        {#1}%
+        {#4}%
 }
-\makeatletter
-% \addplotexponentialregression[params for \addplot][default settings for a and b, also for x and y columns]{table file}
-\NewDocumentCommand{\addplotexponentialregression}{ O{no markers} o m}{%
-    \pgfkeyssetvalue{/addplotexponentialregression/x}{0}
-    \pgfkeyssetvalue{/addplotexponentialregression/y}{1}
-    \pgfkeyssetvalue{/addplotexponentialregression/a}{1}
-    \pgfkeyssetvalue{/addplotexponentialregression/b}{1}
-    \pgfkeyssetvalue{/addplotexponentialregression/col sep}{space}
-    \pgfkeys{/addplotexponentialregression/.cd,#2}
-    \pgftognucolumnset{/addplotexponentialregression/x}{\@addplotexponentialregression@colx}%
-    \pgftognucolumnset{/addplotexponentialregression/y}{\@addplotexponentialregression@coly}%
-    \edef\@addplotexponentialregression@inita{\pgfkeysvalueof{/addplotexponentialregression/a}}%
-    \edef\@addplotexponentialregression@initb{\pgfkeysvalueof{/addplotexponentialregression/b}}%
-    \pgftognucolsepset{/addplotexponentialregression/col sep}{\@addplotexponentialregression@colsep}%
-    \addplot [#1] gnuplot [raw gnuplot] { % allows arbitrary gnuplot commands
-        f(x) = a*exp(b*x);     % Define the function to fit
-        % Set reasonable starting values here
-        a=\@addplotexponentialregression@inita;
-        b=\@addplotexponentialregression@initb;
-        set datafile separator \@addplotexponentialregression@colsep;
-        fit f(x) '#3' u \@addplotexponentialregression@colx:\@addplotexponentialregression@coly\space via a,b; % Select the file
-        stats '#3' u \@addplotexponentialregression@colx:\@addplotexponentialregression@coly;
-        plot [x=STATS_min_x:STATS_max_x][STATS_min_y:STATS_max_y] f(x);    % Specify the range to plot
-        set print "#3-parameters.dat";  % Open a file to save the parameters
-        print a, b;                  % Write the parameters to file
-    };
-    \pgfplotstableread{#3-parameters.dat}\parameters % Open the file Gnuplot wrote
-    \pgfplotstablegetelem{0}{0}\of\parameters \xdef\pgfplotstableregressiona{\pgfplotsretval} % Get first element, save into \pgfplotstableregressiona
-    \pgfplotstablegetelem{0}{1}\of\parameters \xdef\pgfplotstableregressionb{\pgfplotsretval}
-}
-% \addplotquadraticregression[params for \addplot][default settings for a and b and c, also for x and y columns]{table file}
-\NewDocumentCommand{\addplotquadraticregression}{ O{no markers} o m}{%
-    \pgfkeyssetvalue{/addplotquadraticregression/x}{0}
-    \pgfkeyssetvalue{/addplotquadraticregression/y}{1}
-    \pgfkeyssetvalue{/addplotquadraticregression/a}{1}
-    \pgfkeyssetvalue{/addplotquadraticregression/b}{1}
-    \pgfkeyssetvalue{/addplotquadraticregression/c}{1}
-    \pgfkeyssetvalue{/addplotquadraticregression/col sep}{space}
-    \pgfkeys{/addplotquadraticregression/.cd,#2}
-    \pgftognucolumnset{/addplotquadraticregression/x}{\@addplotquadraticregression@colx}%
-    \pgftognucolumnset{/addplotquadraticregression/y}{\@addplotquadraticregression@coly}%
-    \edef\@addplotquadraticregression@inita{\pgfkeysvalueof{/addplotquadraticregression/a}}%
-    \edef\@addplotquadraticregression@initb{\pgfkeysvalueof{/addplotquadraticregression/b}}%
-    \edef\@addplotquadraticregression@initc{\pgfkeysvalueof{/addplotquadraticregression/c}}%
-    \pgftognucolsepset{/addplotquadraticregression/col sep}{\@addplotquadraticregression@colsep}%
-    \addplot [#1] gnuplot [raw gnuplot] { % allows arbitrary gnuplot commands
-        f(x) = a*x**2+b*x+c;     % Define the function to fit
-        % Set reasonable starting values here
-        a=\@addplotquadraticregression@inita;
-        b=\@addplotquadraticregression@initb;
-        c=\@addplotquadraticregression@initc;
-        set datafile separator \@addplotquadraticregression@colsep;
-        fit f(x) '#3' u \@addplotquadraticregression@colx:\@addplotquadraticregression@coly\space via a,b,c; % Select the file
-        stats '#3' u \@addplotquadraticregression@colx:\@addplotquadraticregression@coly;
-        plot [x=STATS_min_x:STATS_max_x][STATS_min_y:STATS_max_y] f(x);    % Specify the range to plot
-        set print "#3-parameters.dat";  % Open a file to save the parameters
-        print a, b, c;                  % Write the parameters to file
-    };
-    \pgfplotstableread{#3-parameters.dat}\parameters % Open the file Gnuplot wrote
-    \pgfplotstablegetelem{0}{0}\of\parameters \xdef\pgfplotstableregressiona{\pgfplotsretval} % Get first element, save into \pgfplotstableregressiona
-    \pgfplotstablegetelem{0}{1}\of\parameters \xdef\pgfplotstableregressionb{\pgfplotsretval}
-    \pgfplotstablegetelem{0}{2}\of\parameters \xdef\pgfplotstableregressionc{\pgfplotsretval}
-}
-% \addplotcubicregression[params for \addplot][default settings for a and b and c and d, also for x and y columns]{table file}
-\NewDocumentCommand{\addplotcubicregression}{ O{no markers} o m}{%
-    \pgfkeyssetvalue{/addplotcubicregression/x}{0}
-    \pgfkeyssetvalue{/addplotcubicregression/y}{1}
-    \pgfkeyssetvalue{/addplotcubicregression/a}{1}
-    \pgfkeyssetvalue{/addplotcubicregression/b}{1}
-    \pgfkeyssetvalue{/addplotcubicregression/c}{1}
-    \pgfkeyssetvalue{/addplotcubicregression/d}{1}
-    \pgfkeyssetvalue{/addplotcubicregression/col sep}{space}
-    \pgfkeys{/addplotcubicregression/.cd,#2}
-    \pgftognucolumnset{/addplotcubicregression/x}{\@addplotcubicregression@colx}%
-    \pgftognucolumnset{/addplotcubicregression/y}{\@addplotcubicregression@coly}%
-    \edef\@addplotcubicregression@inita{\pgfkeysvalueof{/addplotcubicregression/a}}%
-    \edef\@addplotcubicregression@initb{\pgfkeysvalueof{/addplotcubicregression/b}}%
-    \edef\@addplotcubicregression@initc{\pgfkeysvalueof{/addplotcubicregression/c}}%
-    \edef\@addplotcubicregression@initd{\pgfkeysvalueof{/addplotcubicregression/d}}%
-    \pgftognucolsepset{/addplotcubicregression/col sep}{\@addplotcubicregression@colsep}%
-    \addplot [#1] gnuplot [raw gnuplot] { % allows arbitrary gnuplot commands
-        f(x) = a*x**3+b*x**2+c*x+d;     % Define the function to fit
-        % Set reasonable starting values here
-        a=\@addplotcubicregression@inita;
-        b=\@addplotcubicregression@initb;
-        c=\@addplotcubicregression@initc;
-        d=\@addplotcubicregression@initd;
-        set datafile separator \@addplotcubicregression@colsep;
-        fit f(x) '#3' u \@addplotcubicregression@colx:\@addplotcubicregression@coly\space via a,b,c,d; % Select the file
-        stats '#3' u \@addplotcubicregression@colx:\@addplotcubicregression@coly;
-        plot [x=STATS_min_x:STATS_max_x][STATS_min_y:STATS_max_y] f(x);    % Specify the range to plot
-        set print "#3-parameters.dat";  % Open a file to save the parameters
-        print a, b, c, d;                  % Write the parameters to file
-    };
-    \pgfplotstableread{#3-parameters.dat}\parameters % Open the file Gnuplot wrote
-    \pgfplotstablegetelem{0}{0}\of\parameters \xdef\pgfplotstableregressiona{\pgfplotsretval} % Get first element, save into \pgfplotstableregressiona
-    \pgfplotstablegetelem{0}{1}\of\parameters \xdef\pgfplotstableregressionb{\pgfplotsretval}
-    \pgfplotstablegetelem{0}{2}\of\parameters \xdef\pgfplotstableregressionc{\pgfplotsretval}
-    \pgfplotstablegetelem{0}{3}\of\parameters \xdef\pgfplotstableregressiond{\pgfplotsretval}
+% \addplotcubicregression[params for \addplot][default settings for a and b and c and d, also for x and y columns][table parameters]{table file}
+\NewDocumentCommand{\addplotcubicregression}{ O{no markers} o o m}{%
+    \addplotfunctionalregression{cubic}%
+        {#2}%
+        {#3}%
+        {a,b,c,d}%
+        {a*x**3+b*x**2+c*x+d}%
+        {#1}%
+        {#4}%
 }
 % regress on y = a (x!)
-% \addplotfactorialregression[params for \addplot][default settings for a, also for x and y columns]{table file}
-\NewDocumentCommand{\addplotfactorialregression}{ O{no markers} o m}{%
-    \pgfkeyssetvalue{/addplotfactorialregression/x}{0}
-    \pgfkeyssetvalue{/addplotfactorialregression/y}{1}
-    \pgfkeyssetvalue{/addplotfactorialregression/a}{1}
-    \pgfkeyssetvalue{/addplotfactorialregression/col sep}{space}
-    \pgfkeys{/addplotfactorialregression/.cd,#2}
-    \pgftognucolumnset{/addplotfactorialregression/x}{\@addplotfactorialregression@colx}%
-    \pgftognucolumnset{/addplotfactorialregression/y}{\@addplotfactorialregression@coly}%
-    \edef\@addplotfactorialregression@inita{\pgfkeysvalueof{/addplotfactorialregression/a}}%
-    \pgftognucolsepset{/addplotfactorialregression/col sep}{\@addplotfactorialregression@colsep}%
-    \addplot [#1] gnuplot [raw gnuplot] { % allows arbitrary gnuplot commands
-        f(x) = a*gamma(x+1);     % Define the function to fit
-        % Set reasonable starting values here
-        a=\@addplotfactorialregression@inita;
-        set datafile separator \@addplotfactorialregression@colsep;
-        fit f(x) '#3' u \@addplotfactorialregression@colx:\@addplotfactorialregression@coly\space via a; % Select the file
-        stats '#3' u \@addplotfactorialregression@colx:\@addplotfactorialregression@coly;
-        plot [x=STATS_min_x:STATS_max_x][STATS_min_y:STATS_max_y] f(x);    % Specify the range to plot
-        set print "#3-parameters.dat";  % Open a file to save the parameters
-        print a;                  % Write the parameters to file
-    };
-    \pgfplotstableread{#3-parameters.dat}\parameters % Open the file Gnuplot wrote
-    \pgfplotstablegetelem{0}{0}\of\parameters \xdef\pgfplotstableregressiona{\pgfplotsretval} % Get first element, save into \pgfplotstableregressiona
+% \addplotfactorialregression[params for \addplot][default settings for a, also for x and y columns][table parameters]{table file}
+\NewDocumentCommand{\addplotfactorialregression}{ O{no markers} o o m}{%
+    \addplotfunctionalregression{factorial}%
+        {#2}%
+        {#3}%
+        {a}%
+        {a*gamma(x+1)}%
+        {#1}%
+        {#4}%
+}
+\pgfkeys{%
+%        /pgfplots/table/create col/quadratic regression/.code={%
+%                \pgfplotstable@quadratic@regression{#1}%
+%                \pgfkeysalso{/pgfplots/table/create col/@from list struct=\pgfplotsretval}%
+%        },
+        /pgfplots/table/create col/quadratic regression/.default=,%
+        /pgfplots/table/create col/quadratic regression/x/.initial=,%
+        /pgfplots/table/create col/quadratic regression/y/.initial=,%
+        /pgfplots/table/create col/quadratic regression/a/.initial=1,%
+        /pgfplots/table/create col/quadratic regression/b/.initial=1,%
+        /pgfplots/table/create col/quadratic regression/c/.initial=1,%
+        /pgfplots/table/create col/quadratic regression/table/.initial=,%
+        %/pgfplots/table/create col/quadratic regression/variance/.initial=,%
+        %/pgfplots/table/create col/quadratic regression/variance list/.initial=,%
+        %/pgfplots/table/create col/quadratic regression/variance src/.initial=,%
+        %/pgfplots/table/create col/quadratic regression/xmode/.initial=,% auto
+        %/pgfplots/table/create col/quadratic regression/ymode/.initial=,% auto
+%
+%        /pgfplots/table/create col/cubic regression/.code={%
+%                \pgfplotstable@cubic@regression{#1}%
+%                \pgfkeysalso{/pgfplots/table/create col/@from list struct=\pgfplotsretval}%
+%        },
+        /pgfplots/table/create col/cubic regression/.default=,%
+        /pgfplots/table/create col/cubic regression/x/.initial=,%
+        /pgfplots/table/create col/cubic regression/y/.initial=,%
+        /pgfplots/table/create col/cubic regression/a/.initial=1,%
+        /pgfplots/table/create col/cubic regression/b/.initial=1,%
+        /pgfplots/table/create col/cubic regression/c/.initial=1,%
+        /pgfplots/table/create col/cubic regression/d/.initial=1,%
+        /pgfplots/table/create col/cubic regression/table/.initial=,%
+        %/pgfplots/table/create col/cubic regression/variance/.initial=,%
+        %/pgfplots/table/create col/cubic regression/variance list/.initial=,%
+        %/pgfplots/table/create col/cubic regression/variance src/.initial=,%
+        %/pgfplots/table/create col/cubic regression/xmode/.initial=,% auto
+        %/pgfplots/table/create col/cubic regression/ymode/.initial=,% auto
+%
+%        /pgfplots/table/create col/exponential regression/.code={%
+%                \pgfplotstable@exponential@regression{#1}%
+%                \pgfkeysalso{/pgfplots/table/create col/@from list struct=\pgfplotsretval}%
+%        },
+        /pgfplots/table/create col/exponential regression/.default=,%
+        /pgfplots/table/create col/exponential regression/x/.initial=,%
+        /pgfplots/table/create col/exponential regression/y/.initial=,%
+        /pgfplots/table/create col/exponential regression/a/.initial=1,%
+        /pgfplots/table/create col/exponential regression/b/.initial=1,%
+        /pgfplots/table/create col/exponential regression/table/.initial=,%
+        %/pgfplots/table/create col/exponential regression/variance/.initial=,%
+        %/pgfplots/table/create col/exponential regression/variance list/.initial=,%
+        %/pgfplots/table/create col/exponential regression/variance src/.initial=,%
+        %/pgfplots/table/create col/exponential regression/xmode/.initial=,% auto
+        %/pgfplots/table/create col/exponential regression/ymode/.initial=,% auto
+%
+%        /pgfplots/table/create col/factorial regression/.code={%
+%                \pgfplotstable@factorial@regression{#1}%
+%                \pgfkeysalso{/pgfplots/table/create col/@from list struct=\pgfplotsretval}%
+%        },
+        /pgfplots/table/create col/factorial regression/.default=,%
+        /pgfplots/table/create col/factorial regression/x/.initial=,%
+        /pgfplots/table/create col/factorial regression/y/.initial=,%
+        /pgfplots/table/create col/factorial regression/a/.initial=1,%
+        /pgfplots/table/create col/factorial regression/table/.initial=,%
+        %/pgfplots/table/create col/factorial regression/variance/.initial=,%
+        %/pgfplots/table/create col/factorial regression/variance list/.initial=,%
+        %/pgfplots/table/create col/factorial regression/variance src/.initial=,%
+        %/pgfplots/table/create col/factorial regression/xmode/.initial=,% auto
+        %/pgfplots/table/create col/factorial regression/ymode/.initial=,% auto
 }
 \makeatother
