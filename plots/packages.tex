@@ -180,43 +180,6 @@
 
 
 \makeatletter
-\bgroup
-\catcode`\&=\active
-\gdef\@addplotregression@table@read#1#2\@addplotregression@table@read@end{%
-    \begingroup
-    \def\\{\noexpand\\}%
-    \xdef\@addplotregression@table{#2}%
-    \def\\{^^J}%
-    \catcode`\&=\active
-    \def&{,}%
-    \xdef\@addplotregression@table{\expandafter\scantokens\expandafter{\@addplotregression@table\noexpand}}% https://tex.stackexchange.com/a/9829/2066
-    \endgroup
-}%
-
-\def\@addplotregression@table@read#1#2\@addplotregression@table@read@end{%
-    \begingroup
-    \def\\{^^J}%
-    \xdef\@addplotregression@table{#2}%
-    \StrSubstitute{\@addplotregression@table}{&}{,}[\@addplotregression@table]%
-    \xdef\@addplotregression@table{\@addplotregression@table}%
-    \endgroup
-}%
-\egroup
-% table, x, y, table, output, opts
-\newcommand{\@addplotregression@table@to@gnu}[5]{%
-  \pgfplotstabletypeset[begin table=\@addplotregression@table@read,end table=\@addplotregression@table@read@end,
-      set thousands separator={},
-      sci e,
-      verbatim,
-      columns={#2,#3},
-      #5
-  ]{#1}%
-  \xdef#4{\@addplotregression@table}%
-}
-\newcommand{\pgfswaptwo}[3]{#1{#3}{#2}}
-\newcommand{\pgfkeysgetvaluecs}[2]{%
-  \expandafter\pgfswaptwo\expandafter\pgfkeysgetvalue\expandafter{\csname #2\endcsname}{#1}%
-}
 % \addplotfunctionalregression{regression kind}{default settings for a and b, also for x and y columns}{default settings for table}{comma-separated-variable-list}{f(x)}{params for \addplot}{table file}
 \newcounter{addplotfunctionalregression@var@count}
 \newcommand{\addplotfunctionalregression@tablename}{\jobname-regression.table}
