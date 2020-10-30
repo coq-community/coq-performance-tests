@@ -184,21 +184,24 @@
 \newcounter{addplotfunctionalregression@var@count}
 \newcommand{\addplotfunctionalregression@tablename}{\jobname-regression.table}
 \newcommand{\addplotfunctionalregression@parametersname}{\jobname-parameters.dat}
+\newif\iffunctionalregression@boundy
 \newcommand{\addplotfunctionalregression}[7]{%
     \begingroup
     \pgfqkeys{/pgfplots/table/create col/#1 regression}{#2}%
     \pgfkeysgetvalue{/pgfplots/table/create col/#1 regression/x}{\pgfplotstable@xsrc}%
     \pgfkeysgetvalue{/pgfplots/table/create col/#1 regression/y}{\pgfplotstable@ysrc}%
+%    \pgfkeysgetvalue{/pgfplots/table/create col/#1 regression/bound y}{\pgfplotstable@boundy}%
+%    \csname functionalregression@boundy\pgfplotstable@boundy\endcsname
     \def\pgfplotstable@regression@initcode{}%
     \foreach \varname in {#4} {%
       \pgfkeysgetvalue{/pgfplots/table/create col/#1 regression/\varname}{\pgfplotstable@varinit}%
-      \edef\pgfplotstable@regression@initcode{%
+      \xdef\pgfplotstable@regression@initcode{%
         \pgfplotstable@regression@initcode\space
         \varname=\pgfplotstable@varinit;
       }%
     }%
     %\def\pgfplotstable@table{#7}%
-    \pgfplotstableread[col sep=comma]{#7}{\pgfplotstable@tableinternal}% FIXME
+    \pgfplotstableread[#3]{#7}{\pgfplotstable@tableinternal}% FIXME
     \def\pgfplotstable@table{\pgfplotstable@tableinternal}%
     \ifx\pgfplotstable@table\pgfutil@empty
           \pgfutil@ifundefined{pgfplotstablename}{}{% query the name of the actual table struct
@@ -251,7 +254,7 @@
         EOD^^J
         fit f(x) $Mydata u 1:2 via #4; % Select the file
         stats $Mydata u 1:2;
-        plot [x=STATS_min_x:STATS_max_x][STATS_min_y:STATS_max_y] f(x);    % Specify the range to plot
+        plot [x=STATS_min_x:STATS_max_x]\iffunctionalregression@boundy[STATS_min_y:STATS_max_y]\fi f(x);    % Specify the range to plot
         set print "\addplotfunctionalregression@parametersname";  % Open a file to save the parameters
         print #4;                  % Write the parameters to file
     }%
@@ -265,113 +268,53 @@
     }%
     \endgroup
 }
+% \addplot<kind>regression[params for \addplot][default settings for a and b, also for x and y columns][table parameters]{table file}
+% \pgfplotstablenewregression{regression name}{comma-separated variable list}{function}
+\newcommand{\pgfplotstablenewregression}[3]{%
+  \expandafter\NewDocumentCommand\csname addplot#1regression\endcsname{ O{no markers} O{} O{} m}{%
+      \addplotfunctionalregression{#1}%
+          {##2}%
+          {##3}%
+          {#2}%
+          {#3}%
+          {##1}%
+          {##4}%
+  }
+  \pgfkeys{%
+%        /pgfplots/table/create col/#1 regression/.code={%
+%                \pgfplotstable@#1@regression{#1}%
+%                \pgfkeysalso{/pgfplots/table/create col/@from list struct=\pgfplotsretval}%
+%        },
+        /pgfplots/table/create col/#1 regression/.default=,%
+        /pgfplots/table/create col/#1 regression/x/.initial=,%
+        /pgfplots/table/create col/#1 regression/y/.initial=,%
+        /pgfplots/table/create col/#1 regression/bound y/.is if=functionalregression@boundy,
+        /pgfplots/table/create col/#1 regression/table/.initial=,%
+        %/pgfplots/table/create col/#1 regression/variance/.initial=,%
+        %/pgfplots/table/create col/#1 regression/variance list/.initial=,%
+        %/pgfplots/table/create col/#1 regression/variance src/.initial=,%
+        %/pgfplots/table/create col/#1 regression/xmode/.initial=,% auto
+        %/pgfplots/table/create col/#1 regression/ymode/.initial=,% auto
+  }
+  \bgroup % cf https://tex.stackexchange.com/a/15263/2066
+    \globaldefs=1\relax
+    \foreach \varname in {#2} {%
+      \pgfkeys{%
+        /pgfplots/table/create col/#1 regression/\varname/.initial=1%
+      }%
+    }
+  \egroup
+}
+
+
 %% exponential regression fit
 % \addplotexponentialregression[params for \addplot][default settings for a and b, also for x and y columns][table parameters]{table file}
-\NewDocumentCommand{\addplotexponentialregression}{ O{no markers} o o m}{%
-    \addplotfunctionalregression{exponential}%
-        {#2}%
-        {#3}%
-        {a,b}%
-        {a*exp(b*x)}%
-        {#1}%
-        {#4}%
-}
+\pgfplotstablenewregression{exponential}{a,b}{a*exp(b*x)}
 % \addplotquadraticregression[params for \addplot][default settings for a and b and c, also for x and y columns][table parameters]{table file}
-\NewDocumentCommand{\addplotquadraticregression}{ O{no markers} o o m}{%
-    \addplotfunctionalregression{quadratic}%
-        {#2}%
-        {#3}%
-        {a,b,c}%
-        {a*x**2+b*x+c}%
-        {#1}%
-        {#4}%
-}
+\pgfplotstablenewregression{quadratic}{a,b,c}{a*x**2+b*x+c}
 % \addplotcubicregression[params for \addplot][default settings for a and b and c and d, also for x and y columns][table parameters]{table file}
-\NewDocumentCommand{\addplotcubicregression}{ O{no markers} o o m}{%
-    \addplotfunctionalregression{cubic}%
-        {#2}%
-        {#3}%
-        {a,b,c,d}%
-        {a*x**3+b*x**2+c*x+d}%
-        {#1}%
-        {#4}%
-}
+\pgfplotstablenewregression{cubic}{a,b,c,d}{a*x**3+b*x**2+c*x+d}
 % regress on y = a (x!)
 % \addplotfactorialregression[params for \addplot][default settings for a, also for x and y columns][table parameters]{table file}
-\NewDocumentCommand{\addplotfactorialregression}{ O{no markers} o o m}{%
-    \addplotfunctionalregression{factorial}%
-        {#2}%
-        {#3}%
-        {a}%
-        {a*gamma(x+1)}%
-        {#1}%
-        {#4}%
-}
-\pgfkeys{%
-%        /pgfplots/table/create col/quadratic regression/.code={%
-%                \pgfplotstable@quadratic@regression{#1}%
-%                \pgfkeysalso{/pgfplots/table/create col/@from list struct=\pgfplotsretval}%
-%        },
-        /pgfplots/table/create col/quadratic regression/.default=,%
-        /pgfplots/table/create col/quadratic regression/x/.initial=,%
-        /pgfplots/table/create col/quadratic regression/y/.initial=,%
-        /pgfplots/table/create col/quadratic regression/a/.initial=1,%
-        /pgfplots/table/create col/quadratic regression/b/.initial=1,%
-        /pgfplots/table/create col/quadratic regression/c/.initial=1,%
-        /pgfplots/table/create col/quadratic regression/table/.initial=,%
-        %/pgfplots/table/create col/quadratic regression/variance/.initial=,%
-        %/pgfplots/table/create col/quadratic regression/variance list/.initial=,%
-        %/pgfplots/table/create col/quadratic regression/variance src/.initial=,%
-        %/pgfplots/table/create col/quadratic regression/xmode/.initial=,% auto
-        %/pgfplots/table/create col/quadratic regression/ymode/.initial=,% auto
-%
-%        /pgfplots/table/create col/cubic regression/.code={%
-%                \pgfplotstable@cubic@regression{#1}%
-%                \pgfkeysalso{/pgfplots/table/create col/@from list struct=\pgfplotsretval}%
-%        },
-        /pgfplots/table/create col/cubic regression/.default=,%
-        /pgfplots/table/create col/cubic regression/x/.initial=,%
-        /pgfplots/table/create col/cubic regression/y/.initial=,%
-        /pgfplots/table/create col/cubic regression/a/.initial=1,%
-        /pgfplots/table/create col/cubic regression/b/.initial=1,%
-        /pgfplots/table/create col/cubic regression/c/.initial=1,%
-        /pgfplots/table/create col/cubic regression/d/.initial=1,%
-        /pgfplots/table/create col/cubic regression/table/.initial=,%
-        %/pgfplots/table/create col/cubic regression/variance/.initial=,%
-        %/pgfplots/table/create col/cubic regression/variance list/.initial=,%
-        %/pgfplots/table/create col/cubic regression/variance src/.initial=,%
-        %/pgfplots/table/create col/cubic regression/xmode/.initial=,% auto
-        %/pgfplots/table/create col/cubic regression/ymode/.initial=,% auto
-%
-%        /pgfplots/table/create col/exponential regression/.code={%
-%                \pgfplotstable@exponential@regression{#1}%
-%                \pgfkeysalso{/pgfplots/table/create col/@from list struct=\pgfplotsretval}%
-%        },
-        /pgfplots/table/create col/exponential regression/.default=,%
-        /pgfplots/table/create col/exponential regression/x/.initial=,%
-        /pgfplots/table/create col/exponential regression/y/.initial=,%
-        /pgfplots/table/create col/exponential regression/a/.initial=1,%
-        /pgfplots/table/create col/exponential regression/b/.initial=1,%
-        /pgfplots/table/create col/exponential regression/table/.initial=,%
-        %/pgfplots/table/create col/exponential regression/variance/.initial=,%
-        %/pgfplots/table/create col/exponential regression/variance list/.initial=,%
-        %/pgfplots/table/create col/exponential regression/variance src/.initial=,%
-        %/pgfplots/table/create col/exponential regression/xmode/.initial=,% auto
-        %/pgfplots/table/create col/exponential regression/ymode/.initial=,% auto
-%
-%        /pgfplots/table/create col/factorial regression/.code={%
-%                \pgfplotstable@factorial@regression{#1}%
-%                \pgfkeysalso{/pgfplots/table/create col/@from list struct=\pgfplotsretval}%
-%        },
-        /pgfplots/table/create col/factorial regression/.default=,%
-        /pgfplots/table/create col/factorial regression/x/.initial=,%
-        /pgfplots/table/create col/factorial regression/y/.initial=,%
-        /pgfplots/table/create col/factorial regression/a/.initial=1,%
-        /pgfplots/table/create col/factorial regression/table/.initial=,%
-        %/pgfplots/table/create col/factorial regression/variance/.initial=,%
-        %/pgfplots/table/create col/factorial regression/variance list/.initial=,%
-        %/pgfplots/table/create col/factorial regression/variance src/.initial=,%
-        %/pgfplots/table/create col/factorial regression/xmode/.initial=,% auto
-        %/pgfplots/table/create col/factorial regression/ymode/.initial=,% auto
-}
+\pgfplotstablenewregression{factorial}{a}{a*gamma(x+1)}
 \makeatother
