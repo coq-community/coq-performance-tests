@@ -219,6 +219,8 @@
 }
 % \addplotfunctionalregression{regression kind}{default settings for a and b, also for x and y columns}{default settings for table}{comma-separated-variable-list}{f(x)}{params for \addplot}{table file}
 \newcounter{addplotfunctionalregression@var@count}
+\newcommand{\addplotfunctionalregression@tablename}{\jobname-regression.table}
+\newcommand{\addplotfunctionalregression@parametersname}{\jobname-parameters.dat}
 \newcommand{\addplotfunctionalregression}[7]{%
     \begingroup
     \pgfqkeys{/pgfplots/table/create col/#1 regression}{#2}%
@@ -232,7 +234,9 @@
         \varname=\pgfplotstable@varinit;
       }%
     }%
-    \def\pgfplotstable@table{#7}%
+    %\def\pgfplotstable@table{#7}%
+    \pgfplotstableread[col sep=comma]{#7}{\pgfplotstable@tableinternal}% FIXME
+    \def\pgfplotstable@table{\pgfplotstable@tableinternal}%
     \ifx\pgfplotstable@table\pgfutil@empty
           \pgfutil@ifundefined{pgfplotstablename}{}{% query the name of the actual table struct
                 \let\pgfplotstable@table=\pgfplotstablename
@@ -261,8 +265,20 @@
     \ifx\pgfplotstable@ysrc\pgfutil@empty
             \def\pgfplotstable@ysrc{[index]1}%
     \fi
-    \expandafter\@addplotregression@table@to@gnu\expandafter{\pgfplotstable@table}{\pgfplotstable@xsrc}{\pgfplotstable@ysrc}{\pgfplotstable@gnu@table}{#3}%
-    \addplot [#6] gnuplot [raw gnuplot] { % allows arbitrary gnuplot commands
+    \bgroup
+      \edef\dosavetable{\noexpand\pgfplotstablesave[
+          col sep=comma,
+          columns={\pgfplotstable@xsrc,\pgfplotstable@ysrc},
+        ]{\expandafter\unexpanded\expandafter{\pgfplotstable@table}}{\addplotfunctionalregression@tablename}%
+      }%
+      \dosavetable
+      \everyeof{\noexpand}%
+      \def\par{^^J}%
+      \obeylines
+      \makeatletter
+      \xdef\pgfplotstable@gnu@table{\@@input \addplotfunctionalregression@tablename\space}%
+    \egroup
+    \xdef\pgfplotstable@gnu@code{%
         f(x) = #5;     % Define the function to fit
         % Set reasonable starting values here
         \pgfplotstable@regression@initcode\space
@@ -273,10 +289,11 @@
         fit f(x) $Mydata u 1:2 via #4; % Select the file
         stats $Mydata u 1:2;
         plot [x=STATS_min_x:STATS_max_x][STATS_min_y:STATS_max_y] f(x);    % Specify the range to plot
-        set print "\jobname-parameters.dat";  % Open a file to save the parameters
+        set print "\addplotfunctionalregression@parametersname";  % Open a file to save the parameters
         print #4;                  % Write the parameters to file
-    };
-    \pgfplotstableread{\jobname-parameters.dat}\parameters % Open the file Gnuplot wrote
+    }%
+    \addplot [#6] gnuplot [raw gnuplot] {\pgfplotstable@gnu@code}; % allows arbitrary gnuplot commands
+    \pgfplotstableread{\addplotfunctionalregression@parametersname}\parameters % Open the file Gnuplot wrote
     \setcounter{addplotfunctionalregression@var@count}{0}%
     \foreach \varname in {#4} {%
       \pgfplotstablegetelem{0}{\arabic{addplotfunctionalregression@var@count}}\of\parameters
