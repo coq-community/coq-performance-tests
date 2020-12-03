@@ -9,6 +9,12 @@ Require PerformanceExperiments.Sample.
 Import ListNotations.
 Local Open Scope list_scope. Local Open Scope Z_scope.
 
+Definition Z_to_nat (x : Z) :=
+  match x with
+  | Zpos p => Pos.iter_op plus p (S O)
+  | _ => 0%nat
+  end.
+
 Definition sieve' (fuel : nat) (max : Z)
   := List.rev
        (fst
@@ -24,13 +30,13 @@ Definition sieve' (fuel : nat) (max : Z)
                             PositiveSet.add
                             composites
                             (List.map (fun n => Pos.mul (Pos.of_nat (S n)) next_prime)
-                                      (List.seq 0 (Z.to_nat (max / Z.pos next_prime)))),
+                                      (List.seq 0 (Z_to_nat (max / Z.pos next_prime)))),
                           Pos.succ next_prime)))
              fuel
              (nil, PositiveSet.empty, 2%positive))).
 
 Definition sieve (n : Z)
-  := Eval cbv [sieve'] in sieve' (Z.to_nat n) n.
+  := Eval cbv [sieve'] in sieve' (Z_to_nat n) n.
 
 Global Arguments Pos.to_nat !_ / .
 
