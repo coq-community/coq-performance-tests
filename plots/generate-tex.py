@@ -11,7 +11,7 @@ def to_valid_tex_cmd(s):
     numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
     for n, v in enumerate(numbers):
         s = s.replace(str(n), v)
-    return s.replace(' ', '').replace('-', '').replace('_', '')
+    return s.replace(' ', '').replace('-', '').replace('_', '').replace(';', '')
 
 
 def generate_legend_and_regression(color, mark, xlabel, ylabel, name):
@@ -48,12 +48,12 @@ def generate_legend_and_regression(color, mark, xlabel, ylabel, name):
         if regression_kind in ('linear', 'quadratic', 'cubic', 'exponential'):
             if regression_kind in ('linear',):# 'quadratic', 'cubic', 'exponential'):
                 ret += fr'''
-        \addplot[no markers, color={color}] table[x=param-{xlabel},y={{create col/{regression_kind} regression={{y={ylabel}}}}},col sep=comma]{{{name}.txt}};
+        \addplot[no markers, color={color}] table[x=param-{xlabel},y={{create col/{regression_kind} regression={{y={ylabel}}}}},col sep=comma]{{generated/{name}.txt}};
 {variables_str}'''
             else:
                 assert(regression_kind in ('quadratic', 'cubic', 'exponential'))
                 ret += fr'''
-        \addplot{regression_kind}regression[no markers, color={color}, smooth][x=param-{xlabel},y={ylabel},bound y][col sep=comma]{{{name}.txt}};
+        \addplot{regression_kind}regression[no markers, color={color}, smooth][x=param-{xlabel},y={ylabel},bound y][col sep=comma]{{generated/{name}.txt}};
 {variables_str}'''
 
             if regression_kind == 'exponential':
@@ -125,7 +125,7 @@ def generate_tex(name, txt_lines):
     if len(ylabels) < 1: raise Exception('Invalid header with not enough columns: %s' % repr(txt_lines[0]))
     if not header[0].startswith('param-'): raise Exception('Invalid header: first column %s does not start with param-' % header[0])
     xlabel = header[0][len('param-'):]
-    plots = [fr'        \addplot[only marks,mark={mark},color={color}] table[x=param-{xlabel},y={ylabel},col sep=comma]{{{name}.txt}};'
+    plots = [fr'        \addplot[only marks,mark={mark},color={color}] table[x=param-{xlabel},y={ylabel},col sep=comma]{{generated/{name}.txt}};'
              + generate_legend_and_regression(color=color, mark=mark, xlabel=xlabel, ylabel=ylabel, name=name)
              for mark, color, ylabel
              in zip(itertools.cycle(MARKS),
@@ -136,7 +136,7 @@ def generate_tex(name, txt_lines):
     return r'''
 \begin{figure*}
   \begin{tikzpicture}
-    \begin{filecontents*}{%(name)s.txt}
+    \begin{filecontents*}[overwrite]{generated/%(name)s.txt}
 %(contents)s
 \end{filecontents*}
     \begin{axis}[xlabel=%(xlabel)s,
@@ -162,6 +162,8 @@ if __name__ == '__main__':
     with open(infile, 'r') as f:
         intext = f.readlines()
     res, table = generate_tex(name, intext)
+    path, _ = os.path.split(outfile)
+    os.makedirs(path, exist_ok=True)
     with open(outfile, 'w') as f:
         f.write(res)
     if table_file is not None:

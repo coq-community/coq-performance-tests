@@ -41,48 +41,57 @@ ALL_PERF_LOGS := $(foreach size,$(SIZES),\
 ALL_PERF_VFILES := $(ALL_PERF_LOGS:.log=.v)
 
 define makekind
-$(eval $(1)_PERF_LOGS := $(filter $(PERF_DIR)/$(1)/%.log,$(ALL_PERF_LOGS)))
-$(eval $(1)_PERF_VFILES := $($(1)_PERF_LOGS:.log=.v))
+$(eval ARG_SLASH:=$(1))
+$(eval ARG_DOT:=$(subst /,.,$(1)))
+$(eval ARG__:=$(subst /,_,$(1)))
+$(eval $(ARG__)_PERF_LOGS := $(filter $(PERF_DIR)/$(ARG_SLASH)/%.log,$(ALL_PERF_LOGS)))
+$(eval $(ARG__)_PERF_VFILES := $($(ARG__)_PERF_LOGS:.log=.v))
 
-$$($(1)_PERF_VFILES) : $(PERF_DIR)/$(1)/_%.v : $(PERF_DIR)/Template.v.in
+$$($(ARG__)_PERF_VFILES) : $(PERF_DIR)/$(ARG_SLASH)/_%.v : $(PERF_DIR)/Template.v.in
 	$$(SHOW)'SED $$(<:$(PERF_DIR)/%=%) > $$(@:$(PERF_DIR)/%=%)'
 	$$(HIDE)mkdir -p $$(dir $$@)
-	$$(HIDE)sed 's/@EXAMPLE@/$(1)/g; s/@ARGS@/$$(subst _, ,$$*)/g' $$< > $$@
+	$$(HIDE)sed 's/@EXAMPLE@/$(ARG_DOT)/g; s/@ARGS@/$$(subst _, ,$$*)/g' $$< > $$@
 
-$$($(1)_PERF_LOGS) : %.log : %.v $(PERF_DIR)/$(1).vo
+$$($(ARG__)_PERF_LOGS) : %.log : %.v $(PERF_DIR)/$(ARG_SLASH).vo
 
-.PHONY: perf-$(1)
-perf-$(1):: $($(1)_PERF_LOGS)
+.PHONY: perf-$(ARG__)
+perf-$(ARG__):: $($(ARG__)_PERF_LOGS)
 endef
 
 define makekind_sh
-$(eval $(1)_PERF_LOGS := $(filter $(PERF_DIR)/$(1)/%.log,$(ALL_PERF_LOGS)))
-$(eval $(1)_PERF_VFILES := $($(1)_PERF_LOGS:.log=.v))
+ARG_SLASH:=$(1)
+ARG_DOT:=$(subst /,.,$(1))
+ARG__:=$(subst /,_,$(1))
+$(eval $(ARG__)_PERF_LOGS := $(filter $(PERF_DIR)/$(ARG_SLASH)/%.log,$(ALL_PERF_LOGS)))
+$(eval $(ARG__)_PERF_VFILES := $($(ARG__)_PERF_LOGS:.log=.v))
 
-$$($(1)_PERF_VFILES) : $(PERF_DIR)/$(1)/_%.v : $(PERF_DIR)/$(1).sh
+$$($(ARG__)_PERF_VFILES) : $(PERF_DIR)/$(ARG_SLASH)/_%.v : $(PERF_DIR)/$(ARG_SLASH).sh
 	$$(SHOW)'BASH $$< $$(subst _, ,$$*) > $$@'
 	$$(HIDE)mkdir -p $$(dir $$@)
 	$$(HIDE)bash $$< $$(subst _, ,$$*) > $$@
 
-$$($(1)_PERF_LOGS) : %.log : %.v
+$$($(ARG__)_PERF_LOGS) : %.log : %.v
 
-.PHONY: perf-$(1)
-perf-$(1):: $($(1)_PERF_LOGS)
+.PHONY: perf-$(ARG__)
+perf-$(ARG__):: $($(ARG__)_PERF_LOGS)
 endef
 
 define makekind_special
-$(eval $(1)_PERF_LOGS := $(filter $(PERF_DIR)/$(1)/%.log,$(ALL_PERF_LOGS)))
-$(eval $(1)_PERF_VFILES := $($(1)_PERF_LOGS:.log=.v))
+ARG_SLASH:=$(1)
+ARG_DOT:=$(subst /,.,$(1))
+ARG__:=$(subst /,_,$(1))
+$(eval $(ARG__)_PERF_LOGS := $(filter $(PERF_DIR)/$(ARG_SLASH)/%.log,$(ALL_PERF_LOGS)))
+$(eval $(ARG__)_PERF_VFILES := $($(ARG__)_PERF_LOGS:.log=.v))
 
-$$($(1)_PERF_VFILES) : $(PERF_DIR)/$(1)/_%.v : $(PERF_DIR)/Template_$(1).v.in
+$$($(ARG__)_PERF_VFILES) : $(PERF_DIR)/$(ARG_SLASH)/_%.v : $(PERF_DIR)/Template_$(ARG__).v.in
 	$$(SHOW)'SED $$< > $$@'
 	$$(HIDE)mkdir -p $$(dir $$@)
-	$$(HIDE)sed 's/@EXAMPLE@/$(1)/g; s/@ARGS@/$$(subst _, ,$$*)/g' $$< > $$@
+	$$(HIDE)sed 's/@EXAMPLE@/$(ARG_DOT)/g; s/@ARGS@/$$(subst _, ,$$*)/g' $$< > $$@
 
-$$($(1)_PERF_LOGS) : %.log : %.v $(PERF_DIR)/$(1).vo
+$$($(ARG__)_PERF_LOGS) : %.log : %.v $(PERF_DIR)/$(ARG_SLASH).vo
 
-.PHONY: perf-$(1)
-perf-$(1):: $($(1)_PERF_LOGS)
+.PHONY: perf-$(ARG__)
+perf-$(ARG__):: $($(ARG__)_PERF_LOGS)
 endef
 
 define makesize

@@ -9,7 +9,7 @@ extra_bar=""
 extra_bar_space=""
 coq_versions="master 8.12.0 8.11.2 8.10.2 8.9.1 8.8.2"
 for stem in $stems; do
-    stem_dash="$(echo "$stem" | sed 's/_/-/g')"
+    stem_dash="$(echo "$stem" | sed 's,[_/],-,g')"
     echo
     echo '- [`'"$stem"'`](./PerformanceExperiments/'"$stem"'.v)'
     if [ "$(echo $coq_versions | wc -w)" -eq 1 ]; then extra_bar="|"; extra_bar_space=" |"; fi
