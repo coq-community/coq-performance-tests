@@ -41,8 +41,9 @@ perf.csv:
 # the find trick is from https://stackoverflow.com/a/4264351/377022
 .PHONY: copy-perf
 copy-perf::
-	cp -t $(OUTPUT) perf.csv $(wildcard *.txt)
-	for d in */; do if test -n "$$(find "$$d" -maxdepth 1 -name '*.log' -print -quit)"; then mkdir -p $(OUTPUT)/$$d; cp -t $(OUTPUT)/$$d $$d/*.log; fi; done
+	cp -t $(OUTPUT) perf.csv $(wildcard *.txt **/*.txt)
+	find -type d -exec mkdir -p "$(OUTPUT)/{}" \;
+	find -name '*.log' -exec cp {} "$(OUTPUT)/{}" \;
 
 perf-txts: perf.csv
 	$(PYTHON3) $(PERF_DIR)/csv_to_txt.py $<
@@ -55,9 +56,9 @@ perf-txts: perf.csv
 	gnuplot $<
 
 perf-gnuplots::
-	$(MAKE) $(patsubst %.txt,%.gnuplot,$(wildcard *.txt))
+	$(MAKE) $(patsubst %.txt,%.gnuplot,$(wildcard *.txt **/*.txt))
 .PHONY: perf-gnuplots
 
 perf-fits::
-	$(MAKE) $(addsuffix -fits.dat,$(wildcard *.txt))
+	$(MAKE) $(addsuffix -fits.dat,$(wildcard *.txt **/*.txt))
 .PHONY: perf-fits

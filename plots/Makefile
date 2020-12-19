@@ -28,7 +28,7 @@ generated/all.tex: Makefile $(PERF_KINDS_MAKEFILE)
 	$(SHOW)'ECHO > $@'
 	$(HIDE)echo '$(patsubst %,\include{generated/%},$(EXPERIMENTS_PERF_KINDS))' > $@
 
-SVGS := $(addsuffix .svg,$(EXPERIMENTS_PERF_KINDS) $(EXTRA_TEX))
+SVGS := $(addsuffix .svg,$(subst /,-,$(EXPERIMENTS_PERF_KINDS)) $(EXTRA_TEX))
 
 $(SVGS) : %.svg : all.pdf
 	$(SHOW)'PDF2SVG $@'

@@ -7,10 +7,34 @@
 \pgfplotsset{compat=1.15}
 \usepackage{currfile}
 \usepackage{filecontents}
+\usepackage{xstring}
+
+\makeatletter
+\def\@replaceslash#1#2/#3\relax{%
+  #2%
+  \ifx#3\@empty
+  \else
+    #1\@replaceslash{#1}#3\relax%
+  \fi
+}
+\def\replaceslash#1#2{\@replaceslash{#1}#2/\relax}
+\def\replaceslashdash#1{\replaceslash{-}{#1}}
+\newcommand{\StrGobbleBegin}[3]{%
+  \StrLen{#2}[\@StrGobbleBegin@Len]%
+  \IfBeginWith{#1}{#2}{%
+    \StrGobbleLeft{#1}{\@StrGobbleBegin@Len}[#3]%
+  }{%
+    \edef#3{#1}%
+  }%
+}
+\makeatother
 
 \usepgfplotslibrary{external}
 \tikzexternalize
-\tikzsetfigurename{\tikzexternalrealjob-\currfilebase-figure}
+\edef\currfiledirbase{\currfiledir\currfilebase}
+\StrGobbleBegin{\currfiledirbase}{generated/}{\currfiledirbaseadjusted}
+\edef\currfiledirbasedash{\expandafter\replaceslashdash\expandafter{\currfiledirbaseadjusted}}
+\tikzsetfigurename{\tikzexternalrealjob-\currfiledirbasedash-figure}
 
 \usepackage{hyperref}
 \usepackage{unicode-math}

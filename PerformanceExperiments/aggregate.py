@@ -4,6 +4,8 @@ import sys, os, os.path
 import csv
 import re
 
+DIR = os.path.dirname(os.path.realpath(__file__))
+
 parser = argparse.ArgumentParser()
 parser.add_argument('-o', '--output-file', dest='outfile', type=argparse.FileType('w'),
                     default=sys.stdout,
@@ -14,7 +16,7 @@ parser.add_argument('infile', metavar='INFILE', nargs='*', type=argparse.FileTyp
                     help='input log files')
 
 
-def process_file(f, data):
+def process_file(f, data, fbase=DIR):
     REPLACE_KEY = '#replace-'
     def param_to_tuple(p):
         k, v = p.split('=')
@@ -26,7 +28,7 @@ def process_file(f, data):
     reg = re.compile(r'(?:Tactic call|Finished) (.*?) (?:ran for|in) ([0-9\.]+) secs \(([0-9\.]+)u,([0-9\.]+)s\)(?: \(success\)| \(successful\))?')
     native_reg = re.compile(r'native_compute: (.*?) done in ([0-9\.]+)')
     fdir, fname = os.path.split(f.name)
-    fbase, kind = os.path.split(fdir)
+    kind = os.path.relpath(fdir, start=fbase)
     curparams = None
     cur_native_data = {}
     cur_replacements = {}

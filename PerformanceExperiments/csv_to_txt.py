@@ -29,12 +29,12 @@ def split_to_kinds(data):
             if any(row[k] is None or row[k] == '' for row in rows):
                 # print('Warning: Mix of empty and non-empty entries for key %s in kind %s:\n%s' % (k, kind, repr([row[k] for row in rows])), file=sys.stderr)
                 pass
-        ret[kind] = ([tuple(k.replace(' ', '-').replace('_', '-') for k in headings)] +
+        ret[kind] = ([tuple(k.replace(' ', '-').replace('_', '-').replace(';', '-') for k in headings)] +
                      [tuple(row[k] for k in headings) for row in rows])
     return ret
 
 def emit_output(kind, rows):
-    with open('%s.txt' % kind.replace('_', '-').replace(' ', '-'), 'w') as f:
+    with open('%s.txt' % kind.replace('_', '-').replace(' ', '-').replace(';', '-'), 'w') as f:
         f.write('\n'.join(','.join(v.replace(',', '-') for v in row) for row in rows))
 
 if __name__ == '__main__':
