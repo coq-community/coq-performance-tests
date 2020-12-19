@@ -27,6 +27,8 @@ COQ_EXTENDED_VERSION := $(shell (true | $(COQBIN)coqtop 2>/dev/null; $(COQBIN)co
 COQ_EXTENDED_VERSION_OLD := $(shell cat $(COQ_VERSION_FILE) 2>/dev/null)
 
 HAS_LTAC2:=
+USES_ML4:=yes
+USES_MLG:=
 IS_8_9_OR_NEWER:=
 IS_8_10_OR_NEWER:=
 IS_8_11_OR_NEWER:=
@@ -40,6 +42,8 @@ ifneq (,$(filter 8.9%,$(COQ_VERSION)))
 EXPECTED_EXT:=.v89
 else
 IS_8_10_OR_NEWER:=yes
+USES_ML4:=
+USES_MLG:=yes
 ifneq (,$(filter 8.10%,$(COQ_VERSION)))
 EXPECTED_EXT:=.v810
 else

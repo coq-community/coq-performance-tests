@@ -5,6 +5,7 @@ Require Import Coq.Bool.Bool.
 Require Import Coq.Sorting.Mergesort.
 Require Export Coq.Lists.List.
 Require Export Coq.ZArith.ZArith.
+Require Import PerformanceExperiments.Sandbox.
 Export ListNotations.
 
 Global Set Printing Width 1000.
@@ -285,6 +286,12 @@ Qed.
 Instance reflect_eq_nat : reflect_rel (@eq nat) Nat.eqb
   := reflect_rel_of_beq_iff Nat.eqb_eq.
 
+Instance reflect_eq_N : reflect_rel (@eq N) N.eqb
+  := reflect_rel_of_beq_iff N.eqb_eq.
+
+Instance reflect_eq_positive : reflect_rel (@eq positive) Pos.eqb
+  := reflect_rel_of_beq_iff Pos.eqb_eq.
+
 Instance reflect_eq_Z : reflect_rel (@eq Z) Z.eqb
   := reflect_rel_of_beq_iff Z.eqb_eq.
 
@@ -342,7 +349,10 @@ Ltac runtests args_of_size describe_goal mkgoal redgoal time_solve_goal sz :=
       | ?x :: ?xs
         => describe_goal x;
            let T := mkgoal x in
-           try (solve [ assert T by (redgoal x; once (time_solve_goal x + fail 2 "time_solve_goal failed!")) ]; []);
+           sandbox
+             (assert T;
+              [ redgoal x; once (time_solve_goal x)
+              | ]);
            iter xs
       end in
   iter args.
@@ -351,7 +361,7 @@ Ltac runtests_verify_sanity args_of_size describe_goal mkgoal redgoal time_solve
   let time_solve_goal'
       := lazymatch sz with
          | Sanity
-           => fun x => time_solve_goal x; do_verify ()
+           => fun x => time_solve_goal x; do_verify x
          | _
            => fun x => time_solve_goal x
          end in
@@ -381,7 +391,7 @@ Ltac runtests_step_arg_constr args_of_size describe_goal step_goal redgoal_const
         => let G := step_goal_from_to_constr step_goal cur x G in
            let G := redgoal_constr x G in
            describe_goal x;
-           try (solve [ redgoal x; once (time_solve_goal x G extra_args + fail 2 "time_solve_goal failed!") ]; []);
+           sandbox (redgoal x; once (time_solve_goal x G extra_args));
            iter x xs G
       end in
   let zero := (eval cbv in (@zero T _)) in
