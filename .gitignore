@@ -52,6 +52,11 @@ nra.cache
 Makefile.coq
 Makefile.coq.conf
 
+# Generated ml files
+*.mlg.d
+*.cmt
+PerformanceExperiments/sandbox_plugin.ml
+
 # Generated .v files for perf
 *_Sanity.v
 *_SuperFast.v
