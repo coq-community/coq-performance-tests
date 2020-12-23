@@ -43,7 +43,6 @@
 \def\currdirfilebase{\expandafter\currfiledir\currfilebase}
 \def\currdirfilebasenogenerated{\ExpandNext{\stripleadinggenerated}{\currdirfilebase}}
 \def\currdirfilebasedash{\ExpandNext{\replaceslashdash}{\currdirfilebasenogenerated}}
-\ExpandNext{\message}{\ExpandNext{Cur File: }{\currdirfilebasedash}}
 \tikzsetfigurename{\tikzexternalrealjob-\currdirfilebasedash-figure}
 
 \usepackage{hyperref}
