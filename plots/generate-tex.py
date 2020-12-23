@@ -136,7 +136,7 @@ def generate_tex(name, txt_lines):
     return r'''
 \begin{figure*}
   \begin{tikzpicture}
-    \begin{filecontents*}[overwrite]{generated/%(name)s.txt}
+    \begin{filecontents*}{generated/%(name)s.txt}
 %(contents)s
 \end{filecontents*}
     \begin{axis}[xlabel=%(xlabel)s,
