@@ -7,34 +7,44 @@
 \pgfplotsset{compat=1.15}
 \usepackage{currfile}
 \usepackage{filecontents}
-\usepackage{xstring}
+\usepackage{etoolbox}
+\usepackage{etextools}
 
 \makeatletter
 \def\@replaceslash#1#2/#3\relax{%
   #2%
-  \ifx#3\@empty
-  \else
+  \ifstrempty{#3}{%
+  }{%
     #1\@replaceslash{#1}#3\relax%
-  \fi
+  }%
 }
 \def\replaceslash#1#2{\@replaceslash{#1}#2/\relax}
 \def\replaceslashdash#1{\replaceslash{-}{#1}}
-\newcommand{\StrGobbleBegin}[3]{%
-  \StrLen{#2}[\@StrGobbleBegin@Len]%
-  \IfBeginWith{#1}{#2}{%
-    \StrGobbleLeft{#1}{\@StrGobbleBegin@Len}[#3]%
+\expandaftercmds{\def\striptrailinggenerated#1}{\detokenize{generated/}{#1}}
+\expandaftercmds{\def\@stripleadinggenerated#1}{\detokenize{generated/}#2\relax}{%
+  \ifstrempty{#1}{%
+    \ifstrempty{#2}{%
+    }{%
+      \striptrailinggenerated#2%
+    }%
   }{%
-    \edef#3{#1}%
+    \ifstrempty{#2}{%
+      #1%
+    }{%
+      \expandaftercmds{#1}{\detokenize{generated/}}\striptrailinggenerated#2%
+    }%
   }%
 }
+\def\stripleadinggenerated#1{\expandafter\@stripleadinggenerated\detokenize{#1generated/}\relax}
 \makeatother
 
 \usepgfplotslibrary{external}
 \tikzexternalize
-\edef\currfiledirbase{\currfiledir\currfilebase}
-\StrGobbleBegin{\currfiledirbase}{generated/}{\currfiledirbaseadjusted}
-\edef\currfiledirbasedash{\expandafter\replaceslashdash\expandafter{\currfiledirbaseadjusted}}
-\tikzsetfigurename{\tikzexternalrealjob-\currfiledirbasedash-figure}
+\def\currdirfilebase{\expandafter\currfiledir\currfilebase}
+\def\currdirfilebasenogenerated{\ExpandNext{\stripleadinggenerated}{\currdirfilebase}}
+\def\currdirfilebasedash{\ExpandNext{\replaceslashdash}{\currdirfilebasenogenerated}}
+\ExpandNext{\message}{\ExpandNext{Cur File: }{\currdirfilebasedash}}
+\tikzsetfigurename{\tikzexternalrealjob-\currdirfilebasedash-figure}
 
 \usepackage{hyperref}
 \usepackage{unicode-math}
