@@ -343,6 +343,7 @@ TSWLatexianTemp*
 *-figure*.dep
 *.pgf-plot.gnuplot
 *.pgf-plot.table
+*-regression.table
 *-parameters.dat
 PerformanceExperiments/Ltac2Compat/Array.v
 PerformanceExperiments/Ltac2Compat/Constr.v

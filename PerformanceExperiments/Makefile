@@ -23,7 +23,7 @@ include Makefile.variables
 all:: invoke-coqmakefile
 .PHONY: all
 
-WARNINGS:=-notation-overridden
+WARNINGS:=-notation-overridden,-undeclared-scope
 
 ifneq ($(wildcard ../.git),)
 FILE_FINDER := git ls-files
