@@ -3,11 +3,14 @@
 # Pass this script a list of file names, and it'll print the relevant
 # lines for README.md to display things
 
+# https://stackoverflow.com/a/246128/377022
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
 stems="$@"
 stems="$(echo "$stems" | tr ' ' '\n' | sed 's/\.v$//g' | tr '\n' ' ')"
 extra_bar=""
 extra_bar_space=""
-coq_versions="master 8.12.0 8.11.2 8.10.2 8.9.1 8.8.2"
+coq_versions="$(grep -o 'COQ_VERSION:\s*[^, ]*' .github/workflows/coq.yml | sed 's/COQ_VERSION://g; s/[ "]//g')"
 for stem in $stems; do
     stem_dash="$(echo "$stem" | sed 's,[_/],-,g')"
     echo

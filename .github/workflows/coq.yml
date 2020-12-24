@@ -13,9 +13,13 @@ jobs:
 
     strategy:
       matrix:
+        # N.B. The update-README makefile target pulls information
+        # about Coq versions from this file, so be careful about
+        # ordering of the env and about the presence of COQ_VERSION
+        # immediately followed by : in this file
         env:
         - { COQ_VERSION: "master", COQ_PACKAGE: "coq        libcoq-ocaml-dev"       , PPA: "ppa:jgross-h/coq-master-daily"             , TIMED: "1", SLEEP_TIME: "1" }
-        - { COQ_VERSION: "8.12.0", COQ_PACKAGE: "coq-8.12.0 libcoq-8.12.0-ocaml-dev", PPA: "ppa:jgross-h/many-coq-versions-ocaml-4-05" , TIMED: "1", SLEEP_TIME: "30" }
+        - { COQ_VERSION: "8.12.2", COQ_PACKAGE: "coq-8.12.2 libcoq-8.12.2-ocaml-dev", PPA: "ppa:jgross-h/many-coq-versions-ocaml-4-05" , TIMED: "1", SLEEP_TIME: "30" }
         - { COQ_VERSION: "8.11.2", COQ_PACKAGE: "coq-8.11.2 libcoq-8.11.2-ocaml-dev", PPA: "ppa:jgross-h/many-coq-versions-ocaml-4-05" , TIMED: "1", SLEEP_TIME: "60" }
         - { COQ_VERSION: "8.10.2", COQ_PACKAGE: "coq-8.10.2 libcoq-8.10.2-ocaml-dev", PPA: "ppa:jgross-h/many-coq-versions-ocaml-4-05" , TIMED: "1", SLEEP_TIME: "90" }
         - { COQ_VERSION: "8.9.1" , COQ_PACKAGE: "coq-8.9.1  libcoq-8.9.1-ocaml-dev" , PPA: "ppa:jgross-h/many-coq-versions"            , TIMED: "1", SLEEP_TIME: "120" }
@@ -114,7 +118,7 @@ jobs:
           FOLDER: doc-build
           SINGLE_COMMIT: true
         if: github.ref == 'refs/heads/master' && ( github.event_name == 'push' || github.event_name == 'schedule' )
-        
+
   deploy-history:
 
     runs-on: ubuntu-latest
