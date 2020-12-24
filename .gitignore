@@ -349,6 +349,9 @@ TSWLatexianTemp*
 PerformanceExperiments/Ltac2Compat/Array.v
 PerformanceExperiments/Ltac2Compat/Constr.v
 PerformanceExperiments/Ltac2Compat/Init.v
+PerformanceExperiments/Reify/reify_plugin.ml4
+PerformanceExperiments/Reify/reify_plugin.mlg
+PerformanceExperiments/Reify/reify_plugin.ml
 plots/generated/
 plots/*.log
 plots/*.svg
