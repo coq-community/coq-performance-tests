@@ -19,6 +19,7 @@ KINDS := \
 	Reify/BaselineStats \
 	Reify/CanonicalStructures \
 	Reify/LtacVariants \
+	Reify/OCaml \
 	Reify/Parametricity \
 	Reify/TypeClasses \
 	# end of list
