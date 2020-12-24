@@ -50,12 +50,15 @@ Ltac time_solve_goal do_cbv pre_reify do_reify post_reify n :=
   once (pre_reify n);
   once (do_reify n);
   once (post_reify n).
-Ltac do_verify is_flat :=
+Ltac ref_PHOAS_of is_flat :=
   let ref_PHOAS := lazymatch (eval cbv in is_flat) with
                    | true => fun n => (eval lazy in (rbig_flat (count_of_N n)))
                    | false => fun n => (eval lazy in (rbig (count_of_N n)))
                    | ?v => fail 0 "Invalid argument for is_flat (expected true or false):" v
                    end in
+  fun n => ref_PHOAS n.
+Ltac do_verify is_flat :=
+  let ref_PHOAS := ref_PHOAS_of is_flat in
   fun n => check_sane ltac:(ref_PHOAS n).
 
 Ltac noop _ := idtac.

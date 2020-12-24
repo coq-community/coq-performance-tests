@@ -84,6 +84,7 @@ PerformanceExperiments/.coq-version-short-date
 PerformanceExperiments/.machine
 PerformanceExperiments/.machine-extended
 PerformanceExperiments/*.txt
+PerformanceExperiments/**/*.txt
 PerformanceExperiments/perf.csv
 
 # LaTeX

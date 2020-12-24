@@ -17,6 +17,10 @@ KINDS := \
 	rewrite_repeated_app_fast_rewrite \
 	rewrite_repeated_app_fast_rewrite_no_abstract \
 	Reify/Parametricity \
+	Reify/TypeClasses \
+	Reify/CanonicalStructures \
+	Reify/LtacVariants \
+	Reify/BaselineStats \
 	# end of list
 
 LTAC2_KINDS := \
