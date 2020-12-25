@@ -257,79 +257,79 @@ Ltac time_solve_goal kind sz :=
                     end in
   lazymatch kind with
   | BodyFlatPHOAS
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for TypeClassesBodyFlatPHOAS with big_flat-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for TypeClassesBodyFlatPHOAS with big_flat-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for TypeClassesBodyFlatPHOAS with big_flat-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for TypeClassesBodyFlatPHOAS with big_flat-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for TypeClassesBodyFlatPHOAS with big_flat-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for TypeClassesBodyFlatPHOAS with big_flat-regression-quadratic") in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for TypeClassesBodyFlatPHOAS with big_flat-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for TypeClassesBodyFlatPHOAS with big_flat-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for TypeClassesBodyFlatPHOAS with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for TypeClassesBodyFlatPHOAS with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for TypeClassesBodyFlatPHOAS with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for TypeClassesBodyFlatPHOAS with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for TypeClassesBodyFlatPHOAS with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for TypeClassesBodyFlatPHOAS with big_flat"(*-regression-quadratic*)) in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for TypeClassesBodyFlatPHOAS with big_flat"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for TypeClassesBodyFlatPHOAS with big_flat"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for TypeClassesBodyFlatPHOAS with big_flat-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for TypeClassesBodyFlatPHOAS with big_flat-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for TypeClassesBodyFlatPHOAS with big_flat-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for TypeClassesBodyFlatPHOAS with big_flat-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for TypeClassesBodyFlatPHOAS with big_flat"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for TypeClassesBodyFlatPHOAS with big_flat"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for TypeClassesBodyFlatPHOAS with big_flat"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for TypeClassesBodyFlatPHOAS with big_flat"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | ArgPHOAS true
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for TypeClassesPHOAS with big_flat-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for TypeClassesPHOAS with big_flat-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for TypeClassesPHOAS with big_flat-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for TypeClassesPHOAS with big_flat-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for TypeClassesPHOAS with big_flat-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for TypeClassesPHOAS with big_flat-regression-quadratic") in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for TypeClassesPHOAS with big_flat-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for TypeClassesPHOAS with big_flat-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for TypeClassesPHOAS with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for TypeClassesPHOAS with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for TypeClassesPHOAS with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for TypeClassesPHOAS with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for TypeClassesPHOAS with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for TypeClassesPHOAS with big_flat"(*-regression-quadratic*)) in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for TypeClassesPHOAS with big_flat"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for TypeClassesPHOAS with big_flat"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for TypeClassesPHOAS with big_flat-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for TypeClassesPHOAS with big_flat-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for TypeClassesPHOAS with big_flat-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for TypeClassesPHOAS with big_flat-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for TypeClassesPHOAS with big_flat"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for TypeClassesPHOAS with big_flat"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for TypeClassesPHOAS with big_flat"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for TypeClassesPHOAS with big_flat"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | ArgPHOAS false
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for TypeClassesPHOAS with big-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for TypeClassesPHOAS with big-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for TypeClassesPHOAS with big-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for TypeClassesPHOAS with big-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for TypeClassesPHOAS with big-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for TypeClassesPHOAS with big-regression-quadratic") in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for TypeClassesPHOAS with big-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for TypeClassesPHOAS with big-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for TypeClassesPHOAS with big"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for TypeClassesPHOAS with big"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for TypeClassesPHOAS with big"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for TypeClassesPHOAS with big"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for TypeClassesPHOAS with big"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for TypeClassesPHOAS with big"(*-regression-quadratic*)) in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for TypeClassesPHOAS with big"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for TypeClassesPHOAS with big"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for TypeClassesPHOAS with big-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for TypeClassesPHOAS with big-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for TypeClassesPHOAS with big-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for TypeClassesPHOAS with big-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for TypeClassesPHOAS with big"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for TypeClassesPHOAS with big"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for TypeClassesPHOAS with big"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for TypeClassesPHOAS with big"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | BodyHOAS true
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for TypeClassesBodyHOAS with big_flat-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for TypeClassesBodyHOAS with big_flat-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for TypeClassesBodyHOAS with big_flat-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for TypeClassesBodyHOAS with big_flat-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for TypeClassesBodyHOAS with big_flat-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for TypeClassesBodyHOAS with big_flat-regression-quadratic") in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for TypeClassesBodyHOAS with big_flat-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for TypeClassesBodyHOAS with big_flat-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for TypeClassesBodyHOAS with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for TypeClassesBodyHOAS with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for TypeClassesBodyHOAS with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for TypeClassesBodyHOAS with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for TypeClassesBodyHOAS with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for TypeClassesBodyHOAS with big_flat"(*-regression-quadratic*)) in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for TypeClassesBodyHOAS with big_flat"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for TypeClassesBodyHOAS with big_flat"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for TypeClassesBodyHOAS with big_flat-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for TypeClassesBodyHOAS with big_flat-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for TypeClassesBodyHOAS with big_flat-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for TypeClassesBodyHOAS with big_flat-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for TypeClassesBodyHOAS with big_flat"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for TypeClassesBodyHOAS with big_flat"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for TypeClassesBodyHOAS with big_flat"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for TypeClassesBodyHOAS with big_flat"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | BodyHOAS false
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for TypeClassesBodyHOAS with big-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for TypeClassesBodyHOAS with big-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for TypeClassesBodyHOAS with big-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for TypeClassesBodyHOAS with big-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for TypeClassesBodyHOAS with big-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for TypeClassesBodyHOAS with big-regression-quadratic") in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for TypeClassesBodyHOAS with big-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for TypeClassesBodyHOAS with big-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for TypeClassesBodyHOAS with big"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for TypeClassesBodyHOAS with big"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for TypeClassesBodyHOAS with big"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for TypeClassesBodyHOAS with big"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for TypeClassesBodyHOAS with big"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for TypeClassesBodyHOAS with big"(*-regression-quadratic*)) in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for TypeClassesBodyHOAS with big"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for TypeClassesBodyHOAS with big"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for TypeClassesBodyHOAS with big-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for TypeClassesBodyHOAS with big-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for TypeClassesBodyHOAS with big-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for TypeClassesBodyHOAS with big-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for TypeClassesBodyHOAS with big"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for TypeClassesBodyHOAS with big"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for TypeClassesBodyHOAS with big"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for TypeClassesBodyHOAS with big"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | ?kind => fail 0 "Unrecognized kind:" kind
   end.

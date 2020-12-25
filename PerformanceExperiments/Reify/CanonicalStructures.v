@@ -384,76 +384,76 @@ Ltac time_solve_goal kind sz :=
                     end in
   lazymatch kind with
   | {| is_flat := true  ; representation := PHOAS |}
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for CanonicalStructuresFlatPHOAS with big_flat-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for CanonicalStructuresFlatPHOAS with big_flat-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for CanonicalStructuresFlatPHOAS with big_flat-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for CanonicalStructuresFlatPHOAS with big_flat-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for CanonicalStructuresFlatPHOAS with big_flat-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for CanonicalStructuresFlatPHOAS with big_flat-regression-quadratic") in
-       let restart_timer_postprocess := ltac:(restart_timer                 "postprocess for CanonicalStructuresFlatPHOAS with big_flat-regression-quadratic") in
-       let finish_timing_postprocess := ltac:(finish_timing ("Tactic call") "postprocess for CanonicalStructuresFlatPHOAS with big_flat-regression-quadratic") in
-       let time_intros_ tac          := time                                   "intros _ for CanonicalStructuresFlatPHOAS with big_flat-regression-quadratic" tac in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for CanonicalStructuresFlatPHOAS with big_flat-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for CanonicalStructuresFlatPHOAS with big_flat-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for CanonicalStructuresFlatPHOAS with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for CanonicalStructuresFlatPHOAS with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for CanonicalStructuresFlatPHOAS with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for CanonicalStructuresFlatPHOAS with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for CanonicalStructuresFlatPHOAS with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for CanonicalStructuresFlatPHOAS with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_postprocess := ltac:(restart_timer                 "postprocess for CanonicalStructuresFlatPHOAS with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_postprocess := ltac:(finish_timing ("Tactic call") "postprocess for CanonicalStructuresFlatPHOAS with big_flat"(*-regression-quadratic*)) in
+       let time_intros_ tac          := time                                   "intros _ for CanonicalStructuresFlatPHOAS with big_flat"(*-regression-quadratic*) tac in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for CanonicalStructuresFlatPHOAS with big_flat"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for CanonicalStructuresFlatPHOAS with big_flat"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy restart_timer_postprocess finish_timing_postprocess time_intros_ time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for CanonicalStructuresFlatPHOAS with big_flat-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for CanonicalStructuresFlatPHOAS with big_flat-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for CanonicalStructuresFlatPHOAS with big_flat-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for CanonicalStructuresFlatPHOAS with big_flat-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for CanonicalStructuresFlatPHOAS with big_flat"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for CanonicalStructuresFlatPHOAS with big_flat"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for CanonicalStructuresFlatPHOAS with big_flat"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for CanonicalStructuresFlatPHOAS with big_flat"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | {| is_flat := false ; representation := PHOAS |}
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for CanonicalStructuresPHOAS with big-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for CanonicalStructuresPHOAS with big-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for CanonicalStructuresPHOAS with big-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for CanonicalStructuresPHOAS with big-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for CanonicalStructuresPHOAS with big-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for CanonicalStructuresPHOAS with big-regression-quadratic") in
-       let restart_timer_postprocess := ltac:(restart_timer                 "postprocess for CanonicalStructuresPHOAS with big-regression-quadratic") in
-       let finish_timing_postprocess := ltac:(finish_timing ("Tactic call") "postprocess for CanonicalStructuresPHOAS with big-regression-quadratic") in
-       let time_intros_ tac          := time                                   "intros _ for CanonicalStructuresPHOAS with big-regression-quadratic" tac in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for CanonicalStructuresPHOAS with big-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for CanonicalStructuresPHOAS with big-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for CanonicalStructuresPHOAS with big"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for CanonicalStructuresPHOAS with big"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for CanonicalStructuresPHOAS with big"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for CanonicalStructuresPHOAS with big"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for CanonicalStructuresPHOAS with big"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for CanonicalStructuresPHOAS with big"(*-regression-quadratic*)) in
+       let restart_timer_postprocess := ltac:(restart_timer                 "postprocess for CanonicalStructuresPHOAS with big"(*-regression-quadratic*)) in
+       let finish_timing_postprocess := ltac:(finish_timing ("Tactic call") "postprocess for CanonicalStructuresPHOAS with big"(*-regression-quadratic*)) in
+       let time_intros_ tac          := time                                   "intros _ for CanonicalStructuresPHOAS with big"(*-regression-quadratic*) tac in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for CanonicalStructuresPHOAS with big"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for CanonicalStructuresPHOAS with big"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy restart_timer_postprocess finish_timing_postprocess time_intros_ time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for CanonicalStructuresPHOAS with big-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for CanonicalStructuresPHOAS with big-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for CanonicalStructuresPHOAS with big-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for CanonicalStructuresPHOAS with big-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for CanonicalStructuresPHOAS with big"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for CanonicalStructuresPHOAS with big"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for CanonicalStructuresPHOAS with big"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for CanonicalStructuresPHOAS with big"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | {| is_flat := true  ; representation := HOAS |}
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for CanonicalStructuresFlatHOAS with big_flat-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for CanonicalStructuresFlatHOAS with big_flat-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for CanonicalStructuresFlatHOAS with big_flat-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for CanonicalStructuresFlatHOAS with big_flat-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for CanonicalStructuresFlatHOAS with big_flat-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for CanonicalStructuresFlatHOAS with big_flat-regression-quadratic") in
-       let restart_timer_postprocess := ltac:(restart_timer                 "postprocess for CanonicalStructuresFlatHOAS with big_flat-regression-quadratic") in
-       let finish_timing_postprocess := ltac:(finish_timing ("Tactic call") "postprocess for CanonicalStructuresFlatHOAS with big_flat-regression-quadratic") in
-       let time_intros_ tac          := time                                   "intros _ for CanonicalStructuresFlatHOAS with big_flat-regression-quadratic" tac in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for CanonicalStructuresFlatHOAS with big_flat-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for CanonicalStructuresFlatHOAS with big_flat-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for CanonicalStructuresFlatHOAS with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for CanonicalStructuresFlatHOAS with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for CanonicalStructuresFlatHOAS with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for CanonicalStructuresFlatHOAS with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for CanonicalStructuresFlatHOAS with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for CanonicalStructuresFlatHOAS with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_postprocess := ltac:(restart_timer                 "postprocess for CanonicalStructuresFlatHOAS with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_postprocess := ltac:(finish_timing ("Tactic call") "postprocess for CanonicalStructuresFlatHOAS with big_flat"(*-regression-quadratic*)) in
+       let time_intros_ tac          := time                                   "intros _ for CanonicalStructuresFlatHOAS with big_flat"(*-regression-quadratic*) tac in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for CanonicalStructuresFlatHOAS with big_flat"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for CanonicalStructuresFlatHOAS with big_flat"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy restart_timer_postprocess finish_timing_postprocess time_intros_ time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for CanonicalStructuresFlatHOAS with big_flat-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for CanonicalStructuresFlatHOAS with big_flat-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for CanonicalStructuresFlatHOAS with big_flat-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for CanonicalStructuresFlatHOAS with big_flat-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for CanonicalStructuresFlatHOAS with big_flat"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for CanonicalStructuresFlatHOAS with big_flat"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for CanonicalStructuresFlatHOAS with big_flat"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for CanonicalStructuresFlatHOAS with big_flat"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | {| is_flat := false ; representation := HOAS |}
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for CanonicalStructuresHOAS with big-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for CanonicalStructuresHOAS with big-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for CanonicalStructuresHOAS with big-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for CanonicalStructuresHOAS with big-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for CanonicalStructuresHOAS with big-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for CanonicalStructuresHOAS with big-regression-quadratic") in
-       let restart_timer_postprocess := ltac:(restart_timer                 "postprocess for CanonicalStructuresHOAS with big-regression-quadratic") in
-       let finish_timing_postprocess := ltac:(finish_timing ("Tactic call") "postprocess for CanonicalStructuresHOAS with big-regression-quadratic") in
-       let time_intros_ tac          := time                                   "intros _ for CanonicalStructuresHOAS with big-regression-quadratic" tac in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for CanonicalStructuresHOAS with big-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for CanonicalStructuresHOAS with big-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for CanonicalStructuresHOAS with big"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for CanonicalStructuresHOAS with big"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for CanonicalStructuresHOAS with big"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for CanonicalStructuresHOAS with big"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for CanonicalStructuresHOAS with big"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for CanonicalStructuresHOAS with big"(*-regression-quadratic*)) in
+       let restart_timer_postprocess := ltac:(restart_timer                 "postprocess for CanonicalStructuresHOAS with big"(*-regression-quadratic*)) in
+       let finish_timing_postprocess := ltac:(finish_timing ("Tactic call") "postprocess for CanonicalStructuresHOAS with big"(*-regression-quadratic*)) in
+       let time_intros_ tac          := time                                   "intros _ for CanonicalStructuresHOAS with big"(*-regression-quadratic*) tac in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for CanonicalStructuresHOAS with big"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for CanonicalStructuresHOAS with big"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy restart_timer_postprocess finish_timing_postprocess time_intros_ time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for CanonicalStructuresHOAS with big-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for CanonicalStructuresHOAS with big-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for CanonicalStructuresHOAS with big-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for CanonicalStructuresHOAS with big-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for CanonicalStructuresHOAS with big"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for CanonicalStructuresHOAS with big"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for CanonicalStructuresHOAS with big"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for CanonicalStructuresHOAS with big"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | ?kind => fail 0 "Unrecognized kind:" kind
   end.

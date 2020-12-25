@@ -66,214 +66,214 @@ Ltac time_solve_goal kind sz :=
                     end in
   lazymatch kind with
   | {| is_flat := true ; ltac_kind := LtacPrimUncurry |}
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacPrimUncurry with big_flat-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacPrimUncurry with big_flat-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacPrimUncurry with big_flat-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacPrimUncurry with big_flat-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacPrimUncurry with big_flat-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacPrimUncurry with big_flat-regression-quadratic") in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacPrimUncurry with big_flat-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacPrimUncurry with big_flat-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacPrimUncurry with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacPrimUncurry with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacPrimUncurry with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacPrimUncurry with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacPrimUncurry with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacPrimUncurry with big_flat"(*-regression-quadratic*)) in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacPrimUncurry with big_flat"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacPrimUncurry with big_flat"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for LtacPrimUncurry with big_flat-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for LtacPrimUncurry with big_flat-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for LtacPrimUncurry with big_flat-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for LtacPrimUncurry with big_flat-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for LtacPrimUncurry with big_flat"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for LtacPrimUncurry with big_flat"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for LtacPrimUncurry with big_flat"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for LtacPrimUncurry with big_flat"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | {| is_flat := true ; ltac_kind := LtacTCPrimPair |}
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTCPrimPair with big_flat-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTCPrimPair with big_flat-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTCPrimPair with big_flat-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTCPrimPair with big_flat-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTCPrimPair with big_flat-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTCPrimPair with big_flat-regression-quadratic") in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTCPrimPair with big_flat-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTCPrimPair with big_flat-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTCPrimPair with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTCPrimPair with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTCPrimPair with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTCPrimPair with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTCPrimPair with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTCPrimPair with big_flat"(*-regression-quadratic*)) in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTCPrimPair with big_flat"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTCPrimPair with big_flat"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for LtacTCPrimPair with big_flat-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for LtacTCPrimPair with big_flat-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for LtacTCPrimPair with big_flat-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for LtacTCPrimPair with big_flat-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for LtacTCPrimPair with big_flat"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for LtacTCPrimPair with big_flat"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for LtacTCPrimPair with big_flat"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for LtacTCPrimPair with big_flat"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | {| is_flat := true ; ltac_kind := LtacTCGallinaCtx |}
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTCGallinaCtx with big_flat-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTCGallinaCtx with big_flat-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTCGallinaCtx with big_flat-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTCGallinaCtx with big_flat-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTCGallinaCtx with big_flat-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTCGallinaCtx with big_flat-regression-quadratic") in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTCGallinaCtx with big_flat-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTCGallinaCtx with big_flat-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTCGallinaCtx with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTCGallinaCtx with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTCGallinaCtx with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTCGallinaCtx with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTCGallinaCtx with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTCGallinaCtx with big_flat"(*-regression-quadratic*)) in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTCGallinaCtx with big_flat"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTCGallinaCtx with big_flat"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for LtacTCGallinaCtx with big_flat-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for LtacTCGallinaCtx with big_flat-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for LtacTCGallinaCtx with big_flat-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for LtacTCGallinaCtx with big_flat-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for LtacTCGallinaCtx with big_flat"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for LtacTCGallinaCtx with big_flat"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for LtacTCGallinaCtx with big_flat"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for LtacTCGallinaCtx with big_flat"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | {| is_flat := true ; ltac_kind := LtacTCExplicitCtx |}
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTCExplicitCtx with big_flat-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTCExplicitCtx with big_flat-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTCExplicitCtx with big_flat-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTCExplicitCtx with big_flat-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTCExplicitCtx with big_flat-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTCExplicitCtx with big_flat-regression-quadratic") in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTCExplicitCtx with big_flat-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTCExplicitCtx with big_flat-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTCExplicitCtx with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTCExplicitCtx with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTCExplicitCtx with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTCExplicitCtx with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTCExplicitCtx with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTCExplicitCtx with big_flat"(*-regression-quadratic*)) in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTCExplicitCtx with big_flat"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTCExplicitCtx with big_flat"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for LtacTCExplicitCtx with big_flat-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for LtacTCExplicitCtx with big_flat-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for LtacTCExplicitCtx with big_flat-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for LtacTCExplicitCtx with big_flat-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for LtacTCExplicitCtx with big_flat"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for LtacTCExplicitCtx with big_flat"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for LtacTCExplicitCtx with big_flat"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for LtacTCExplicitCtx with big_flat"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | {| is_flat := true ; ltac_kind := LtacTacInTermPrimPair |}
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTacInTermPrimPair with big_flat-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTacInTermPrimPair with big_flat-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTacInTermPrimPair with big_flat-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTacInTermPrimPair with big_flat-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTacInTermPrimPair with big_flat-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTacInTermPrimPair with big_flat-regression-quadratic") in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTacInTermPrimPair with big_flat-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTacInTermPrimPair with big_flat-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTacInTermPrimPair with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTacInTermPrimPair with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTacInTermPrimPair with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTacInTermPrimPair with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTacInTermPrimPair with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTacInTermPrimPair with big_flat"(*-regression-quadratic*)) in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTacInTermPrimPair with big_flat"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTacInTermPrimPair with big_flat"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for LtacTacInTermPrimPair with big_flat-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for LtacTacInTermPrimPair with big_flat-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for LtacTacInTermPrimPair with big_flat-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for LtacTacInTermPrimPair with big_flat-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for LtacTacInTermPrimPair with big_flat"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for LtacTacInTermPrimPair with big_flat"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for LtacTacInTermPrimPair with big_flat"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for LtacTacInTermPrimPair with big_flat"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | {| is_flat := true ; ltac_kind := LtacTacInTermGallinaCtx |}
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTacInTermGallinaCtx with big_flat-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTacInTermGallinaCtx with big_flat-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTacInTermGallinaCtx with big_flat-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTacInTermGallinaCtx with big_flat-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTacInTermGallinaCtx with big_flat-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTacInTermGallinaCtx with big_flat-regression-quadratic") in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTacInTermGallinaCtx with big_flat-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTacInTermGallinaCtx with big_flat-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTacInTermGallinaCtx with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTacInTermGallinaCtx with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTacInTermGallinaCtx with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTacInTermGallinaCtx with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTacInTermGallinaCtx with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTacInTermGallinaCtx with big_flat"(*-regression-quadratic*)) in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTacInTermGallinaCtx with big_flat"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTacInTermGallinaCtx with big_flat"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for LtacTacInTermGallinaCtx with big_flat-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for LtacTacInTermGallinaCtx with big_flat-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for LtacTacInTermGallinaCtx with big_flat-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for LtacTacInTermGallinaCtx with big_flat-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for LtacTacInTermGallinaCtx with big_flat"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for LtacTacInTermGallinaCtx with big_flat"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for LtacTacInTermGallinaCtx with big_flat"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for LtacTacInTermGallinaCtx with big_flat"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | {| is_flat := true ; ltac_kind := LtacTacInTermExplicitCtx |}
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTacInTermExplicitCtx with big_flat-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTacInTermExplicitCtx with big_flat-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTacInTermExplicitCtx with big_flat-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTacInTermExplicitCtx with big_flat-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTacInTermExplicitCtx with big_flat-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTacInTermExplicitCtx with big_flat-regression-quadratic") in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTacInTermExplicitCtx with big_flat-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTacInTermExplicitCtx with big_flat-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTacInTermExplicitCtx with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTacInTermExplicitCtx with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTacInTermExplicitCtx with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTacInTermExplicitCtx with big_flat"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTacInTermExplicitCtx with big_flat"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTacInTermExplicitCtx with big_flat"(*-regression-quadratic*)) in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTacInTermExplicitCtx with big_flat"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTacInTermExplicitCtx with big_flat"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for LtacTacInTermExplicitCtx with big_flat-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for LtacTacInTermExplicitCtx with big_flat-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for LtacTacInTermExplicitCtx with big_flat-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for LtacTacInTermExplicitCtx with big_flat-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for LtacTacInTermExplicitCtx with big_flat"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for LtacTacInTermExplicitCtx with big_flat"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for LtacTacInTermExplicitCtx with big_flat"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for LtacTacInTermExplicitCtx with big_flat"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | {| is_flat := false ; ltac_kind := LtacPrimUncurry |}
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacPrimUncurry with big-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacPrimUncurry with big-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacPrimUncurry with big-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacPrimUncurry with big-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacPrimUncurry with big-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacPrimUncurry with big-regression-quadratic") in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacPrimUncurry with big-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacPrimUncurry with big-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacPrimUncurry with big"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacPrimUncurry with big"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacPrimUncurry with big"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacPrimUncurry with big"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacPrimUncurry with big"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacPrimUncurry with big"(*-regression-quadratic*)) in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacPrimUncurry with big"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacPrimUncurry with big"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for LtacPrimUncurry with big-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for LtacPrimUncurry with big-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for LtacPrimUncurry with big-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for LtacPrimUncurry with big-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for LtacPrimUncurry with big"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for LtacPrimUncurry with big"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for LtacPrimUncurry with big"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for LtacPrimUncurry with big"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | {| is_flat := false ; ltac_kind := LtacTCPrimPair |}
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTCPrimPair with big-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTCPrimPair with big-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTCPrimPair with big-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTCPrimPair with big-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTCPrimPair with big-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTCPrimPair with big-regression-quadratic") in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTCPrimPair with big-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTCPrimPair with big-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTCPrimPair with big"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTCPrimPair with big"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTCPrimPair with big"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTCPrimPair with big"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTCPrimPair with big"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTCPrimPair with big"(*-regression-quadratic*)) in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTCPrimPair with big"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTCPrimPair with big"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for LtacTCPrimPair with big-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for LtacTCPrimPair with big-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for LtacTCPrimPair with big-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for LtacTCPrimPair with big-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for LtacTCPrimPair with big"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for LtacTCPrimPair with big"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for LtacTCPrimPair with big"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for LtacTCPrimPair with big"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | {| is_flat := false ; ltac_kind := LtacTCGallinaCtx |}
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTCGallinaCtx with big-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTCGallinaCtx with big-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTCGallinaCtx with big-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTCGallinaCtx with big-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTCGallinaCtx with big-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTCGallinaCtx with big-regression-quadratic") in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTCGallinaCtx with big-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTCGallinaCtx with big-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTCGallinaCtx with big"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTCGallinaCtx with big"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTCGallinaCtx with big"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTCGallinaCtx with big"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTCGallinaCtx with big"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTCGallinaCtx with big"(*-regression-quadratic*)) in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTCGallinaCtx with big"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTCGallinaCtx with big"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for LtacTCGallinaCtx with big-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for LtacTCGallinaCtx with big-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for LtacTCGallinaCtx with big-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for LtacTCGallinaCtx with big-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for LtacTCGallinaCtx with big"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for LtacTCGallinaCtx with big"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for LtacTCGallinaCtx with big"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for LtacTCGallinaCtx with big"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | {| is_flat := false ; ltac_kind := LtacTCExplicitCtx |}
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTCExplicitCtx with big-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTCExplicitCtx with big-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTCExplicitCtx with big-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTCExplicitCtx with big-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTCExplicitCtx with big-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTCExplicitCtx with big-regression-quadratic") in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTCExplicitCtx with big-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTCExplicitCtx with big-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTCExplicitCtx with big"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTCExplicitCtx with big"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTCExplicitCtx with big"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTCExplicitCtx with big"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTCExplicitCtx with big"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTCExplicitCtx with big"(*-regression-quadratic*)) in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTCExplicitCtx with big"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTCExplicitCtx with big"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for LtacTCExplicitCtx with big-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for LtacTCExplicitCtx with big-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for LtacTCExplicitCtx with big-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for LtacTCExplicitCtx with big-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for LtacTCExplicitCtx with big"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for LtacTCExplicitCtx with big"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for LtacTCExplicitCtx with big"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for LtacTCExplicitCtx with big"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | {| is_flat := false ; ltac_kind := LtacTacInTermPrimPair |}
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTacInTermPrimPair with big-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTacInTermPrimPair with big-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTacInTermPrimPair with big-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTacInTermPrimPair with big-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTacInTermPrimPair with big-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTacInTermPrimPair with big-regression-quadratic") in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTacInTermPrimPair with big-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTacInTermPrimPair with big-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTacInTermPrimPair with big"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTacInTermPrimPair with big"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTacInTermPrimPair with big"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTacInTermPrimPair with big"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTacInTermPrimPair with big"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTacInTermPrimPair with big"(*-regression-quadratic*)) in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTacInTermPrimPair with big"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTacInTermPrimPair with big"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for LtacTacInTermPrimPair with big-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for LtacTacInTermPrimPair with big-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for LtacTacInTermPrimPair with big-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for LtacTacInTermPrimPair with big-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for LtacTacInTermPrimPair with big"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for LtacTacInTermPrimPair with big"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for LtacTacInTermPrimPair with big"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for LtacTacInTermPrimPair with big"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | {| is_flat := false ; ltac_kind := LtacTacInTermGallinaCtx |}
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTacInTermGallinaCtx with big-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTacInTermGallinaCtx with big-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTacInTermGallinaCtx with big-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTacInTermGallinaCtx with big-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTacInTermGallinaCtx with big-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTacInTermGallinaCtx with big-regression-quadratic") in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTacInTermGallinaCtx with big-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTacInTermGallinaCtx with big-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTacInTermGallinaCtx with big"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTacInTermGallinaCtx with big"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTacInTermGallinaCtx with big"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTacInTermGallinaCtx with big"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTacInTermGallinaCtx with big"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTacInTermGallinaCtx with big"(*-regression-quadratic*)) in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTacInTermGallinaCtx with big"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTacInTermGallinaCtx with big"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for LtacTacInTermGallinaCtx with big-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for LtacTacInTermGallinaCtx with big-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for LtacTacInTermGallinaCtx with big-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for LtacTacInTermGallinaCtx with big-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for LtacTacInTermGallinaCtx with big"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for LtacTacInTermGallinaCtx with big"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for LtacTacInTermGallinaCtx with big"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for LtacTacInTermGallinaCtx with big"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | {| is_flat := false ; ltac_kind := LtacTacInTermExplicitCtx |}
-    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTacInTermExplicitCtx with big-regression-quadratic") in
-       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTacInTermExplicitCtx with big-regression-quadratic") in
-       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTacInTermExplicitCtx with big-regression-quadratic") in
-       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTacInTermExplicitCtx with big-regression-quadratic") in
-       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTacInTermExplicitCtx with big-regression-quadratic") in
-       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTacInTermExplicitCtx with big-regression-quadratic") in
-       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTacInTermExplicitCtx with big-regression-quadratic" tac in
-       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTacInTermExplicitCtx with big-regression-quadratic" tac in
+    => let restart_timer_norm_reif   := ltac:(restart_timer                   "norm reif for LtacTacInTermExplicitCtx with big"(*-regression-quadratic*)) in
+       let finish_timing_norm_reif   := ltac:(finish_timing ("Tactic call")   "norm reif for LtacTacInTermExplicitCtx with big"(*-regression-quadratic*)) in
+       let restart_timer_actual_reif := ltac:(restart_timer                 "actual reif for LtacTacInTermExplicitCtx with big"(*-regression-quadratic*)) in
+       let finish_timing_actual_reif := ltac:(finish_timing ("Tactic call") "actual reif for LtacTacInTermExplicitCtx with big"(*-regression-quadratic*)) in
+       let restart_timer_eval_lazy   := ltac:(restart_timer                   "eval lazy for LtacTacInTermExplicitCtx with big"(*-regression-quadratic*)) in
+       let finish_timing_eval_lazy   := ltac:(finish_timing ("Tactic call")   "eval lazy for LtacTacInTermExplicitCtx with big"(*-regression-quadratic*)) in
+       let time_lazy_beta_iota tac   := time                             "lazy beta iota for LtacTacInTermExplicitCtx with big"(*-regression-quadratic*) tac in
+       let time_transitivity_Denote_rv tac := time             "transitivity (Denote rv) for LtacTacInTermExplicitCtx with big"(*-regression-quadratic*) tac in
        let do_reify := do_reify restart_timer_norm_reif finish_timing_norm_reif restart_timer_actual_reif finish_timing_actual_reif restart_timer_eval_lazy finish_timing_eval_lazy time_lazy_beta_iota time_transitivity_Denote_rv in
-       let do_cbv     x := time  "cbv for LtacTacInTermExplicitCtx with big-regression-quadratic" do_cbv     x in
-       let pre_reify  x := time  "pre for LtacTacInTermExplicitCtx with big-regression-quadratic" pre_reify  x in
-       let do_reify   x := time "reif for LtacTacInTermExplicitCtx with big-regression-quadratic" do_reify   x in
-       let post_reify x := time "post for LtacTacInTermExplicitCtx with big-regression-quadratic" post_reify x in
+       let do_cbv     x := time  "cbv for LtacTacInTermExplicitCtx with big"(*-regression-quadratic*) do_cbv     x in
+       let pre_reify  x := time  "pre for LtacTacInTermExplicitCtx with big"(*-regression-quadratic*) pre_reify  x in
+       let do_reify   x := time "reif for LtacTacInTermExplicitCtx with big"(*-regression-quadratic*) do_reify   x in
+       let post_reify x := time "post for LtacTacInTermExplicitCtx with big"(*-regression-quadratic*) post_reify x in
        BenchmarkExtraUtil.time_solve_goal do_cbv pre_reify do_reify post_reify
   | ?kind => fail 0 "Unrecognized kind:" kind
   end.

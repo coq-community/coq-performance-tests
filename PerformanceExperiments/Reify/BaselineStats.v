@@ -68,64 +68,64 @@ Ltac time_solve_goal kind :=
   => let ref_PHOAS := ref_PHOAS n in
      lazymatch kind with
      | {| is_flat := true ; tactic := refine_let |}
-       => time "refine let on PHOAS with big_flat-regression-quadratic"
+       => time "refine let on PHOAS with big_flat"(*-regression-quadratic*)
                (idtac; let p := fresh in refine (let p := ref_PHOAS in _))
      | {| is_flat := true ; tactic := transitivity |}
-       => time "transitivity on PHOAS with big_flat-regression-quadratic"
+       => time "transitivity on PHOAS with big_flat"(*-regression-quadratic*)
                (idtac;
                 let p := fresh in
                 assert (p : O = O);
                 [ transitivity (Denote ref_PHOAS) | ])
      | {| is_flat := true ; tactic := rkind (identity (partial cbv)) |}
-       => time "identity cbv on PHOAS with big_flat-regression-quadratic" (idtac; let __ := (eval cbv in ref_PHOAS) in idtac)
+       => time "identity cbv on PHOAS with big_flat"(*-regression-quadratic*) (idtac; let __ := (eval cbv in ref_PHOAS) in idtac)
      | {| is_flat := true ; tactic := rkind (identity (partial lazy)) |}
-       => time "identity lazy on PHOAS with big_flat-regression-quadratic" (idtac; let __ := (eval lazy in ref_PHOAS) in idtac)
+       => time "identity lazy on PHOAS with big_flat"(*-regression-quadratic*) (idtac; let __ := (eval lazy in ref_PHOAS) in idtac)
      | {| is_flat := true ; tactic := rkind (identity (partial simpl)) |}
-       => time "identity simpl on PHOAS with big_flat-regression-quadratic" (idtac; let __ := (eval simpl in ref_PHOAS) in idtac)
+       => time "identity simpl on PHOAS with big_flat"(*-regression-quadratic*) (idtac; let __ := (eval simpl in ref_PHOAS) in idtac)
      | {| is_flat := true ; tactic := rkind (identity (partial cbn)) |}
-       => time "identity cbn on PHOAS with big_flat-regression-quadratic" (idtac; let __ := (eval cbn in ref_PHOAS) in idtac)
+       => time "identity cbn on PHOAS with big_flat"(*-regression-quadratic*) (idtac; let __ := (eval cbn in ref_PHOAS) in idtac)
      | {| is_flat := true ; tactic := rkind (identity (full vm_compute)) |}
-       => time "identity vm_compute on PHOAS with big_flat-regression-quadratic" (idtac; let __ := (eval vm_compute in ref_PHOAS) in idtac)
+       => time "identity vm_compute on PHOAS with big_flat"(*-regression-quadratic*) (idtac; let __ := (eval vm_compute in ref_PHOAS) in idtac)
      | {| is_flat := true ; tactic := rkind (identity (full native_compute)) |}
-       => time "identity native_compute on PHOAS with big_flat-regression-quadratic" (idtac; let __ := (eval native_compute in ref_PHOAS) in idtac)
+       => time "identity native_compute on PHOAS with big_flat"(*-regression-quadratic*) (idtac; let __ := (eval native_compute in ref_PHOAS) in idtac)
      | {| is_flat := true ; tactic := rkind (red_Denote cbv) |}
-       => time "cbv Denote on PHOAS with big_flat-regression-quadratic" (idtac; let __ := (eval cbv [PHOAS.Denote PHOAS.denote] in (PHOAS.Denote ref_PHOAS)) in idtac)
+       => time "cbv Denote on PHOAS with big_flat"(*-regression-quadratic*) (idtac; let __ := (eval cbv [PHOAS.Denote PHOAS.denote] in (PHOAS.Denote ref_PHOAS)) in idtac)
      | {| is_flat := true ; tactic := rkind (red_Denote lazy) |}
-       => time "lazy Denote on PHOAS with big_flat-regression-quadratic" (idtac; let __ := (eval lazy [PHOAS.Denote PHOAS.denote] in (PHOAS.Denote ref_PHOAS)) in idtac)
+       => time "lazy Denote on PHOAS with big_flat"(*-regression-quadratic*) (idtac; let __ := (eval lazy [PHOAS.Denote PHOAS.denote] in (PHOAS.Denote ref_PHOAS)) in idtac)
      | {| is_flat := true ; tactic := rkind (red_Denote cbn) |}
-       => time "cbn Denote on PHOAS with big_flat-regression-quadratic" (idtac; let __ := (eval cbn [PHOAS.Denote PHOAS.denote] in (PHOAS.Denote ref_PHOAS)) in idtac)
+       => time "cbn Denote on PHOAS with big_flat"(*-regression-quadratic*) (idtac; let __ := (eval cbn [PHOAS.Denote PHOAS.denote] in (PHOAS.Denote ref_PHOAS)) in idtac)
      | {| is_flat := true ; tactic := rkind (red_Denote simpl) |}
-       => time "simpl Denote on PHOAS with big_flat-regression-quadratic" (idtac; let __ := (eval simpl in (PHOAS.Denote ref_PHOAS)) in idtac)
+       => time "simpl Denote on PHOAS with big_flat"(*-regression-quadratic*) (idtac; let __ := (eval simpl in (PHOAS.Denote ref_PHOAS)) in idtac)
 
      | {| is_flat := false ; tactic := refine_let |}
-       => time "refine let on PHOAS with big-regression-quadratic"
+       => time "refine let on PHOAS with big"(*-regression-quadratic*)
                (idtac; let p := fresh in refine (let p := ref_PHOAS in _))
      | {| is_flat := false ; tactic := transitivity |}
-       => time "transitivity on PHOAS with big-regression-quadratic"
+       => time "transitivity on PHOAS with big"(*-regression-quadratic*)
                (idtac;
                 let p := fresh in
                 assert (p : O = O);
                 [ transitivity (Denote ref_PHOAS) | ])
      | {| is_flat := false ; tactic := rkind (identity (partial cbv)) |}
-       => time "identity cbv on PHOAS with big-regression-quadratic" (idtac; let __ := (eval cbv in ref_PHOAS) in idtac)
+       => time "identity cbv on PHOAS with big"(*-regression-quadratic*) (idtac; let __ := (eval cbv in ref_PHOAS) in idtac)
      | {| is_flat := false ; tactic := rkind (identity (partial lazy)) |}
-       => time "identity lazy on PHOAS with big-regression-quadratic" (idtac; let __ := (eval lazy in ref_PHOAS) in idtac)
+       => time "identity lazy on PHOAS with big"(*-regression-quadratic*) (idtac; let __ := (eval lazy in ref_PHOAS) in idtac)
      | {| is_flat := false ; tactic := rkind (identity (partial simpl)) |}
-       => time "identity simpl on PHOAS with big-regression-quadratic" (idtac; let __ := (eval simpl in ref_PHOAS) in idtac)
+       => time "identity simpl on PHOAS with big"(*-regression-quadratic*) (idtac; let __ := (eval simpl in ref_PHOAS) in idtac)
      | {| is_flat := false ; tactic := rkind (identity (partial cbn)) |}
-       => time "identity cbn on PHOAS with big-regression-quadratic" (idtac; let __ := (eval cbn in ref_PHOAS) in idtac)
+       => time "identity cbn on PHOAS with big"(*-regression-quadratic*) (idtac; let __ := (eval cbn in ref_PHOAS) in idtac)
      | {| is_flat := false ; tactic := rkind (identity (full vm_compute)) |}
-       => time "identity vm_compute on PHOAS with big-regression-quadratic" (idtac; let __ := (eval vm_compute in ref_PHOAS) in idtac)
+       => time "identity vm_compute on PHOAS with big"(*-regression-quadratic*) (idtac; let __ := (eval vm_compute in ref_PHOAS) in idtac)
      | {| is_flat := false ; tactic := rkind (identity (full native_compute)) |}
-       => time "identity native_compute on PHOAS with big-regression-quadratic" (idtac; let __ := (eval native_compute in ref_PHOAS) in idtac)
+       => time "identity native_compute on PHOAS with big"(*-regression-quadratic*) (idtac; let __ := (eval native_compute in ref_PHOAS) in idtac)
      | {| is_flat := false ; tactic := rkind (red_Denote cbv) |}
-       => time "cbv Denote on PHOAS with big-regression-quadratic" (idtac; let __ := (eval cbv [PHOAS.Denote PHOAS.denote] in (PHOAS.Denote ref_PHOAS)) in idtac)
+       => time "cbv Denote on PHOAS with big"(*-regression-quadratic*) (idtac; let __ := (eval cbv [PHOAS.Denote PHOAS.denote] in (PHOAS.Denote ref_PHOAS)) in idtac)
      | {| is_flat := false ; tactic := rkind (red_Denote lazy) |}
-       => time "lazy Denote on PHOAS with big-regression-quadratic" (idtac; let __ := (eval lazy [PHOAS.Denote PHOAS.denote] in (PHOAS.Denote ref_PHOAS)) in idtac)
+       => time "lazy Denote on PHOAS with big"(*-regression-quadratic*) (idtac; let __ := (eval lazy [PHOAS.Denote PHOAS.denote] in (PHOAS.Denote ref_PHOAS)) in idtac)
      | {| is_flat := false ; tactic := rkind (red_Denote cbn) |}
-       => time "cbn Denote on PHOAS with big-regression-quadratic" (idtac; let __ := (eval cbn [PHOAS.Denote PHOAS.denote] in (PHOAS.Denote ref_PHOAS)) in idtac)
+       => time "cbn Denote on PHOAS with big"(*-regression-quadratic*) (idtac; let __ := (eval cbn [PHOAS.Denote PHOAS.denote] in (PHOAS.Denote ref_PHOAS)) in idtac)
      | {| is_flat := false ; tactic := rkind (red_Denote simpl) |}
-       => time "simpl Denote on PHOAS with big-regression-quadratic" (idtac; let __ := (eval simpl in (PHOAS.Denote ref_PHOAS)) in idtac)
+       => time "simpl Denote on PHOAS with big"(*-regression-quadratic*) (idtac; let __ := (eval simpl in (PHOAS.Denote ref_PHOAS)) in idtac)
      | ?kind => fail 0 "Unrecognized kind:" kind
      end.
 
