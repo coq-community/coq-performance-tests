@@ -72,4 +72,4 @@ $(PERF_KINDS): | PerformanceExperiments
 
 .PHONY: update-README
 update-README::
-	etc/update-readme.sh $(KINDS)
+	etc/update-readme.sh $(sort $(KINDS) $(DISABLED_KINDS))
