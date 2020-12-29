@@ -70,6 +70,7 @@ KINDS += $(LTAC2_KINDS)
 else
 DISABLED_FILES += $(addsuffix .v,$(LTAC2_KINDS)) \
 	rewrite_repeated_app_common_ltac2.v \
+	Ltac2/Util/% \
 	# end of list
 endif
 
