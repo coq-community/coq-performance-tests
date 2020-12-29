@@ -26,6 +26,7 @@ KINDS := \
 
 LTAC2_KINDS := \
 	rewrite_repeated_app_fast_rewrite_ltac2 \
+	Reify/Ltac2 \
 	# end of list
 
 VERSION_8_9_OR_NEWER_KINDS := \
@@ -77,6 +78,7 @@ KINDS += $(LTAC2_KINDS)
 else
 DISABLED_FILES += $(addsuffix .v,$(LTAC2_KINDS)) \
 	rewrite_repeated_app_common_ltac2.v \
+	Reify/Ltac2Reify.v \
 	Ltac2/Util/% \
 	# end of list
 DISABLED_KINDS += $(LTAC2_KINDS)
