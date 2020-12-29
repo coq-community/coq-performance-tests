@@ -16,7 +16,6 @@ let tclCATCH_SUCCESS t =
 
 DECLARE PLUGIN "sandbox"
 
-open Stdarg
 open Tacarg
 
 TACTIC EXTEND raise_success
