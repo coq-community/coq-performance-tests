@@ -44,6 +44,7 @@ VERSION_8_10_OR_NEWER_KINDS := \
 	# end of list
 
 QUOTE_KINDS := \
+	Reify/QuoteFlat \
 	# end of list
 
 DISABLED_FILES?=
