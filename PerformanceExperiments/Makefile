@@ -31,9 +31,11 @@ else
 $(warning Not a git clone, using find instead)
 FILE_FINDER := find -name
 endif
+# `find -name` gives files starting with `./`, we need to remove it for `filter-out`
+norm_file_names = $(patsubst ./%,%,$(1))
 SORT_COQPROJECT = sed 's,^\./,,g; s,[^/]*/,~&,g' | env LC_COLLATE=C sort | sed 's,~,,g' | uniq
 OLD_COQPROJECT_CONTENTS:=$(shell cat _CoqProject 2>/dev/null)
-COQPROJECT_CONTENTS_CMD:=(echo '-R . $(PERF_LIB)'; echo '-I .'; echo '-I Reify'; echo '-arg -w -arg $(WARNINGS)'; ((echo '$(COMPATIBILITY_FILES) $(filter-out $(DISABLED_FILES),$(foreach ext,v ml4 mlg mlpack mllib,$(shell $(FILE_FINDER) "*.$(ext)")))' | tr ' ' '\n') | $(SORT_COQPROJECT)))
+COQPROJECT_CONTENTS_CMD:=(echo '-R . $(PERF_LIB)'; echo '-I .'; echo '-I Reify'; echo '-arg -w -arg $(WARNINGS)'; ((echo '$(COMPATIBILITY_FILES) $(filter-out $(call norm_file_names,$(DISABLED_FILES)),$(call norm_file_names,$(foreach ext,v ml4 mlg mlpack mllib,$(shell $(FILE_FINDER) "*.$(ext)"))))' | tr ' ' '\n') | $(SORT_COQPROJECT)))
 COQPROJECT_CONTENTS:=$(shell $(COQPROJECT_CONTENTS_CMD))
 ifneq ($(OLD_COQPROJECT_CONTENTS),$(COQPROJECT_CONTENTS))
 _CoqProject::
