@@ -134,9 +134,17 @@ Lemma dlet_pair A B T x y f : Let_In (@pair A B x y) f = (dlet x' := x in dlet y
 Proof. reflexivity. Qed.
 Hint Rewrite dlet_pair : mydb letdb.
 Lemma lift_dlet A B C x (f : A -> B) (g : B -> C) : g (Let_In x f) = Let_In x (fun x' => g (f x')). Proof. reflexivity. Qed.
-Hint Rewrite lift_dlet : mydb letdb.
+Definition lift_dlet_list A B C := @lift_dlet A B (list C).
+Definition lift_dlet_prod A B C1 C2 := @lift_dlet A B (C1 * C2).
+Definition lift_dlet_nat A B := @lift_dlet A B nat.
+Definition lift_dlet_Z A B := @lift_dlet A B Z.
+Hint Rewrite lift_dlet_list lift_dlet_prod lift_dlet_nat lift_dlet_Z : mydb letdb.
 Lemma lift_dlet1 A B C D x y (f : A -> B) (g : B -> C -> D) : g (Let_In x f) y = Let_In x (fun x' => g (f x') y). Proof. reflexivity. Qed.
-Hint Rewrite lift_dlet1 : mydb letdb.
+Definition lift_dlet1_list A B C D := @lift_dlet1 A B C (list D).
+Definition lift_dlet1_prod A B C D1 D2 := @lift_dlet1 A B C (D1 * D2).
+Definition lift_dlet1_nat A B C := @lift_dlet1 A B C nat.
+Definition lift_dlet1_Z A B C := @lift_dlet1 A B C Z.
+Hint Rewrite lift_dlet1_list lift_dlet1_prod lift_dlet1_nat lift_dlet1_Z : mydb letdb.
 Lemma inline_dlet_S B x (f : nat -> B) : Let_In (S x) f = f (S x). Proof. reflexivity. Qed.
 Hint Rewrite inline_dlet_S : mydb letdb.
 Lemma inline_dlet_O B (f : nat -> B) : Let_In O f = f O. Proof. reflexivity. Qed.
@@ -394,7 +402,7 @@ Global Instance partition_Proper_eq {A} : Proper ((eq ==> eq) ==> eq ==> eq) (@L
 Proof. repeat intro; subst; apply partition_Proper; repeat intro; eauto. Qed.
 Global Instance fold_right_Proper_eq {A B} : Proper ((eq ==> eq ==> eq) ==> eq ==> eq ==> eq) (@fold_right A B) | 1.
 Proof. cbv [respectful]; repeat intro; subst; apply fold_right_Proper; repeat intro; eauto. Qed.
-
+Global Instance: forall {A}, Proper (eq ==> eq ==> Basics.flip Basics.impl) (@eq A) := _.
 Global Instance: forall {A}, Proper (eq ==> pointwise_relation _ (Basics.flip eq) ==> eq ==> eq) (@update_nth A).
 Proof. Admitted.
 Global Instance: forall {A}, Proper (eq ==> pointwise_relation _ eq ==> eq ==> eq) (@update_nth A).
@@ -425,6 +433,116 @@ Qed.
 Global Instance: Proper (eq ==> eq ==> eq) Z.mul := _.
 Global Instance: forall {A}, Proper (eq ==> eq ==> eq) (@cons A) := _.
 Global Instance: forall {A}, Proper (eq ==> eq ==> eq) (@app A) := _.
+Global Instance: forall {A B f}, Proper (@eq A ==> @eq B) f := _.
+Global Instance: forall {A B C f}, Proper (@eq A ==> @eq B ==> @eq C) f := _.
+Global Instance: forall {A B}, Proper (eq ==> pointwise_relation A (@eq B) ==> eq) Let_In := _.
+Global Instance: forall {A B}, Proper (eq ==> forall_relation (fun _ : A => @eq B) ==> eq) Let_In := _.
+Global Instance: forall {A a}, ProperProxy (@eq A) a := _.
+Global Instance: forall {A B f}, ProperProxy (pointwise_relation A (@eq B)) f := _.
+Global Instance: forall {A B f}, ProperProxy (forall_relation (fun _ : A => @eq B)) f.
+Proof. cbv; reflexivity. Qed.
+
+Module ViaSetoidRewrite.
+  Ltac go_step :=
+    time (match goal with |- ?G => idtac "Goal:" G end;
+          first [ time setoid_rewrite lift_dlet
+                | time setoid_rewrite lift_dlet1
+                | match goal with
+                  | [ |- context[Let_In _ _ ++ _] ] => setoid_rewrite app_dlet
+                  | [ |- context[dlet x := (_, _) in _] ] => setoid_rewrite dlet_pair
+                  | [ |- context[Let_In O] ] => setoid_rewrite inline_dlet_O
+                  | [ |- context[Let_In (S ?x)] ] => setoid_rewrite inline_dlet_S
+                  end
+                | time progress mycbv
+                | time progress rewrite ?Z_of_nat_O, ?Z_of_nat_S, ?Z_mul_pos_pos, ?Z.mul_0_l, ?Z.mul_0_r, ?Z.opp_0, ?Z_div_0_l_pos, ?Z_opp_pos, ?Z_opp_neg, ?unfold_Z_div_pos_pos, ?unfold_Z_div_pos_neg, ?unfold_Z_div_neg_pos,?unfold_Z_div_neg_neg, ?Z.pow_0_r, ?Z_pow_pos_pos, ?Z_modulo_pos_pos, ?Z_eqb_pos_pos, ?Z.eqb_refl, ?Nat.eqb_refl, ?Z_eqb_neg_neg, ?Z_eqb_pos_0, ?Z_eqb_0_pos, ?Z_eqb_pos_neg, ?Z_eqb_neg_pos, ?Z_eqb_neg_0, ?Z_eqb_0_neg, ?length_nil, <- ?pred_Sn, ?nat_eqb_S_O, ?nat_eqb_O_S
+                | progress cbn [nat_rect]
+                | match goal with
+                  | [ |- context[prod_rect _ (_, _)] ] => setoid_rewrite prod_rect_pair
+                  | [ |- context[List.length (_ :: _)] ] => setoid_rewrite @length_cons
+                  | [ |- context[fst (_, _)] ] => setoid_rewrite @fst_pair
+                  | [ |- context[snd (_, _)] ] => setoid_rewrite @snd_pair
+                  | [ |- context[(_ :: _) ++ _] ] => setoid_rewrite app_cons
+                  | [ |- context[nil ++ _] ] => setoid_rewrite app_nil
+                  | [ |- context[rev (_ :: _)] ] => setoid_rewrite rev_cons
+                  | [ |- context[rev nil] ] => setoid_rewrite rev_nil
+                  | [ |- context[prod_rect _ _ (_, _)] ] => setoid_rewrite prod_rect_pair
+                  | [ |- context[partition _ nil] ] => setoid_rewrite partition_nil
+                  | [ |- context[fold_right _ _ nil] ] => setoid_rewrite @fold_right_nil
+                  | [ |- context[update_nth _ _ nil] ] => setoid_rewrite @update_nth_nil
+                  | [ |- context[update_nth O _ (_ :: _)] ] => setoid_rewrite @update_nth_cons
+                  | [ |- context[update_nth (S _) _ (_ :: _)] ] => setoid_rewrite @update_nth_S_cons
+                  | [ |- context[List.map _ nil] ] => setoid_rewrite map_nil
+                  | [ |- context[List.combine _ nil] ] => setoid_rewrite @combine_nil_r
+                  | [ |- context[flat_map _ nil] ] => setoid_rewrite @flat_map_nil
+                  | [ |- context[partition _ (_ :: _)] ] => setoid_rewrite partition_cons
+                  | [ |- context[fold_right _ _ (_ :: _)] ] => setoid_rewrite @fold_right_cons
+                  | [ |- context[List.map _ (_ :: _)] ] => setoid_rewrite map_cons
+                  | [ |- context[List.combine (_ :: _) (_ :: _)] ] => setoid_rewrite @combine_cons
+                  | [ |- context[flat_map _ (_ :: _)] ] => setoid_rewrite @flat_map_cons
+                  | [ |- context[Associational.split _ (_ :: _)] ] => setoid_rewrite split_cons
+                  | [ |- context[Associational.reduce _ _ _] ] => setoid_rewrite unfold_reduce
+                  | [ |- context[Associational.mul (_ :: _) (_ :: _)] ] => setoid_rewrite mul_cons_cons
+                  | [ |- context[Associational.mul nil (_ :: _)] ] => setoid_rewrite mul_nil_cons
+                  | [ |- context[Associational.mul (_ :: _) nil] ] => setoid_rewrite mul_cons_nil
+                  | [ |- context[Associational.mul nil nil] ] => setoid_rewrite mul_nil_nil
+                  | [ |- context[nat_rect _ _ _ O _] ] => idtac "0arr"; setoid_rewrite nat_rect_O_arr
+                  | [ |- context[nat_rect _ _ _ (S _) _] ] => idtac "Sarr"; setoid_rewrite nat_rect_S_arr
+                  | [ |- context[nat_rect _ _ _ (S _)] ] => idtac "S"; setoid_rewrite nat_rect_S
+                  | [ |- context[nat_rect _ _ _ O] ] => idtac "0"; setoid_rewrite nat_rect_O
+                  end
+                | progress cbv [Associational.repeat_reduce]
+                | progress cbv [Positional.from_associational]
+                | progress cbv [Positional.zeros repeat]
+                | progress cbv [Positional.place]
+                | progress cbv [Positional.chained_carries]
+                | progress cbv [Positional.add_to_nth]
+                | progress cbv [Positional.carry_reduce Positional.carry Positional.to_associational seq Associational.carry Associational.carryterm] ]).
+  Ltac go_count_max n max :=
+    lazymatch max with
+    | O => idtac "Not Finished:" n
+    | _
+      => let max := lazymatch max with
+                    | S ?max => max
+                    | _ => max
+                    end in
+         idtac "Cur:" n; tryif go_step then go_count_max (S n) max else idtac "Finished:" n
+    end.
+  Ltac go_count n := intros; go_count_max n tt.
+  Ltac go := go_count O (*repeat go_step*).
+End ViaSetoidRewrite.
+
+Module ViaRewriteStrat.
+  Ltac go :=
+    intros;
+    time (rewrite_strat (((topdown (hints mydb; eval mycbv));
+                          eval cbv [Associational.repeat_reduce nat_rect Associational.split Associational.mul];
+                          ((topdown (hints mydb; eval mycbv)));
+                          eval cbv [Positional.from_associational Init.Nat.pred Positional.zeros repeat Positional.place nat_rect Positional.add_to_nth])));
+    (* COQBUG(https://github.com/coq/coq/issues/10934) *)
+    time (rewrite_strat ((try repeat (topdown (hints mydb; eval mycbv)))));
+    time (rewrite_strat ((try repeat (topdown (hints mydb; eval mycbv)))));
+    time (rewrite_strat eval cbv [Positional.chained_carries Positional.carry_reduce]);
+    time (rewrite_strat ((try repeat (topdown (hints mydb; eval mycbv)))));
+    time (rewrite_strat eval cbv [Positional.carry Positional.to_associational Associational.carry seq Associational.carryterm Positional.from_associational]);
+    time (rewrite_strat ((try repeat (topdown (hints mydb; eval mycbv)))));(*.
+        Time*)
+    time (rewrite_strat ((try repeat (topdown (hints mydb; eval mycbv)))));(*.
+        Time*)
+    time (rewrite_strat eval cbv [Init.Nat.pred Positional.zeros repeat Positional.place nat_rect]);
+    time (rewrite_strat ((try repeat (topdown (hints mydb; eval mycbv)))));(*.
+        Time*)
+    time (rewrite_strat ((try repeat (topdown (hints mydb; eval mycbv)))));
+    time (rewrite_strat eval cbv [Positional.add_to_nth Associational.reduce]);(*.
+        Set Printing Depth 1000000.
+        Typeclasses eauto := debug.
+        Time*)
+    time (rewrite_strat ((try repeat (topdown (hints mydb; eval mycbv)))));(*.
+        Time*)
+    time (rewrite_strat ((try repeat (topdown (hints mydb; eval mycbv))))).
+End ViaRewriteStrat.
+
+Ltac print_goal _ :=
+  match goal with |- ?G => idtac "Goal:" G end.
 
 Class params :=
   { n : nat;
@@ -435,114 +553,170 @@ Class params :=
     machine_wordsize : Z }.
 (*
 Require Import Crypto.Rewriter.PerfTesting.Core.
-Import UnsaturatedSolinas.
-Definition p' := Eval vm_compute in of_string "2^61 - 1" 64.
+Import UnsaturatedSolinas Coq.Lists.List.ListNotations.
+Set Printing Width 1000000.
+Definition p' := Eval native_compute in of_string "2^61 - 1" 64.
 Definition p : params
-  := Eval vm_compute in invert_Some (List.nth_error p' 0).
+  := Eval vm_compute in Option.invert_Some (List.nth_error p' 0).
 Print p.
  *)
-Notation size_of_problem := 1%nat (only parsing).
-Definition p : params
-  := match size_of_problem as n return match n with 4%nat => _ | _ => _ end with
+
+Definition default_params_of_size (n : nat) : params
+  := (* no recorded example, so fake one *)
+    {| n := n; s := 2^(64 * Z.of_nat n + 1); c := [(1, 1)] ; idxs := seq 0 n ++ [0; 1]%nat; machine_wordsize := 64 |}.
+
+Definition maybe_params_of_size (n : nat) : option params
+  := match n with
      | 1%nat => (* 2^61-1, 1 limb *)
-       {| n := 1; s := 2305843009213693952; c := [(1, 1)]; idxs := [0%nat; 0%nat; 1%nat]; machine_wordsize := 64 |}
+       Some {| n := 1; s := 2305843009213693952; c := [(1, 1)]; idxs := [0%nat; 0%nat; 1%nat]; machine_wordsize := 64 |}
      | 2%nat => (* 2^107-1, 2 limbs *)
-       {| n := 2; s := 162259276829213363391578010288128; c := [(1, 1)]; idxs := [0%nat; 1%nat; 0%nat; 1%nat]; machine_wordsize := 64 |}
+       Some {| n := 2; s := 162259276829213363391578010288128; c := [(1, 1)]; idxs := [0%nat; 1%nat; 0%nat; 1%nat]; machine_wordsize := 64 |}
      | 3%nat => (* 2^127-1, 3 limbs *)
-       {| n := 3; s := 170141183460469231731687303715884105728; c := [(1, 1)]; idxs := [0%nat; 1%nat; 2%nat; 0%nat; 1%nat]; machine_wordsize := 64 |}
+       Some {| n := 3; s := 170141183460469231731687303715884105728; c := [(1, 1)]; idxs := [0%nat; 1%nat; 2%nat; 0%nat; 1%nat]; machine_wordsize := 64 |}
      | 4%nat => (* 2^190-11, 4 limbs *)
-       {| n := 4; s := 1569275433846670190958947355801916604025588861116008628224; c := [(1, 11)]; idxs := [0%nat; 1%nat; 2%nat; 3%nat; 0%nat; 1%nat]; machine_wordsize := 64 |}
-     | _ => (* no recorded example *) tt
+       Some {| n := 4; s := 1569275433846670190958947355801916604025588861116008628224; c := [(1, 11)]; idxs := [0%nat; 1%nat; 2%nat; 3%nat; 0%nat; 1%nat]; machine_wordsize := 64 |}
+     | 5%nat => (* 2^255-19, 5 limbs *)
+       Some {| n := 5; s := 57896044618658097711785492504343953926634992332820282019728792003956564819968; c := [(1, 19)]; idxs := [0%nat; 1%nat; 2%nat; 3%nat; 4%nat; 0%nat; 1%nat]; machine_wordsize := 64 |}
+     | 6%nat => (* 2^321-9, 6 limbs *)
+       Some {| n := 6; s := 4271974071841820164790043412339104229205409044713305539894083215644439451561281100045924173873152; c := [(1, 9)]; idxs := [0%nat; 1%nat; 2%nat; 3%nat; 4%nat; 5%nat; 0%nat; 1%nat]; machine_wordsize := 64 |}
+     | 7%nat => (* 2^389-21, 7 limbs *)
+       Some {| n := 7; s := 1260864198284623334792929283204595641762551656654894293374345388935863096687910739565256520156317300505812095689818112; c := [(1, 21)]; idxs := [0%nat; 1%nat; 2%nat; 3%nat; 4%nat; 5%nat; 6%nat; 0%nat; 1%nat]; machine_wordsize := 64 |}
+     | 8%nat => (* 2^452-3, 8 limbs *)
+       Some {| n := 8; s := 11629419588729710248789180926208072549658261770997088964503843186890228609814366773219056811420217048972200345700258846936553626057834496; c := [(1, 3)]; idxs := [0%nat; 1%nat; 2%nat; 3%nat; 4%nat; 5%nat; 6%nat; 7%nat; 0%nat; 1%nat]; machine_wordsize := 64 |}
+     | 9%nat => (* 2^521-1, 9 limbs *)
+       Some {| n := 9; s := 6864797660130609714981900799081393217269435300143305409394463459185543183397656052122559640661454554977296311391480858037121987999716643812574028291115057152; c := [(1, 1)]; idxs := [0%nat; 1%nat; 2%nat; 3%nat; 4%nat; 5%nat; 6%nat; 7%nat; 8%nat; 0%nat; 1%nat]; machine_wordsize := 64 |}
+     | 10%nat => (* 2^255-19, 32-bit, 10 limbs *)
+       Some {| n := 10; s := 57896044618658097711785492504343953926634992332820282019728792003956564819968; c := [(1, 19)]; idxs := [0%nat; 1%nat; 2%nat; 3%nat; 4%nat; 5%nat; 6%nat; 7%nat; 8%nat; 9%nat; 0%nat; 1%nat]; machine_wordsize := 32 |}
+     | 11%nat => (* 2^285-9, 32-bit, 11 limbs *)
+       Some {| n := 11; s := 62165404551223330269422781018352605012557018849668464680057997111644937126566671941632; c := [(1, 9)]; idxs := [0%nat; 1%nat; 2%nat; 3%nat; 4%nat; 5%nat; 6%nat; 7%nat; 8%nat; 9%nat; 10%nat; 0%nat; 1%nat]; machine_wordsize := 32 |}
+     | 12%nat => (* 2^291-19, 32-bit, 12 limbs *)
+       Some {| n := 12; s := 3978585891278293137243057985174566720803649206378781739523711815145275976100267004264448; c := [(1, 19)]; idxs := [0%nat; 1%nat; 2%nat; 3%nat; 4%nat; 5%nat; 6%nat; 7%nat; 8%nat; 9%nat; 10%nat; 11%nat; 0%nat; 1%nat]; machine_wordsize := 32 |}
+     | 13%nat => (* 2^321-9, 32-bit, 13 limbs *)
+       Some {| n := 13; s := 4271974071841820164790043412339104229205409044713305539894083215644439451561281100045924173873152; c := [(1, 9)]; idxs := [0%nat; 1%nat; 2%nat; 3%nat; 4%nat; 5%nat; 6%nat; 7%nat; 8%nat; 9%nat; 10%nat; 11%nat; 12%nat; 0%nat; 1%nat]; machine_wordsize := 32 |}
+     | 15%nat => (* 2^369-25, 32-bit, 15 limbs *)
+       Some {| n := 15; s := 1202453802380202612679414065556140558016349465041059773802132977424491020858679523053413887173001575952350707712; c := [(1, 25)]; idxs := [0%nat; 1%nat; 2%nat; 3%nat; 4%nat; 5%nat; 6%nat; 7%nat; 8%nat; 9%nat; 10%nat; 11%nat; 12%nat; 13%nat; 14%nat; 0%nat; 1%nat]; machine_wordsize := 32 |}
+     | nlimbs => None
      end.
-Existing Instance p.
+
+Ltac get_goal_of_size nlimbs :=
+  let nlimbs := (eval cbv in nlimbs) in
+  let p := (eval cbv in (maybe_params_of_size nlimbs)) in
+  let __ := lazymatch p with None => idtac "Warning: faking parameters for size:" nlimbs | _ => idtac end in
+  let p := lazymatch p with
+           | Some ?p => p
+           | None => (eval cbv in (default_params_of_size nlimbs))
+           end in
+  let v := constr:(let p' := p in
+                   (fun f g : list Z => ModOps.carry_mulmod (Qnum limbwidth) (Zpos (Qden limbwidth)) s c n idxs (expand_list 0 f n) (expand_list 0 g n))) in
+  let v := (eval cbv -[ModOps.carry_mulmod expand_list] in v) in
+  let g := constr:(forall f g, v f g = f) in
+  let g := (eval cbv [expand_list ModOps.carry_mulmod expand_list_helper nat_rect ModOps.weight Positional.mulmod Positional.to_associational seq List.map List.combine Associational.mul flat_map] in g) in
+  g.
+Notation goal_of_size nlimbs := (match nlimbs%nat return _ with nlimbs' => ltac:(let g := get_goal_of_size nlimbs' in exact g) end) (only parsing).
+
+Notation size_of_problem := 2%nat (only parsing).
+Notation goal := (goal_of_size size_of_problem) (only parsing).
+
+(* sanity check *)
 Goal True.
-  pose (fun f g : list Z => ModOps.carry_mulmod (Qnum limbwidth) (Zpos (Qden limbwidth)) s c n idxs (expand_list 0 f n) (expand_list 0 g n)) as v.
-  cbv -[ModOps.carry_mulmod expand_list] in v.
-  assert (forall f g, v f g = f); subst v; intros.
-  { cbv [expand_list ModOps.carry_mulmod expand_list_helper nat_rect ModOps.weight Positional.mulmod Positional.to_associational seq List.map List.combine Associational.mul flat_map].
-    Set Ltac Profiling.
-    Ltac go_step :=
-      time (match goal with |- ?G => idtac "Goal:" G end;
-                   first [ time setoid_rewrite lift_dlet
-                         | time setoid_rewrite lift_dlet1
-                         | match goal with
-                           | [ |- context[Let_In _ _ ++ _] ] => setoid_rewrite app_dlet
-                           | [ |- context[dlet x := (_, _) in _] ] => setoid_rewrite dlet_pair
-                           | [ |- context[Let_In O] ] => setoid_rewrite inline_dlet_O
-                           | [ |- context[Let_In (S ?x)] ] => setoid_rewrite inline_dlet_S
-                           end
-                         | time progress mycbv
-                         | time progress rewrite ?Z_of_nat_O, ?Z_of_nat_S, ?Z_mul_pos_pos, ?Z.mul_0_l, ?Z.mul_0_r, ?Z.opp_0, ?Z_div_0_l_pos, ?Z_opp_pos, ?Z_opp_neg, ?unfold_Z_div_pos_pos, ?unfold_Z_div_pos_neg, ?unfold_Z_div_neg_pos,?unfold_Z_div_neg_neg, ?Z.pow_0_r, ?Z_pow_pos_pos, ?Z_modulo_pos_pos, ?Z_eqb_pos_pos, ?Z.eqb_refl, ?Nat.eqb_refl, ?Z_eqb_neg_neg, ?Z_eqb_pos_0, ?Z_eqb_0_pos, ?Z_eqb_pos_neg, ?Z_eqb_neg_pos, ?Z_eqb_neg_0, ?Z_eqb_0_neg, ?length_nil, <- ?pred_Sn, ?nat_eqb_S_O, ?nat_eqb_O_S
-                         | progress cbn [nat_rect]
-                         | match goal with
-                           | [ |- context[prod_rect _ (_, _)] ] => setoid_rewrite prod_rect_pair
-                           | [ |- context[List.length (_ :: _)] ] => setoid_rewrite @length_cons
-                           | [ |- context[fst (_, _)] ] => setoid_rewrite @fst_pair
-                           | [ |- context[snd (_, _)] ] => setoid_rewrite @snd_pair
-                           | [ |- context[(_ :: _) ++ _] ] => setoid_rewrite app_cons
-                           | [ |- context[nil ++ _] ] => setoid_rewrite app_nil
-                           | [ |- context[rev (_ :: _)] ] => setoid_rewrite rev_cons
-                           | [ |- context[rev nil] ] => setoid_rewrite rev_nil
-                           | [ |- context[prod_rect _ _ (_, _)] ] => setoid_rewrite prod_rect_pair
-                           | [ |- context[partition _ nil] ] => setoid_rewrite partition_nil
-                           | [ |- context[fold_right _ _ nil] ] => setoid_rewrite @fold_right_nil
-                           | [ |- context[update_nth _ _ nil] ] => setoid_rewrite @update_nth_nil
-                           | [ |- context[update_nth O _ (_ :: _)] ] => setoid_rewrite @update_nth_cons
-                           | [ |- context[update_nth (S _) _ (_ :: _)] ] => setoid_rewrite @update_nth_S_cons
-                           | [ |- context[List.map _ nil] ] => setoid_rewrite map_nil
-                           | [ |- context[List.combine _ nil] ] => setoid_rewrite @combine_nil_r
-                           | [ |- context[flat_map _ nil] ] => setoid_rewrite @flat_map_nil
-                           | [ |- context[partition _ (_ :: _)] ] => setoid_rewrite partition_cons
-                           | [ |- context[fold_right _ _ (_ :: _)] ] => setoid_rewrite @fold_right_cons
-                           | [ |- context[List.map _ (_ :: _)] ] => setoid_rewrite map_cons
-                           | [ |- context[List.combine (_ :: _) (_ :: _)] ] => setoid_rewrite @combine_cons
-                           | [ |- context[flat_map _ (_ :: _)] ] => setoid_rewrite @flat_map_cons
-                           | [ |- context[Associational.split _ (_ :: _)] ] => setoid_rewrite split_cons
-                           | [ |- context[Associational.reduce _ _ _] ] => setoid_rewrite unfold_reduce
-                           | [ |- context[Associational.mul (_ :: _) (_ :: _)] ] => setoid_rewrite mul_cons_cons
-                           | [ |- context[Associational.mul nil (_ :: _)] ] => setoid_rewrite mul_nil_cons
-                           | [ |- context[Associational.mul (_ :: _) nil] ] => setoid_rewrite mul_cons_nil
-                           | [ |- context[Associational.mul nil nil] ] => setoid_rewrite mul_nil_nil
-                           | [ |- context[nat_rect _ _ _ O _] ] => idtac "0arr"; setoid_rewrite nat_rect_O_arr
-                           | [ |- context[nat_rect _ _ _ (S _) _] ] => idtac "Sarr"; setoid_rewrite nat_rect_S_arr
-                           | [ |- context[nat_rect _ _ _ (S _)] ] => idtac "S"; setoid_rewrite nat_rect_S
-                           | [ |- context[nat_rect _ _ _ O] ] => idtac "0"; setoid_rewrite nat_rect_O
-                           end
-                         | progress cbv [Associational.repeat_reduce]
-                         | progress cbv [Positional.from_associational]
-                         | progress cbv [Positional.zeros repeat]
-                         | progress cbv [Positional.place]
-                         | progress cbv [Positional.chained_carries]
-                         | progress cbv [Positional.add_to_nth]
-                         | progress cbv [Positional.carry_reduce Positional.carry Positional.to_associational seq Associational.carry Associational.carryterm] ]).
-    Ltac go_count_max n max :=
-      lazymatch max with
-      | O => idtac "Not Finished:" n
-      | _
-        => let max := lazymatch max with
-                      | S ?max => max
-                      | _ => max
-                      end in
-           idtac "Cur:" n; tryif go_step then go_count_max (S n) max else idtac "Finished:" n
-      end.
-    Ltac go_count n := go_count_max n tt.
-    Ltac go := go_count O (*repeat go_step*).
-    Set Printing Depth 1000000.
-    Set Typeclasses Debug.
-    Time go.
+  assert (goal_of_size 1).
+  ViaRewriteStrat.go.
+  lazymatch goal with
+  | [ |- ?x = _ ]
+    => lazymatch x with
+       | (dlet x' : Z := 1 * (nth_default 0 ?f 0 * nth_default 0 ?g 0) in
+   dlet x'0 : Z := x' + 0 in
+   dlet x'1 : Z := x'0 / 2305843009213693952 in
+   dlet x'2 : Z := x'0 mod 2305843009213693952 in
+   dlet y' : Z := 1 * x'1 in
+   dlet y'0 : Z := 1 * x'2 in
+   dlet x'3 : Z := 1 * (y'0 + 0) in
+   dlet x'4 : Z := 1 * (1 * (y' + 0)) in
+   dlet x'5 : Z := x'3 + (x'4 + 0) in
+   dlet x'6 : Z := x'5 / 2305843009213693952 in
+   dlet x'7 : Z := x'5 mod 2305843009213693952 in
+   dlet x'8 : Z := 1 * x'6 in
+   dlet x'9 : Z := 1 * x'7 in
+   dlet x'10 : Z := 1 * (x'9 + 0) in
+   dlet x'11 : Z := 1 * (1 * (x'8 + 0)) in
+   dlet x'12 : Z := 1 * (x'10 + (x'11 + 0)) in
+   dlet y'1 : Z := 1 * (x'12 + 0) in
+   dlet x'13 : Z := 0 in
+                         [y'1 + (x'13 + 0)])
+         => idtac
+       | _ => fail 0 "Invalid result:" x
+       end
+  end.
+Abort.
+
+Goal True.
+  time "goal_of_size 1" try assert (goal_of_size 1) by (once (ViaRewriteStrat.go; print_goal ())).
+  (*
+  (* Tactic call goal_of_size 1 ran for 9.712 secs (9.702u,0.009s) (success) *)
+  time "goal_of_size 2" try assert (goal_of_size 2) by (once (ViaRewriteStrat.go; print_goal ())).
+  time "goal_of_size 3" try assert (goal_of_size 3) by (once (ViaRewriteStrat.go; print_goal ())).
+  time "goal_of_size 4" try assert (goal_of_size 4) by (once (ViaRewriteStrat.go; print_goal ())).
+  time "goal_of_size 5" try assert (goal_of_size 5) by (once (ViaRewriteStrat.go; print_goal ())).
+  time "goal_of_size 6" try assert (goal_of_size 5) by (once (ViaRewriteStrat.go; print_goal ())).
+  time "goal_of_size 7" try assert (goal_of_size 5) by (once (ViaRewriteStrat.go; print_goal ())).
+  time "goal_of_size 8" try assert (goal_of_size 5) by (once (ViaRewriteStrat.go; print_goal ())).
+  time "goal_of_size 9" try assert (goal_of_size 9) by (once (ViaRewriteStrat.go; print_goal ())).
+   *)
+Abort.
+
+Set Ltac Profiling.
+Set Printing Depth 1000000.
+Set Typeclasses Debug.
+Set Printing Width 1000000.
+
+(* sanity check *)
+Goal True.
+  assert (goal_of_size 1).
+  ViaSetoidRewrite.go.
+  lazymatch goal with
+  | [ |- ?x = _ ]
+    => lazymatch x with
+       | (dlet x' : Z := 1 * (nth_default 0 ?f 0 * nth_default 0 ?g 0) in
+   dlet x'0 : Z := x' + 0 in
+   dlet x'1 : Z := x'0 / 2305843009213693952 in
+   dlet x'2 : Z := x'0 mod 2305843009213693952 in
+   dlet y' : Z := 1 * x'1 in
+   dlet y'0 : Z := 1 * x'2 in
+   dlet x'3 : Z := 1 * (y'0 + 0) in
+   dlet x'4 : Z := 1 * (1 * (y' + 0)) in
+   dlet x'5 : Z := x'3 + (x'4 + 0) in
+   dlet x'6 : Z := x'5 / 2305843009213693952 in
+   dlet x'7 : Z := x'5 mod 2305843009213693952 in
+   dlet x'8 : Z := 1 * x'6 in
+   dlet x'9 : Z := 1 * x'7 in
+   dlet x'10 : Z := 1 * (x'9 + 0) in
+   dlet x'11 : Z := 1 * (1 * (x'8 + 0)) in
+   dlet x'12 : Z := 1 * (x'10 + (x'11 + 0)) in
+   dlet y'1 : Z := 1 * (x'12 + 0) in
+   dlet x'13 : Z := 0 in
+                         [y'1 + (x'13 + 0)])
+         => idtac
+       | _ => fail 0 "Invalid result:" x
+       end
+  end.
+Abort.
+
+(* via setoid_rewrite *)
+Goal goal.
+  Time ViaSetoidRewrite.go.
+  Time Optimize Proof.
+  Time Optimize Heap.
+  (*
+    Time ViaSetoidRewrite.go_count_max O constr:(1000%nat).
     Time Optimize Proof.
     Time Optimize Heap.
-    (*
-    Time go_count_max O constr:(1000%nat).
+    Time ViaSetoidRewrite.go_count_max constr:(1000%nat) constr:(1000%nat).
     Time Optimize Proof.
     Time Optimize Heap.
-    Time go_count_max constr:(1000%nat) constr:(1000%nat).
+    Time ViaSetoidRewrite.go_count_max constr:(2000%nat) constr:(1000%nat).
     Time Optimize Proof.
     Time Optimize Heap.
-    Time go_count_max constr:(2000%nat) constr:(1000%nat).
-    Time Optimize Proof.
-    Time Optimize Heap.
-    Time go_count constr:(3000%nat).
+    Time ViaSetoidRewrite.go_count constr:(3000%nat).
      *)
     (* size 1: Finished transaction in 100.141 secs (99.967u,0.171s) (successful) *)
     (* Size 2: Finished transaction in 607.765 secs (606.448u,1.267s) (successful), Finished: 1269%nat *)
@@ -621,31 +795,7 @@ Goal: ((dlet y' : Z := 1 * (nth_default 0 f 0 * nth_default 0 g 0) in
     Show.
 Abort.
 (*
-    Time (rewrite_strat (((topdown (hints mydb; eval mycbv));
-                            eval cbv [Associational.repeat_reduce nat_rect Associational.split Associational.mul];
-                            ((topdown (hints mydb; eval mycbv)));
-                            eval cbv [Positional.from_associational Init.Nat.pred Positional.zeros repeat Positional.place nat_rect Positional.add_to_nth])));
-      (* COQBUG(https://github.com/coq/coq/issues/10934) *)
-      (rewrite_strat ((try repeat (topdown (hints mydb; eval mycbv)))));
-      (rewrite_strat ((try repeat (topdown (hints mydb; eval mycbv)))));
-      (rewrite_strat eval cbv [Positional.chained_carries Positional.carry_reduce]);
-      (rewrite_strat ((try repeat (topdown (hints mydb; eval mycbv)))));
-      (rewrite_strat eval cbv [Positional.carry Positional.to_associational Associational.carry seq Associational.carryterm Positional.from_associational]);
-      (rewrite_strat ((try repeat (topdown (hints mydb; eval mycbv)))));(*.
-        Time*)
-      (rewrite_strat ((try repeat (topdown (hints mydb; eval mycbv)))));(*.
-        Time*)
-      (rewrite_strat eval cbv [Init.Nat.pred Positional.zeros repeat Positional.place nat_rect]);
-      (rewrite_strat ((try repeat (topdown (hints mydb; eval mycbv)))));(*.
-        Time*)
-      (rewrite_strat ((try repeat (topdown (hints mydb; eval mycbv)))));
-      (rewrite_strat eval cbv [Positional.add_to_nth Associational.reduce]);(*.
-        Set Printing Depth 1000000.
-        Typeclasses eauto := debug.
-        Time*)
-      (rewrite_strat ((try repeat (topdown (hints mydb; eval mycbv)))));(*.
-        Time*)
-      (rewrite_strat ((try repeat (topdown (hints mydb; eval mycbv))))).
+    Time
     Show.
 Abort.
 *)
