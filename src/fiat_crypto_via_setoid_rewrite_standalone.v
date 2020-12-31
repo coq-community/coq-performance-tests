@@ -956,7 +956,6 @@ Chars 36527 - 36623 [(time~"goal_of_size~4"~~~try~~...] 4363.725 secs (4359.384u
 Chars 36631 - 36641 [Goal~_~True.] 0. secs (0.u,0.s)
 Chars 36642 - 36738 [(time~"goal_of_size~5"~~~try~~...] 31132.252 secs (31123.835u,8.56s)
 *)
-Abort.
 
 Set Ltac Profiling.
 Set Printing Depth 1000000.
