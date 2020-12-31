@@ -614,7 +614,7 @@ Ltac get_goal_of_size nlimbs :=
   g.
 Notation goal_of_size nlimbs := (match nlimbs%nat return _ with nlimbs' => ltac:(let g := get_goal_of_size nlimbs' in exact g) end) (only parsing).
 
-Notation size_of_problem := 2%nat (only parsing).
+Notation size_of_problem := 1%nat (only parsing).
 Notation goal := (goal_of_size size_of_problem) (only parsing).
 
 (* sanity check *)
