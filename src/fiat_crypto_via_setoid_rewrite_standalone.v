@@ -649,19 +649,311 @@ Goal True.
   end.
 Abort.
 
-Goal True.
-  time "goal_of_size 1" try assert (goal_of_size 1) by (once (ViaRewriteStrat.go; print_goal ())).
-  (*
-  (* Tactic call goal_of_size 1 ran for 9.712 secs (9.702u,0.009s) (success) *)
-  time "goal_of_size 2" try assert (goal_of_size 2) by (once (ViaRewriteStrat.go; print_goal ())).
-  time "goal_of_size 3" try assert (goal_of_size 3) by (once (ViaRewriteStrat.go; print_goal ())).
-  time "goal_of_size 4" try assert (goal_of_size 4) by (once (ViaRewriteStrat.go; print_goal ())).
-  time "goal_of_size 5" try assert (goal_of_size 5) by (once (ViaRewriteStrat.go; print_goal ())).
-  time "goal_of_size 6" try assert (goal_of_size 5) by (once (ViaRewriteStrat.go; print_goal ())).
-  time "goal_of_size 7" try assert (goal_of_size 5) by (once (ViaRewriteStrat.go; print_goal ())).
-  time "goal_of_size 8" try assert (goal_of_size 5) by (once (ViaRewriteStrat.go; print_goal ())).
-  time "goal_of_size 9" try assert (goal_of_size 9) by (once (ViaRewriteStrat.go; print_goal ())).
-   *)
+Goal True. time "goal_of_size 1" try assert (goal_of_size 1) by (once (ViaRewriteStrat.go; print_goal ())). Abort.
+(* Tactic call goal_of_size 1 ran for 11.346 secs (11.314u,0.031s) (success) *)
+Goal True. time "goal_of_size 2" try assert (goal_of_size 2) by (once (ViaRewriteStrat.go; print_goal ())). Abort.
+(* Tactic call goal_of_size 2 ran for 93.915 secs (93.807u,0.107s) (success) *)
+Goal True. time "goal_of_size 3" try assert (goal_of_size 3) by (once (ViaRewriteStrat.go; print_goal ())). Abort.
+(* Tactic call goal_of_size 3 ran for 559.433 secs (558.805u,0.627s) (success) *)
+Goal True. time "goal_of_size 4" try assert (goal_of_size 4) by (once (ViaRewriteStrat.go; print_goal ())). Abort.
+(* Tactic call goal_of_size 4 ran for 4363.725 secs (4359.384u,4.356s) (success) *)
+Goal True. time "goal_of_size 5" try assert (goal_of_size 5) by (once (ViaRewriteStrat.go; print_goal ())). Abort.
+(* stack overflow *)
+Goal True. time "goal_of_size 6" try assert (goal_of_size 5) by (once (ViaRewriteStrat.go; print_goal ())). Abort.
+Goal True. time "goal_of_size 7" try assert (goal_of_size 5) by (once (ViaRewriteStrat.go; print_goal ())). Abort.
+Goal True. time "goal_of_size 8" try assert (goal_of_size 5) by (once (ViaRewriteStrat.go; print_goal ())). Abort.
+Goal True. time "goal_of_size 9" try assert (goal_of_size 9) by (once (ViaRewriteStrat.go; print_goal ())). Abort.
+  (* Tactic call ran for 0.125 secs (0.125u,0.s) (success)
+Tactic call ran for 0.015 secs (0.015u,0.s) (success)
+Tactic call ran for 0.001 secs (0.001u,0.s) (success)
+Tactic call ran for 0. secs (0.u,0.s) (success)
+Tactic call ran for 0.118 secs (0.114u,0.003s) (success)
+Tactic call ran for 0.001 secs (0.001u,0.s) (success)
+Tactic call ran for 1.151 secs (1.151u,0.s) (success)
+Tactic call ran for 4.506 secs (4.494u,0.011s) (success)
+Tactic call ran for 0.003 secs (0.003u,0.s) (success)
+Tactic call ran for 1.008 secs (1.008u,0.s) (success)
+Tactic call ran for 0.83 secs (0.83u,0.s) (success)
+Tactic call ran for 0.003 secs (0.003u,0.s) (success)
+Tactic call ran for 3.565 secs (3.549u,0.015s) (success)
+Tactic call ran for 0.007 secs (0.007u,0.s) (success)
+Goal:
+((dlet x' : Z := 1 * (nth_default 0 f 0 * nth_default 0 g 0) in
+  dlet x'0 : Z := x' + 0 in
+  dlet x'1 : Z := x'0 / 2305843009213693952 in
+  dlet x'2 : Z := x'0 mod 2305843009213693952 in
+  dlet y' : Z := 1 * x'1 in
+  dlet y'0 : Z := 1 * x'2 in
+  dlet x'3 : Z := 1 * (y'0 + 0) in
+  dlet x'4 : Z := 1 * (1 * (y' + 0)) in
+  dlet x'5 : Z := x'3 + (x'4 + 0) in
+  dlet x'6 : Z := x'5 / 2305843009213693952 in
+  dlet x'7 : Z := x'5 mod 2305843009213693952 in
+  dlet x'8 : Z := 1 * x'6 in
+  dlet x'9 : Z := 1 * x'7 in
+  dlet x'10 : Z := 1 * (x'9 + 0) in
+  dlet x'11 : Z := 1 * (1 * (x'8 + 0)) in
+  dlet x'12 : Z := 1 * (x'10 + (x'11 + 0)) in
+  dlet y'1 : Z := 1 * (x'12 + 0) in
+  dlet x'13 : Z := 0 in
+  [y'1 + (x'13 + 0)]) = f)
+Tactic call goal_of_size 1 ran for 11.346 secs (11.314u,0.031s) (success)
+Chars 35942 - 36038 [(time~"goal_of_size~1"~~~try~~...] 11.346 secs (11.314u,0.031s)
+Tactic call ran for 3.922 secs (3.906u,0.015s) (success)
+Tactic call ran for 0.294 secs (0.294u,0.s) (success)
+Tactic call ran for 0.003 secs (0.003u,0.s) (success)
+Tactic call ran for 0. secs (0.u,0.s) (success)
+Tactic call ran for 0.36 secs (0.36u,0.s) (success)
+Tactic call ran for 0.002 secs (0.002u,0.s) (success)
+Tactic call ran for 3.376 secs (3.372u,0.003s) (success)
+Tactic call ran for 18.768 secs (18.752u,0.016s) (success)
+Tactic call ran for 0.006 secs (0.006u,0.s) (success)
+Tactic call ran for 5.973 secs (5.965u,0.007s) (success)
+Tactic call ran for 4.171 secs (4.159u,0.011s) (success)
+Tactic call ran for 0.007 secs (0.007u,0.s) (success)
+Tactic call ran for 54.441 secs (54.401u,0.039s) (success)
+Tactic call ran for 2.575 secs (2.563u,0.011s) (success)
+Goal:
+((dlet y' : Z := 1 * (nth_default 0 f 0 * nth_default 0 g 0) in
+  dlet x' : Z := 1 * (nth_default 0 f 0 * nth_default 0 g 1) in
+  dlet x'0 : Z := 1 * (nth_default 0 f 1 * nth_default 0 g 0) in
+  dlet x'1 : Z := 2 * (1 * (nth_default 0 f 1 * nth_default 0 g 1)) in
+  dlet x'2 : Z := y' + (x'1 + 0) in
+  dlet x'3 : Z := x'2 / 18014398509481984 in
+  dlet x'4 : Z := x'2 mod 18014398509481984 in
+  dlet y'0 : Z := 1 * x'3 in
+  dlet y'1 : Z := 1 * x'4 in
+  dlet y'2 : Z := 1 * (x' + (x'0 + 0)) in
+  dlet x'5 : Z := 1 * (y'1 + 0) in
+  dlet x'6 : Z := 1 * (y'0 + (y'2 + 0)) in
+  dlet x'7 : Z := 0 in
+  dlet x'8 : Z := x'6 + 0 in
+  dlet x'9 : Z := x'8 / 9007199254740992 in
+  dlet x'10 : Z := x'8 mod 9007199254740992 in
+  dlet x'11 : Z := 1 * (x'5 + (x'7 + 0)) in
+  dlet x'12 : Z := 1 * x'9 in
+  dlet x'13 : Z := 1 * x'10 in
+  dlet x'14 : Z := 1 * (x'11 + 0) in
+  dlet x'15 : Z := 1 * (x'13 + 0) in
+  dlet x'16 : Z := 1 * (1 * (x'12 + 0)) in
+  dlet x'17 : Z := x'14 + (x'16 + 0) in
+  dlet x'18 : Z := x'17 / 18014398509481984 in
+  dlet x'19 : Z := x'17 mod 18014398509481984 in
+  dlet x'20 : Z := 1 * x'18 in
+  dlet x'21 : Z := 1 * x'19 in
+  dlet x'22 : Z := 1 * (x'15 + 0) in
+  dlet x'23 : Z := 1 * (x'21 + 0) in
+  dlet x'24 : Z := 1 * (x'20 + (x'22 + 0)) in
+  dlet x'25 : Z := 0 in
+  dlet x'26 : Z := x'24 + 0 in
+  dlet x'27 : Z := x'26 / 9007199254740992 in
+  dlet x'28 : Z := x'26 mod 9007199254740992 in
+  dlet x'29 : Z := 1 * (x'23 + (x'25 + 0)) in
+  dlet x'30 : Z := 1 * x'27 in
+  dlet x'31 : Z := 1 * x'28 in
+  dlet y'3 : Z := 1 * (x'29 + 0) in
+  dlet y'4 : Z := 1 * (x'31 + 0) in
+  dlet x'32 : Z := 1 * (1 * (x'30 + 0)) in
+  [y'3 + (x'32 + 0); y'4 + 0]) = f)
+Tactic call goal_of_size 2 ran for 93.915 secs (93.807u,0.107s) (success)
+Chars 36121 - 36217 [(time~"goal_of_size~2"~~~try~~...] 93.915 secs (93.807u,0.107s)
+Tactic call ran for 86.089 secs (85.885u,0.203s) (success)
+Tactic call ran for 2.465 secs (2.461u,0.004s) (success)
+Tactic call ran for 0.007 secs (0.007u,0.s) (success)
+Tactic call ran for 0. secs (0.u,0.s) (success)
+Tactic call ran for 1.163 secs (1.159u,0.003s) (success)
+Tactic call ran for 0.003 secs (0.003u,0.s) (success)
+Tactic call ran for 10.188 secs (10.152u,0.035s) (success)
+Tactic call ran for 72.23 secs (72.122u,0.107s) (success)
+Tactic call ran for 0.009 secs (0.009u,0.s) (success)
+Tactic call ran for 28.633 secs (28.613u,0.019s) (success)
+Tactic call ran for 18.459 secs (18.451u,0.007s) (success)
+Tactic call ran for 0.014 secs (0.014u,0.s) (success)
+Tactic call ran for 328.064 secs (327.832u,0.231s) (success)
+Tactic call ran for 12.087 secs (12.075u,0.012s) (success)
+Goal:
+((dlet y' : Z := 1 * (nth_default 0 f 0 * nth_default 0 g 0) in
+  dlet x' : Z := 1 * (nth_default 0 f 0 * nth_default 0 g 1) in
+  dlet x'0 : Z := 1 * (nth_default 0 f 0 * nth_default 0 g 2) in
+  dlet x'1 : Z := 1 * (nth_default 0 f 1 * nth_default 0 g 0) in
+  dlet x'2 : Z := 2 * (nth_default 0 f 1 * nth_default 0 g 1) in
+  dlet x'3 : Z := 1 * (nth_default 0 f 2 * nth_default 0 g 0) in
+  dlet x'4 : Z := 2 * (1 * (nth_default 0 f 1 * nth_default 0 g 2)) in
+  dlet x'5 : Z := 2 * (1 * (nth_default 0 f 2 * nth_default 0 g 1)) in
+  dlet x'6 : Z := 1 * (1 * (nth_default 0 f 2 * nth_default 0 g 2)) in
+  dlet x'7 : Z := y' + (x'4 + (x'5 + 0)) in
+  dlet x'8 : Z := x'7 / 8796093022208 in
+  dlet x'9 : Z := x'7 mod 8796093022208 in
+  dlet y'0 : Z := 1 * x'8 in
+  dlet y'1 : Z := 1 * x'9 in
+  dlet y'2 : Z := 1 * (x' + (x'1 + (x'6 + 0))) in
+  dlet y'3 : Z := 1 * (x'0 + (x'2 + (x'3 + 0))) in
+  dlet x'10 : Z := 1 * (y'1 + 0) in
+  dlet x'11 : Z := 1 * (y'0 + (y'2 + 0)) in
+  dlet x'12 : Z := 1 * (y'3 + 0) in
+  dlet x'13 : Z := 0 in
+  dlet x'14 : Z := x'11 + 0 in
+  dlet x'15 : Z := x'14 / 4398046511104 in
+  dlet x'16 : Z := x'14 mod 4398046511104 in
+  dlet x'17 : Z := 1 * (x'10 + (x'13 + 0)) in
+  dlet x'18 : Z := 1 * x'15 in
+  dlet x'19 : Z := 1 * x'16 in
+  dlet x'20 : Z := 1 * (x'12 + 0) in
+  dlet x'21 : Z := 1 * (x'17 + 0) in
+  dlet x'22 : Z := 1 * (x'19 + 0) in
+  dlet x'23 : Z := 1 * (x'18 + (x'20 + 0)) in
+  dlet x'24 : Z := 0 in
+  dlet x'25 : Z := x'23 + 0 in
+  dlet x'26 : Z := x'25 / 4398046511104 in
+  dlet x'27 : Z := x'25 mod 4398046511104 in
+  dlet x'28 : Z := 1 * (x'21 + (x'24 + 0)) in
+  dlet x'29 : Z := 1 * (x'22 + 0) in
+  dlet x'30 : Z := 1 * x'26 in
+  dlet x'31 : Z := 1 * x'27 in
+  dlet x'32 : Z := 1 * (x'28 + 0) in
+  dlet x'33 : Z := 1 * (x'29 + 0) in
+  dlet x'34 : Z := 1 * (x'31 + 0) in
+  dlet x'35 : Z := 1 * (1 * (x'30 + 0)) in
+  dlet x'36 : Z := x'32 + (x'35 + 0) in
+  dlet x'37 : Z := x'36 / 8796093022208 in
+  dlet x'38 : Z := x'36 mod 8796093022208 in
+  dlet x'39 : Z := 1 * x'37 in
+  dlet x'40 : Z := 1 * x'38 in
+  dlet x'41 : Z := 1 * (x'33 + 0) in
+  dlet x'42 : Z := 1 * (x'34 + 0) in
+  dlet x'43 : Z := 1 * (x'40 + 0) in
+  dlet x'44 : Z := 1 * (x'39 + (x'41 + 0)) in
+  dlet x'45 : Z := 1 * (x'42 + 0) in
+  dlet x'46 : Z := 0 in
+  dlet x'47 : Z := x'44 + 0 in
+  dlet x'48 : Z := x'47 / 4398046511104 in
+  dlet x'49 : Z := x'47 mod 4398046511104 in
+  dlet x'50 : Z := 1 * (x'43 + (x'46 + 0)) in
+  dlet x'51 : Z := 1 * x'48 in
+  dlet x'52 : Z := 1 * x'49 in
+  dlet x'53 : Z := 1 * (x'45 + 0) in
+  dlet y'4 : Z := 1 * (x'50 + 0) in
+  dlet y'5 : Z := 1 * (x'52 + 0) in
+  dlet x'54 : Z := 1 * (x'51 + (x'53 + 0)) in
+  dlet x'55 : Z := 0 in
+  [y'4 + (x'55 + 0); y'5 + 0; x'54 + 0]) = f)
+Tactic call goal_of_size 3 ran for 559.433 secs (558.805u,0.627s) (success)
+Chars 36220 - 36316 [(time~"goal_of_size~3"~~~try~~...] 559.433 secs (558.805u,0.627s)
+Tactic call ran for 1862.263 secs (1859.248u,3.024s) (success)
+Tactic call ran for 16.616 secs (16.576u,0.04s) (success)
+Tactic call ran for 0.023 secs (0.023u,0.s) (success)
+Tactic call ran for 0.001 secs (0.001u,0.s) (success)
+Tactic call ran for 5.231 secs (5.231u,0.s) (success)
+Tactic call ran for 0.004 secs (0.004u,0.s) (success)
+Tactic call ran for 41.886 secs (41.846u,0.039s) (success)
+Tactic call ran for 332.166 secs (331.758u,0.407s) (success)
+Tactic call ran for 0.018 secs (0.018u,0.s) (success)
+Tactic call ran for 148.93 secs (148.81u,0.119s) (success)
+Tactic call ran for 94.186 secs (94.122u,0.063s) (success)
+Tactic call ran for 0.031 secs (0.031u,0.s) (success)
+Tactic call ran for 1810.372 secs (1809.722u,0.656s) (success)
+Tactic call ran for 51.968 secs (51.964u,0.004s) (success)
+Goal:
+((dlet y' : Z := 1 * (nth_default 0 f 0 * nth_default 0 g 0) in
+  dlet x' : Z := 1 * (nth_default 0 f 0 * nth_default 0 g 1) in
+  dlet x'0 : Z := 1 * (nth_default 0 f 0 * nth_default 0 g 2) in
+  dlet x'1 : Z := 1 * (nth_default 0 f 0 * nth_default 0 g 3) in
+  dlet x'2 : Z := 1 * (nth_default 0 f 1 * nth_default 0 g 0) in
+  dlet x'3 : Z := 2 * (nth_default 0 f 1 * nth_default 0 g 1) in
+  dlet x'4 : Z := 1 * (nth_default 0 f 1 * nth_default 0 g 2) in
+  dlet x'5 : Z := 1 * (nth_default 0 f 2 * nth_default 0 g 0) in
+  dlet x'6 : Z := 1 * (nth_default 0 f 2 * nth_default 0 g 1) in
+  dlet x'7 : Z := 1 * (nth_default 0 f 3 * nth_default 0 g 0) in
+  dlet x'8 : Z := 2 * (11 * (nth_default 0 f 1 * nth_default 0 g 3)) in
+  dlet x'9 : Z := 1 * (11 * (nth_default 0 f 2 * nth_default 0 g 2)) in
+  dlet x'10 : Z := 1 * (11 * (nth_default 0 f 2 * nth_default 0 g 3)) in
+  dlet x'11 : Z := 2 * (11 * (nth_default 0 f 3 * nth_default 0 g 1)) in
+  dlet x'12 : Z := 1 * (11 * (nth_default 0 f 3 * nth_default 0 g 2)) in
+  dlet x'13 : Z := 2 * (11 * (nth_default 0 f 3 * nth_default 0 g 3)) in
+  dlet x'14 : Z := y' + (x'8 + (x'9 + (x'11 + 0))) in
+  dlet x'15 : Z := x'14 / 281474976710656 in
+  dlet x'16 : Z := x'14 mod 281474976710656 in
+  dlet y'0 : Z := 1 * x'15 in
+  dlet y'1 : Z := 1 * x'16 in
+  dlet y'2 : Z := 1 * (x' + (x'2 + (x'10 + (x'12 + 0)))) in
+  dlet y'3 : Z := 1 * (x'0 + (x'3 + (x'5 + (x'13 + 0)))) in
+  dlet y'4 : Z := 1 * (x'1 + (x'4 + (x'6 + (x'7 + 0)))) in
+  dlet x'17 : Z := 1 * (y'1 + 0) in
+  dlet x'18 : Z := 1 * (y'0 + (y'2 + 0)) in
+  dlet x'19 : Z := 1 * (y'3 + 0) in
+  dlet x'20 : Z := 1 * (y'4 + 0) in
+  dlet x'21 : Z := 0 in
+  dlet x'22 : Z := x'18 + 0 in
+  dlet x'23 : Z := x'22 / 140737488355328 in
+  dlet x'24 : Z := x'22 mod 140737488355328 in
+  dlet x'25 : Z := 1 * (x'17 + (x'21 + 0)) in
+  dlet x'26 : Z := 1 * x'23 in
+  dlet x'27 : Z := 1 * x'24 in
+  dlet x'28 : Z := 1 * (x'19 + 0) in
+  dlet x'29 : Z := 1 * (x'20 + 0) in
+  dlet x'30 : Z := 1 * (x'25 + 0) in
+  dlet x'31 : Z := 1 * (x'27 + 0) in
+  dlet x'32 : Z := 1 * (x'26 + (x'28 + 0)) in
+  dlet x'33 : Z := 1 * (x'29 + 0) in
+  dlet x'34 : Z := 0 in
+  dlet x'35 : Z := x'32 + 0 in
+  dlet x'36 : Z := x'35 / 281474976710656 in
+  dlet x'37 : Z := x'35 mod 281474976710656 in
+  dlet x'38 : Z := 1 * (x'30 + (x'34 + 0)) in
+  dlet x'39 : Z := 1 * (x'31 + 0) in
+  dlet x'40 : Z := 1 * x'36 in
+  dlet x'41 : Z := 1 * x'37 in
+  dlet x'42 : Z := 1 * (x'33 + 0) in
+  dlet x'43 : Z := 1 * (x'38 + 0) in
+  dlet x'44 : Z := 1 * (x'39 + 0) in
+  dlet x'45 : Z := 1 * (x'41 + 0) in
+  dlet x'46 : Z := 1 * (x'40 + (x'42 + 0)) in
+  dlet x'47 : Z := 0 in
+  dlet x'48 : Z := x'46 + 0 in
+  dlet x'49 : Z := x'48 / 140737488355328 in
+  dlet x'50 : Z := x'48 mod 140737488355328 in
+  dlet x'51 : Z := 1 * (x'43 + (x'47 + 0)) in
+  dlet x'52 : Z := 1 * (x'44 + 0) in
+  dlet x'53 : Z := 1 * (x'45 + 0) in
+  dlet x'54 : Z := 1 * x'49 in
+  dlet x'55 : Z := 1 * x'50 in
+  dlet x'56 : Z := 1 * (x'51 + 0) in
+  dlet x'57 : Z := 1 * (x'52 + 0) in
+  dlet x'58 : Z := 1 * (x'53 + 0) in
+  dlet x'59 : Z := 1 * (x'55 + 0) in
+  dlet x'60 : Z := 1 * (11 * (x'54 + 0)) in
+  dlet x'61 : Z := x'56 + (x'60 + 0) in
+  dlet x'62 : Z := x'61 / 281474976710656 in
+  dlet x'63 : Z := x'61 mod 281474976710656 in
+  dlet x'64 : Z := 1 * x'62 in
+  dlet x'65 : Z := 1 * x'63 in
+  dlet x'66 : Z := 1 * (x'57 + 0) in
+  dlet x'67 : Z := 1 * (x'58 + 0) in
+  dlet x'68 : Z := 1 * (x'59 + 0) in
+  dlet x'69 : Z := 1 * (x'65 + 0) in
+  dlet x'70 : Z := 1 * (x'64 + (x'66 + 0)) in
+  dlet x'71 : Z := 1 * (x'67 + 0) in
+  dlet x'72 : Z := 1 * (x'68 + 0) in
+  dlet x'73 : Z := 0 in
+  dlet x'74 : Z := x'70 + 0 in
+  dlet x'75 : Z := x'74 / 140737488355328 in
+  dlet x'76 : Z := x'74 mod 140737488355328 in
+  dlet x'77 : Z := 1 * (x'69 + (x'73 + 0)) in
+  dlet x'78 : Z := 1 * x'75 in
+  dlet x'79 : Z := 1 * x'76 in
+  dlet x'80 : Z := 1 * (x'71 + 0) in
+  dlet x'81 : Z := 1 * (x'72 + 0) in
+  dlet y'5 : Z := 1 * (x'77 + 0) in
+  dlet y'6 : Z := 1 * (x'79 + 0) in
+  dlet x'82 : Z := 1 * (x'78 + (x'80 + 0)) in
+  dlet x'83 : Z := 1 * (x'81 + 0) in
+  dlet x'84 : Z := 0 in
+  [y'5 + (x'84 + 0); y'6 + 0; x'82 + 0; x'83 + 0]) = f)
+Tactic call goal_of_size 4 ran for 4363.725 secs (4359.384u,4.356s) (success)
+Chars 36527 - 36623 [(time~"goal_of_size~4"~~~try~~...] 4363.725 secs (4359.384u,4.356s)
+Chars 36631 - 36641 [Goal~_~True.] 0. secs (0.u,0.s)
+Chars 36642 - 36738 [(time~"goal_of_size~5"~~~try~~...] 31132.252 secs (31123.835u,8.56s)
+*)
 Abort.
 
 Set Ltac Profiling.
