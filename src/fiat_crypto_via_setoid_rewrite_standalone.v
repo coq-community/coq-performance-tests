@@ -660,9 +660,9 @@ Goal True. time "goal_of_size 4" try assert (goal_of_size 4) by (once (ViaRewrit
 (* Tactic call goal_of_size 4 ran for 4363.725 secs (4359.384u,4.356s) (success) *)
 Goal True. time "goal_of_size 5" try assert (goal_of_size 5) by (once (ViaRewriteStrat.go; print_goal ())). Abort.
 (* stack overflow *)
-Goal True. time "goal_of_size 6" try assert (goal_of_size 5) by (once (ViaRewriteStrat.go; print_goal ())). Abort.
-Goal True. time "goal_of_size 7" try assert (goal_of_size 5) by (once (ViaRewriteStrat.go; print_goal ())). Abort.
-Goal True. time "goal_of_size 8" try assert (goal_of_size 5) by (once (ViaRewriteStrat.go; print_goal ())). Abort.
+Goal True. time "goal_of_size 6" try assert (goal_of_size 6) by (once (ViaRewriteStrat.go; print_goal ())). Abort.
+Goal True. time "goal_of_size 7" try assert (goal_of_size 7) by (once (ViaRewriteStrat.go; print_goal ())). Abort.
+Goal True. time "goal_of_size 8" try assert (goal_of_size 8) by (once (ViaRewriteStrat.go; print_goal ())). Abort.
 Goal True. time "goal_of_size 9" try assert (goal_of_size 9) by (once (ViaRewriteStrat.go; print_goal ())). Abort.
 *)
   (* Tactic call ran for 0.125 secs (0.125u,0.s) (success)
