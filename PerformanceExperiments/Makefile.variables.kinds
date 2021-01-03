@@ -32,6 +32,7 @@ LTAC2_KINDS := \
 VERSION_8_9_OR_NEWER_KINDS := \
 	typeclass_reification_let_in_HOAS \
 	typeclass_reification_let_in_PHOAS \
+	fiat_crypto_via_setoid_rewrite_standalone \
 	# end of list
 
 Q_DECIMAL_NOTATION_KINDS := \
