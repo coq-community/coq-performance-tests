@@ -1,0 +1,16 @@
+Params: 0-nm= 5 , 1-n= 1 , 2-m= 5
+Tactic call cps+simpl-regression-quadratic ran for 0.001 secs (0.001u,0.s) (success)
+Params: 0-nm= 5 , 1-n= 5 , 2-m= 1
+Tactic call cps+simpl-regression-quadratic ran for 0. secs (0.u,0.s) (success)
+Params: 0-nm= 402 , 1-n= 1 , 2-m= 402
+Tactic call cps+simpl-regression-quadratic ran for 0.497 secs (0.497u,0.s) (success)
+Params: 0-nm= 402 , 1-n= 402 , 2-m= 1
+Tactic call cps+simpl-regression-quadratic ran for 0.268 secs (0.268u,0.s) (success)
+Params: 0-nm= 420 , 1-n= 20 , 2-m= 21
+Tactic call cps+simpl-regression-quadratic ran for 0.043 secs (0.043u,0.s) (success)
+Params: 0-nm= 798 , 1-n= 1 , 2-m= 798
+Tactic call cps+simpl-regression-quadratic ran for 1.778 secs (1.778u,0.s) (success)
+Params: 0-nm= 798 , 1-n= 798 , 2-m= 1
+Tactic call cps+simpl-regression-quadratic ran for 1.077 secs (1.073u,0.003s) (success)
+Params: 0-nm= 812 , 1-n= 28 , 2-m= 29
+Tactic call cps+simpl-regression-quadratic ran for 0.112 secs (0.111u,0.s) (success)

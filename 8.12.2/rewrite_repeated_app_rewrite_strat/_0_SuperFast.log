@@ -1,0 +1,40 @@
+Params: n= 50
+Tactic call rewrite_strat-topdown ran for 0.037 secs (0.036u,0.s) (success)
+Tactic call rewrite_strat-topdown-noop ran for 0. secs (0.u,0.s) (success)
+Tactic call abstract+rewrite_strat-topdown ran for 0.058 secs (0.057u,0.s) (success)
+Tactic call close-abstract+rewrite_strat-topdown ran for 0.02 secs (0.02u,0.s)
+Params: n= 100
+Tactic call rewrite_strat-topdown ran for 0.172 secs (0.172u,0.s) (success)
+Tactic call rewrite_strat-topdown-noop ran for 0.001 secs (0.001u,0.s) (success)
+Tactic call abstract+rewrite_strat-topdown ran for 0.269 secs (0.268u,0.s) (success)
+Tactic call close-abstract+rewrite_strat-topdown ran for 0.095 secs (0.095u,0.s)
+Params: n= 150
+Tactic call rewrite_strat-topdown ran for 0.217 secs (0.217u,0.s) (success)
+Tactic call rewrite_strat-topdown-noop ran for 0.002 secs (0.002u,0.s) (success)
+Tactic call abstract+rewrite_strat-topdown ran for 0.513 secs (0.505u,0.007s) (success)
+Tactic call close-abstract+rewrite_strat-topdown ran for 0.293 secs (0.285u,0.007s)
+Params: n= 200
+Tactic call rewrite_strat-topdown ran for 0.458 secs (0.454u,0.003s) (success)
+Tactic call rewrite_strat-topdown-noop ran for 0.003 secs (0.003u,0.s) (success)
+Tactic call abstract+rewrite_strat-topdown ran for 0.882 secs (0.878u,0.003s) (success)
+Tactic call close-abstract+rewrite_strat-topdown ran for 0.42 secs (0.42u,0.s)
+Params: n= 250
+Tactic call rewrite_strat-topdown ran for 0.682 secs (0.675u,0.007s) (success)
+Tactic call rewrite_strat-topdown-noop ran for 0.004 secs (0.004u,0.s) (success)
+Tactic call abstract+rewrite_strat-topdown ran for 1.177 secs (1.166u,0.011s) (success)
+Tactic call close-abstract+rewrite_strat-topdown ran for 0.49 secs (0.485u,0.004s)
+Params: n= 300
+Tactic call rewrite_strat-topdown ran for 1.027 secs (1.015u,0.011s) (success)
+Tactic call rewrite_strat-topdown-noop ran for 0.005 secs (0.005u,0.s) (success)
+Tactic call abstract+rewrite_strat-topdown ran for 1.686 secs (1.67u,0.015s) (success)
+Tactic call close-abstract+rewrite_strat-topdown ran for 0.652 secs (0.648u,0.003s)
+Params: n= 350
+Tactic call rewrite_strat-topdown ran for 1.345 secs (1.333u,0.011s) (success)
+Tactic call rewrite_strat-topdown-noop ran for 0.012 secs (0.012u,0.s) (success)
+Tactic call abstract+rewrite_strat-topdown ran for 2.347 secs (2.335u,0.011s) (success)
+Tactic call close-abstract+rewrite_strat-topdown ran for 0.989 secs (0.989u,0.s)
+Params: n= 400
+Tactic call rewrite_strat-topdown ran for 1.815 secs (1.79u,0.023s) (success)
+Tactic call rewrite_strat-topdown-noop ran for 0.012 secs (0.012u,0.s) (success)
+Tactic call abstract+rewrite_strat-topdown ran for 2.998 secs (2.97u,0.028s) (success)
+Tactic call close-abstract+rewrite_strat-topdown ran for 1.169 secs (1.165u,0.004s)

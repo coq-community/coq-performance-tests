@@ -1,0 +1,32 @@
+Params: n= 11
+Tactic call cbn-regression-cubic ran for 0.057 secs (0.057u,0.s) (success)
+Params: n= 13
+Tactic call cbn-regression-cubic ran for 0.095 secs (0.087u,0.007s) (success)
+Params: n= 14
+Tactic call cbn-regression-cubic ran for 0.122 secs (0.118u,0.003s) (success)
+Params: n= 16
+Tactic call cbn-regression-cubic ran for 0.226 secs (0.226u,0.s) (success)
+Params: n= 19
+Tactic call cbn-regression-cubic ran for 0.285 secs (0.285u,0.s) (success)
+Params: n= 22
+Tactic call cbn-regression-cubic ran for 0.368 secs (0.368u,0.s) (success)
+Params: n= 25
+Tactic call cbn-regression-cubic ran for 0.454 secs (0.454u,0.s) (success)
+Params: n= 28
+Tactic call cbn-regression-cubic ran for 0.654 secs (0.654u,0.s) (success)
+Params: n= 30
+Tactic call cbn-regression-cubic ran for 0.769 secs (0.769u,0.s) (success)
+Params: n= 33
+Tactic call cbn-regression-cubic ran for 0.902 secs (0.902u,0.s) (success)
+Params: n= 36
+Tactic call cbn-regression-cubic ran for 1.16 secs (1.16u,0.s) (success)
+Params: n= 43
+Tactic call cbn-regression-cubic ran for 1.888 secs (1.888u,0.s) (success)
+Params: n= 50
+Tactic call cbn-regression-cubic ran for 2.876 secs (2.876u,0.s) (success)
+Params: n= 56
+Tactic call cbn-regression-cubic ran for 3.893 secs (3.891u,0.s) (success)
+Params: n= 63
+Tactic call cbn-regression-cubic ran for 5.353 secs (5.352u,0.s) (success)
+Params: n= 70
+Tactic call cbn-regression-cubic ran for 6.973 secs (6.965u,0.007s) (success)

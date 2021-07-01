@@ -1,0 +1,9 @@
+COQLIB=/usr/lib/coq/
+COQCORELIB=/usr/lib/coq/../coq-core//
+DOCDIR=/usr/share/doc/coq/
+OCAMLFIND=/usr/bin/ocamlfind
+CAMLFLAGS=-thread -rectypes -w +a-4-9-27-41-42-44-45-48-58-67-68   -safe-string -strict-sequence
+WARN=-warn-error +a-3
+HASNATDYNLINK=true
+COQ_SRC_SUBDIRS=config lib clib kernel library engine pretyping interp gramlib parsing proofs tactics toplevel printing ide stm vernac plugins/btauto plugins/cc plugins/derive plugins/extraction plugins/firstorder plugins/funind plugins/ltac plugins/micromega plugins/nsatz plugins/ring plugins/rtauto plugins/ssr plugins/ssrmatching plugins/ssrsearch plugins/syntax
+COQ_NATIVE_COMPILER_DEFAULT=ondemand

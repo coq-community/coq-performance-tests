@@ -1,0 +1,40 @@
+Params: n= 50
+Tactic call rewrite_strat-bottomup ran for 0.063 secs (0.063u,0.s) (success)
+Tactic call rewrite_strat-bottomup-noop ran for 0. secs (0.u,0.s) (success)
+Tactic call abstract+rewrite_strat-bottomup ran for 0.174 secs (0.174u,0.s) (success)
+Tactic call close-abstract+rewrite_strat-bottomup ran for 0.11 secs (0.109u,0.s)
+Params: n= 100
+Tactic call rewrite_strat-bottomup ran for 0.196 secs (0.196u,0.s) (success)
+Tactic call rewrite_strat-bottomup-noop ran for 0.001 secs (0.001u,0.s) (success)
+Tactic call abstract+rewrite_strat-bottomup ran for 0.294 secs (0.294u,0.s) (success)
+Tactic call close-abstract+rewrite_strat-bottomup ran for 0.095 secs (0.095u,0.s)
+Params: n= 150
+Tactic call rewrite_strat-bottomup ran for 0.514 secs (0.514u,0.s) (success)
+Tactic call rewrite_strat-bottomup-noop ran for 0.001 secs (0.001u,0.s) (success)
+Tactic call abstract+rewrite_strat-bottomup ran for 0.763 secs (0.763u,0.s) (success)
+Tactic call close-abstract+rewrite_strat-bottomup ran for 0.245 secs (0.245u,0.s)
+Params: n= 200
+Tactic call rewrite_strat-bottomup ran for 0.801 secs (0.793u,0.007s) (success)
+Tactic call rewrite_strat-bottomup-noop ran for 0.002 secs (0.002u,0.s) (success)
+Tactic call abstract+rewrite_strat-bottomup ran for 1.211 secs (1.203u,0.007s) (success)
+Tactic call close-abstract+rewrite_strat-bottomup ran for 0.406 secs (0.406u,0.s)
+Params: n= 250
+Tactic call rewrite_strat-bottomup ran for 1.16 secs (1.152u,0.007s) (success)
+Tactic call rewrite_strat-bottomup-noop ran for 0.004 secs (0.004u,0.s) (success)
+Tactic call abstract+rewrite_strat-bottomup ran for 1.816 secs (1.808u,0.007s) (success)
+Tactic call close-abstract+rewrite_strat-bottomup ran for 0.651 secs (0.651u,0.s)
+Params: n= 300
+Tactic call rewrite_strat-bottomup ran for 1.84 secs (1.836u,0.004s) (success)
+Tactic call rewrite_strat-bottomup-noop ran for 0.006 secs (0.006u,0.s) (success)
+Tactic call abstract+rewrite_strat-bottomup ran for 2.828 secs (2.824u,0.004s) (success)
+Tactic call close-abstract+rewrite_strat-bottomup ran for 0.98 secs (0.98u,0.s)
+Params: n= 350
+Tactic call rewrite_strat-bottomup ran for 2.786 secs (2.77u,0.015s) (success)
+Tactic call rewrite_strat-bottomup-noop ran for 0.015 secs (0.015u,0.s) (success)
+Tactic call abstract+rewrite_strat-bottomup ran for 4.114 secs (4.098u,0.015s) (success)
+Tactic call close-abstract+rewrite_strat-bottomup ran for 1.31 secs (1.31u,0.s)
+Params: n= 400
+Tactic call rewrite_strat-bottomup ran for 3.734 secs (3.73u,0.003s) (success)
+Tactic call rewrite_strat-bottomup-noop ran for 0.012 secs (0.012u,0.s) (success)
+Tactic call abstract+rewrite_strat-bottomup ran for 5.429 secs (5.424u,0.003s) (success)
+Tactic call close-abstract+rewrite_strat-bottomup ran for 1.68 secs (1.68u,0.s)
