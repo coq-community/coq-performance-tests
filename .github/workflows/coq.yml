@@ -18,12 +18,14 @@ jobs:
         # ordering of the env and about the presence of COQ_VERSION
         # immediately followed by : in this file
         env:
-        - { COQ_VERSION: "master", COQ_PACKAGE: "coq        libcoq-ocaml-dev"       , PPA: "ppa:jgross-h/coq-master-daily"             , TIMED: "1", SLEEP_TIME: "1" }
-        - { COQ_VERSION: "8.12.2", COQ_PACKAGE: "coq-8.12.2 libcoq-8.12.2-ocaml-dev", PPA: "ppa:jgross-h/many-coq-versions-ocaml-4-05" , TIMED: "1", SLEEP_TIME: "30" }
-        - { COQ_VERSION: "8.11.2", COQ_PACKAGE: "coq-8.11.2 libcoq-8.11.2-ocaml-dev", PPA: "ppa:jgross-h/many-coq-versions-ocaml-4-05" , TIMED: "1", SLEEP_TIME: "60" }
-        - { COQ_VERSION: "8.10.2", COQ_PACKAGE: "coq-8.10.2 libcoq-8.10.2-ocaml-dev", PPA: "ppa:jgross-h/many-coq-versions-ocaml-4-05" , TIMED: "1", SLEEP_TIME: "90" }
-        - { COQ_VERSION: "8.9.1" , COQ_PACKAGE: "coq-8.9.1  libcoq-8.9.1-ocaml-dev" , PPA: "ppa:jgross-h/many-coq-versions"            , TIMED: "1", SLEEP_TIME: "120" }
-        - { COQ_VERSION: "8.8.2" , COQ_PACKAGE: "coq-8.8.2  libcoq-8.8.2-ocaml-dev" , PPA: "ppa:jgross-h/many-coq-versions"            , TIMED: "1", SLEEP_TIME: "150" }
+        - { COQ_VERSION: "master", COQ_PACKAGE: "coq        libcoq-ocaml-dev"       , PPA: "ppa:jgross-h/coq-master-daily"             , TIMED: "1" }
+        - { COQ_VERSION: "8.14.0", COQ_PACKAGE: "coq-8.14.0 libcoq-8.14.0-ocaml-dev", PPA: "ppa:jgross-h/many-coq-versions-ocaml-4-08" , TIMED: "1" }
+        - { COQ_VERSION: "8.13.2", COQ_PACKAGE: "coq-8.13.2 libcoq-8.13.2-ocaml-dev", PPA: "ppa:jgross-h/many-coq-versions-ocaml-4-05" , TIMED: "1" }
+        - { COQ_VERSION: "8.12.2", COQ_PACKAGE: "coq-8.12.2 libcoq-8.12.2-ocaml-dev", PPA: "ppa:jgross-h/many-coq-versions-ocaml-4-05" , TIMED: "1" }
+        - { COQ_VERSION: "8.11.2", COQ_PACKAGE: "coq-8.11.2 libcoq-8.11.2-ocaml-dev", PPA: "ppa:jgross-h/many-coq-versions-ocaml-4-05" , TIMED: "1" }
+        - { COQ_VERSION: "8.10.2", COQ_PACKAGE: "coq-8.10.2 libcoq-8.10.2-ocaml-dev", PPA: "ppa:jgross-h/many-coq-versions-ocaml-4-05" , TIMED: "1" }
+        - { COQ_VERSION: "8.9.1" , COQ_PACKAGE: "coq-8.9.1  libcoq-8.9.1-ocaml-dev" , PPA: "ppa:jgross-h/many-coq-versions"            , TIMED: "1" }
+        - { COQ_VERSION: "8.8.2" , COQ_PACKAGE: "coq-8.8.2  libcoq-8.8.2-ocaml-dev" , PPA: "ppa:jgross-h/many-coq-versions"            , TIMED: "1" }
 
     env: ${{ matrix.env }}
 
