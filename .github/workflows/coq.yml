@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         # N.B. The update-README makefile target pulls information
         # about Coq versions from this file, so be careful about
