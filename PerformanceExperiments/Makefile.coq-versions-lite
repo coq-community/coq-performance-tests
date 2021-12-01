@@ -56,8 +56,13 @@ HAS_LTAC2:=yes
 ifneq (,$(filter 8.11%,$(COQ_VERSION)))
 EXPECTED_EXT:=.v811
 else
+ifneq (,$(filter 8.12%,$(COQ_VERSION))$(filter 8.13%,$(COQ_VERSION))$(filter 8.14%,$(COQ_VERSION))$(filter 8.15%,$(COQ_VERSION)))
 IS_8_12_OR_NEWER:=yes
 EXPECTED_EXT:=.v812
+else
+IS_8_12_OR_NEWER:=yes
+EXPECTED_EXT:=.v816
+endif
 endif
 endif
 endif
