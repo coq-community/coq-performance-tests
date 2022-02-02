@@ -17,10 +17,16 @@ Ltac do_autorewrite := autorewrite with rew_fg.
 Ltac do_rewrite_bang := try rewrite !fg.
 Ltac do_rewrite_once := try rewrite fg.
 Ltac do_rewrite_ques := try rewrite ?fg.
+Ltac do_rewrite_bang_evar := try rewrite !(fg _).
+Ltac do_rewrite_once_evar := try rewrite (fg _).
+Ltac do_rewrite_ques_evar := try rewrite ?(fg _).
 Require Import Coq.ssr.ssreflect.
 Ltac do_ssr_rewrite_bang := try rewrite !fg.
 Ltac do_ssr_rewrite_once := try rewrite fg.
 Ltac do_ssr_rewrite_ques := try rewrite ?fg.
+Ltac do_ssr_rewrite_bang_evar := try rewrite !(fg _).
+Ltac do_ssr_rewrite_once_evar := try rewrite (fg _).
+Ltac do_ssr_rewrite_ques_evar := try rewrite ?(fg _).
 
 Ltac time_solve_goal0 n :=
   time "autorewrite-noop-regression-quadratic" do_autorewrite;
@@ -30,6 +36,12 @@ Ltac time_solve_goal0 n :=
   time "try-ssr-rewrite!-noop-regression-linear" do_ssr_rewrite_bang;
   time "try-ssr-rewrite-noop-regression-linear" do_ssr_rewrite_once;
   time "try-ssr-rewrite?-noop-regression-linear" do_ssr_rewrite_ques;
+  time "try-rewrite!-evar-noop-regression-quadratic" do_rewrite_bang_evar;
+  time "try-rewrite-evar-noop-regression-quadratic" do_rewrite_once_evar;
+  time "try-rewrite?-evar-noop-regression-quadratic" do_rewrite_ques_evar;
+  time "try-ssr-rewrite!-evar-noop-regression-linear" do_ssr_rewrite_bang_evar;
+  time "try-ssr-rewrite-evar-noop-regression-linear" do_ssr_rewrite_once_evar;
+  time "try-ssr-rewrite?-evar-noop-regression-linear" do_ssr_rewrite_ques_evar;
   reflexivity.
 
 Ltac run0 sz := Harness.runtests args_of_size default_describe_goal mkgoal_noop redgoal time_solve_goal0 sz.
