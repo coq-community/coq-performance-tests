@@ -1,3 +1,3 @@
 (** * Reification in OCaml *)
 
-Declare ML Module "reify".
+Declare ML Module "coq-performance-tests.reify".
