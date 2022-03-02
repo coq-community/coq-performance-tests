@@ -56,7 +56,7 @@ jobs:
           pdf2svg \
           python \
           python-pygments
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: echo build params
       run: |
         echo "::group::lscpu"
@@ -108,7 +108,7 @@ jobs:
 
     steps:
       - name: checkout repo (only required because of deploy step) # https://github.com/JamesIves/github-pages-deploy-action/issues/335
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Download a Build Artifact
         uses: actions/download-artifact@v2
         with:
@@ -130,7 +130,7 @@ jobs:
 
     steps:
       - name: checkout repo (only required because of deploy step) # https://github.com/JamesIves/github-pages-deploy-action/issues/335
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Install SSH Client 🔑
         uses: webfactory/ssh-agent@v0.4.1
         with:
