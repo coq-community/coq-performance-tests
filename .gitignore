@@ -354,6 +354,8 @@ PerformanceExperiments/Reify/reify_plugin.mlg
 PerformanceExperiments/Reify/reify_plugin.ml
 PerformanceExperiments/Reify/OCamlReify.v
 PerformanceExperiments/Sandbox.v
+PerformanceExperiments/sandbox_plugin.ml4
+PerformanceExperiments/sandbox_plugin.mlg
 plots/generated/
 plots/*.log
 plots/*.svg
