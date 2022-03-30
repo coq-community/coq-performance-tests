@@ -78,4 +78,6 @@ COMPATIBILITY_FILES := \
 	Ltac2Compat/Array.v \
 	Ltac2Compat/Constr.v \
 	Reify/reify_plugin.$(ML4_OR_MLG) \
+	Reify/OCamlReify.v \
+	Sandbox.v \
 	# end of list
