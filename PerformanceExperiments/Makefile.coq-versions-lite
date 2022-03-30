@@ -34,7 +34,10 @@ IS_8_9_OR_NEWER:=
 IS_8_10_OR_NEWER:=
 IS_8_11_OR_NEWER:=
 IS_8_12_OR_NEWER:=
+IS_8_16_OR_NEWER:=
 HAS_QUOTE_PLUGIN:=yes
+USE_META:=
+META_FRAGMENT:=
 
 ifneq (,$(filter 8.8%,$(COQ_VERSION)))
 EXPECTED_EXT:=.v88
@@ -56,11 +59,13 @@ HAS_LTAC2:=yes
 ifneq (,$(filter 8.11%,$(COQ_VERSION)))
 EXPECTED_EXT:=.v811
 else
-ifneq (,$(filter 8.12%,$(COQ_VERSION))$(filter 8.13%,$(COQ_VERSION))$(filter 8.14%,$(COQ_VERSION))$(filter 8.15%,$(COQ_VERSION)))
 IS_8_12_OR_NEWER:=yes
+ifneq (,$(filter 8.12%,$(COQ_VERSION))$(filter 8.13%,$(COQ_VERSION))$(filter 8.14%,$(COQ_VERSION))$(filter 8.15%,$(COQ_VERSION)))
 EXPECTED_EXT:=.v812
 else
-IS_8_12_OR_NEWER:=yes
+IS_8_16_OR_NEWER:=yes
+USE_META:=yes
+META_FRAGMENT:=META.coq-performance-tests
 EXPECTED_EXT:=.v816
 endif
 endif
