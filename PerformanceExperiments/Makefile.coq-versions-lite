@@ -80,4 +80,5 @@ COMPATIBILITY_FILES := \
 	Reify/reify_plugin.$(ML4_OR_MLG) \
 	Reify/OCamlReify.v \
 	Sandbox.v \
+	sandbox_plugin.$(ML4_OR_MLG) \
 	# end of list
