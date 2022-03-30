@@ -352,6 +352,8 @@ PerformanceExperiments/Ltac2Compat/Init.v
 PerformanceExperiments/Reify/reify_plugin.ml4
 PerformanceExperiments/Reify/reify_plugin.mlg
 PerformanceExperiments/Reify/reify_plugin.ml
+PerformanceExperiments/Reify/OCamlReify.v
+PerformanceExperiments/Sandbox.v
 plots/generated/
 plots/*.log
 plots/*.svg
