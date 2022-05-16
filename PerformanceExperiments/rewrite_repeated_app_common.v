@@ -11,6 +11,7 @@ Axiom f' : nat -> nat -> nat.
 Axiom g' : nat -> nat -> nat.
 Axiom f'g' : forall x y, f' x y = g' x y.
 
+#[global]
 Hint Rewrite fg : rew_fg.
 
 Fixpoint comp_pow {A} (f : A -> A) (n : nat) (x : A) {struct n} : A

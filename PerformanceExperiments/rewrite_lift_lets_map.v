@@ -59,9 +59,11 @@ Definition make_cps {T} (n : nat) (m : nat) (v : Z) (k : list Z -> T)
 Lemma lift_let_list_rect T A P N C (v : A) fls
   : @list_rect T P N C (Let_In v fls) = Let_In v (fun v => @list_rect T P N C (fls v)).
 Proof. reflexivity. Qed.
+#[global]
 Hint Rewrite lift_let_list_rect : mydb2.
 Lemma lift_let_cons T A x (v : A) f : @cons T x (Let_In v f) = Let_In v (fun v => @cons T x (f v)).
 Proof. reflexivity. Qed.
+#[global]
 Hint Rewrite lift_let_cons : mydb1.
 
 Notation goal n m := (forall v, make n m v = nil) (only parsing).
@@ -338,6 +340,7 @@ Ltac mkgoal8 := mkgoal constr:(kind_red simpl).
 Ltac time_solve_goal8 := time_solve_goal constr:(kind_red simpl).
 Ltac run8 sz := Harness.runtests_verify_sanity (args_of_size (kind_red simpl)) describe_goal mkgoal8 redgoal time_solve_goal8 verify sz.
 
+#[global]
 Hint Opaque Let_In : rewrite typeclass_instances.
 Global Opaque Let_In.
 Global Instance : forall {A}, Proper (eq ==> eq ==> Basics.flip Basics.impl) (@eq A) := _.

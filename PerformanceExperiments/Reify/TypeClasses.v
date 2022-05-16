@@ -25,7 +25,9 @@ Module TypeClasses.
     infer reifications if it doesn't fully know what term it's
     reifying. *)
 
+#[global]
   Hint Mode reify_of - ! - : typeclass_instances.
+#[global]
   Hint Opaque Nat.mul Let_In : typeclass_instances.
 
   Ltac reify var x :=
@@ -98,7 +100,9 @@ Module TypeClassesBodyHOAS.
     infer reifications if it doesn't fully know what term it's
     reifying. *)
 
+#[global]
   Hint Mode reify_of ! : typeclass_instances.
+#[global]
   Hint Opaque Nat.mul Let_In : typeclass_instances.
 
   Ltac Reify x :=
@@ -159,7 +163,9 @@ Module TypeClassesBodyFlatPHOAS.
     infer reifications if it doesn't fully know what term it's
     reifying. *)
 
+#[global]
   Hint Mode reify_of - ! : typeclass_instances.
+#[global]
   Hint Opaque Nat.mul : typeclass_instances.
 
   Ltac reify var x :=

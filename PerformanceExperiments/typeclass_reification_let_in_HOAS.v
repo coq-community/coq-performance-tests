@@ -20,15 +20,22 @@ Axiom P : expr -> Prop.
 Axiom p : forall e, P e.
 
 Class reified_of (v : nat) (e : expr) := dummy : True.
+#[global]
 Hint Mode reified_of ! - : typeclass_instances.
+#[global]
 Instance reify_plus {x ex y ey} {_:reified_of x ex} {_:reified_of y ey}
   : reified_of (x + y) (Plus ex ey) := I.
+#[global]
 Instance reify_LetIn {x ex f ef} {_:reified_of x ex} {_:forall v ev, reified_of v (Var ev) -> reified_of (f v) (ef ev)}
   : reified_of (Let_In x f) (LetIn ex ef) := I.
+#[global]
 Instance reify_0 : reified_of 0 Zero := I.
+#[global]
 Instance reify_S {n en} {_:reified_of n en} : reified_of (S n) (Succ en) := I.
 Definition reify (v : nat) {ev : expr} {_ : reified_of v ev} := ev.
+#[global]
 Hint Extern 1 (reified_of _ ?ev) => progress cbv [ev] : typeclass_instances.
+#[global]
 Hint Extern 0 (reified_of _ _) => progress cbv [nested_lets] : typeclass_instances.
 Notation reified v := (match _ with e => match _ : reified_of v e with _ => e end end) (only parsing).
 

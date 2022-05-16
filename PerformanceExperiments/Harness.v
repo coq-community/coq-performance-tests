@@ -283,15 +283,19 @@ Proof.
   intros x y; specialize (Hr x y); destruct Hr; intuition (eauto; congruence).
 Qed.
 
+#[global]
 Instance reflect_eq_nat : reflect_rel (@eq nat) Nat.eqb
   := reflect_rel_of_beq_iff Nat.eqb_eq.
 
+#[global]
 Instance reflect_eq_N : reflect_rel (@eq N) N.eqb
   := reflect_rel_of_beq_iff N.eqb_eq.
 
+#[global]
 Instance reflect_eq_positive : reflect_rel (@eq positive) Pos.eqb
   := reflect_rel_of_beq_iff Pos.eqb_eq.
 
+#[global]
 Instance reflect_eq_Z : reflect_rel (@eq Z) Z.eqb
   := reflect_rel_of_beq_iff Z.eqb_eq.
 
@@ -308,24 +312,33 @@ Proof.
 Defined.
 Local Unset Implicit Arguments.
 
+#[global]
 Instance reflect_eq_prod {A B eqA eqB} {_ : reflect_rel (@eq A) eqA} {_ : reflect_rel (@eq B) eqB}
   : reflect_rel (@eq (A * B)) (prod_beq eqA eqB)
   := reflect_rel_of_beq_iff (prod_beq_iff (reflect_rel_to_beq_iff _) (reflect_rel_to_beq_iff _)).
 
 Class has_sub T := sub : T -> T -> T.
+#[global]
 Instance: has_sub nat := Nat.sub.
+#[global]
 Instance: has_sub Z := Z.sub.
 
 Class has_succ T := succ : T -> T.
+#[global]
 Instance: has_succ nat := S.
+#[global]
 Instance: has_succ Z := Z.succ.
 
 Class has_zero T := zero : T.
+#[global]
 Instance: has_zero nat := O.
+#[global]
 Instance: has_zero Z := Z0.
 
 Class has_sort T := sort : list T -> list T.
+#[global]
 Instance: has_sort nat := NatSort.sort.
+#[global]
 Instance: has_sort Z := ZSort.sort.
 
 Definition remove_smaller_args_of_size_by_reflect
