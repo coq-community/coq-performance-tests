@@ -65,6 +65,7 @@ Local Arguments f_equal {_ _} _ {_ _} _.
 
 Definition fst_pair {A B} (a:A) (b:B) : fst (a,b) = a := eq_refl.
 Definition snd_pair {A B} (a:A) (b:B) : snd (a,b) = b := eq_refl.
+#[global]
 Create HintDb cancel_primpair discriminated. Hint Rewrite @fst_pair @snd_pair : cancel_primpair.
 
 (** ** Equality for [prod] *)
@@ -127,6 +128,7 @@ Proof. repeat (intros [? ?] || intro || split); assumption. Defined.
 Global Instance iff_prod_Proper
   : Proper (iff ==> iff ==> iff) (fun A B => prod A B).
 Proof. repeat intro; tauto. Defined.
+#[global]
 Hint Extern 2 (Proper _ (fun A B => prod A B)) => refine iff_prod_Proper : typeclass_instances.
 
 (** ** Useful Tactics *)

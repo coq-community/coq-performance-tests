@@ -37,6 +37,7 @@ Ltac verify _ :=
     => is_var acc; verify_form acc lhs
   end.
 
+#[global]
 Hint Rewrite Z.add_0_r : mydb.
 
 Inductive rewrite_strat_kind := topdown | bottomup.
@@ -175,6 +176,7 @@ Ltac time_solve_goal2 := time_solve_goal constr:(kind_setoid_rewrite).
 Ltac run2 sz := Harness.runtests_verify_sanity (args_of_size (kind_setoid_rewrite)) describe_goal mkgoal2 redgoal time_solve_goal2 verify sz.
 
 
+#[global]
 Hint Opaque Let_In Z.add : rewrite typeclass_instances.
 Global Opaque Let_In Z.add.
 
