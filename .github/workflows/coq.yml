@@ -135,6 +135,7 @@ jobs:
         uses: webfactory/ssh-agent@v0.4.1
         with:
           ssh-private-key: ${{ secrets.HISTORY_DEPLOY_KEY }}
+        if: github.ref == 'refs/heads/master' && ( github.event_name == 'push' || github.event_name == 'schedule' )
       - name: Download a Build Artifact
         uses: actions/download-artifact@v2
         with:
