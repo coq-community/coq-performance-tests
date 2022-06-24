@@ -86,7 +86,7 @@ jobs:
         echo "::group::apt-show-versions $COQ_PACKAGE"
         apt-show-versions $COQ_PACKAGE
         echo "::endgroup::"
-    - run: make -j2
+    - run: make -j2 TiMED=1
     - run: make perf
     - run: make validate -j2
     - run: sudo make install install-perf
