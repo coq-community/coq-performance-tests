@@ -95,7 +95,7 @@ jobs:
     - run: make copy-pdf copy-doc copy-perf OUTPUT="doc-build/${COQ_VERSION}"
     - run: apt-show-versions $COQ_PACKAGE > doc-build/${COQ_VERSION}/.apt-show-versions
     - name: Upload artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: ${{ matrix.env.COQ_VERSION }}
         path: doc-build/${{ matrix.env.COQ_VERSION }}
