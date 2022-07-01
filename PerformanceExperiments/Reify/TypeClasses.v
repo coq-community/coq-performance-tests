@@ -25,10 +25,9 @@ Module TypeClasses.
     infer reifications if it doesn't fully know what term it's
     reifying. *)
 
-#[global]
-  Hint Mode reify_of - ! - : typeclass_instances.
-#[global]
-  Hint Opaque Nat.mul Let_In : typeclass_instances.
+
+  Global Hint Mode reify_of - ! - : typeclass_instances.
+  Global Hint Opaque Nat.mul Let_In : typeclass_instances.
 
   Ltac reify var x :=
     let c := constr:(_ : @reify_of var x _) in
@@ -100,10 +99,8 @@ Module TypeClassesBodyHOAS.
     infer reifications if it doesn't fully know what term it's
     reifying. *)
 
-#[global]
-  Hint Mode reify_of ! : typeclass_instances.
-#[global]
-  Hint Opaque Nat.mul Let_In : typeclass_instances.
+  Global Hint Mode reify_of ! : typeclass_instances.
+  Global Hint Opaque Nat.mul Let_In : typeclass_instances.
 
   Ltac Reify x :=
     constr:(_ : @reify_of x).
@@ -163,10 +160,8 @@ Module TypeClassesBodyFlatPHOAS.
     infer reifications if it doesn't fully know what term it's
     reifying. *)
 
-#[global]
-  Hint Mode reify_of - ! : typeclass_instances.
-#[global]
-  Hint Opaque Nat.mul : typeclass_instances.
+  Global Hint Mode reify_of - ! : typeclass_instances.
+  Global Hint Opaque Nat.mul : typeclass_instances.
 
   Ltac reify var x :=
     constr:(_ : @reify_of var x).
