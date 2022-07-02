@@ -75,8 +75,8 @@ jobs:
           echo '::group::make validate -j2'
           make validate -j2
           echo '::endgroup::'
-          echo '::group::sudo make install install-perf'
-          sudo make install install-perf
+          echo '::group::make install install-perf'
+          make install install-perf
           echo '::endgroup::'
           echo '::group::make copy-perf OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"'
           make copy-perf OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"
