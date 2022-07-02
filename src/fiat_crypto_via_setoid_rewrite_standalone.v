@@ -120,7 +120,7 @@ Global Instance Proper_Let_In_nd_changevalue_forall {A B} {RB:relation B}
 Proof. cbv; intuition (subst; eauto). Qed.
 
 (* Strangely needed in some cases where we have [(fun _ => foo) ...] messing up dependency calculation *)
-Hint Extern 1 (Proper _ (@Let_In _ _)) => progress cbv beta : typeclass_instances.
+Global Hint Extern 1 (Proper _ (@Let_In _ _)) => progress cbv beta : typeclass_instances.
 
 Definition app_Let_In_nd {A B T} (f:B->T) (e:A) (C:A->B)
   : f (Let_In e C) = Let_In e (fun v => f (C v)) := eq_refl.
@@ -375,7 +375,7 @@ Ltac solve_Proper_eq :=
       unify R R';
       apply (@reflexive_proper A R')
   end.
-Hint Extern 0 (Proper _ _) => solve_Proper_eq : typeclass_instances.
+Global Hint Extern 0 (Proper _ _) => solve_Proper_eq : typeclass_instances.
 
 Declare Reduction mycbv := cbv [Pos.of_succ_nat Pos.succ Pos.mul Pos.add Z_div_unfolded Z_pow_unfolded Z_modulo_unfolded Pos_eqb_unfolded].
 Ltac mycbv := cbv [Pos.of_succ_nat Pos.succ Pos.mul Pos.add Z_div_unfolded Z_pow_unfolded Z_modulo_unfolded Pos_eqb_unfolded].
@@ -384,7 +384,7 @@ Declare Reduction morecbv := cbv [Associational.repeat_reduce Positional.from_as
 Ltac morecbv := cbv [Associational.repeat_reduce Positional.from_associational Positional.zeros repeat Positional.place Positional.chained_carries Positional.add_to_nth Positional.carry_reduce Positional.carry Positional.to_associational seq Associational.carry Associational.carryterm].
 
 Opaque Let_In.
-Hint Constants Opaque : rewrite.
+Global Hint Constants Opaque : rewrite.
 
 Global Instance flat_map_Proper A B : Proper (pointwise_relation _ eq ==> eq ==> eq) (@flat_map A B).
 Proof. Admitted.
@@ -411,8 +411,8 @@ Global Instance: forall A B, Proper (eq ==> eq ==> eq) (@pair A B) := _.
 Global Instance: forall A B P, Proper (pointwise_relation _ (pointwise_relation _ eq) ==> eq ==> eq) (@prod_rect A B (fun _ => P)).
 Proof. intros ? ? ? f g Hfg [? ?] ? ?; subst; apply Hfg. Qed.
 Global Instance: Transitive (Basics.flip Basics.impl) := _.
-Existing Instance pointwise_map.
-Existing Instance fold_right_Proper.
+Global Existing Instance pointwise_map.
+Global Existing Instance fold_right_Proper.
 Global Instance: forall A B, Proper (forall_relation (fun _ => pointwise_relation _ eq) ==> eq ==> eq ==> eq) (@fold_right A B).
 Proof. intros ? ? f g Hfg. apply fold_right_Proper, Hfg. Qed.
 Global Instance: forall A B x, (Proper (pointwise_relation _ eq ==> eq) (@Let_In A (fun _ => B) x)) := _.

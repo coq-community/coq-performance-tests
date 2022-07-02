@@ -17,7 +17,7 @@ Module Type LetInT.
   Notation "'dlet' x .. y := v 'in' f" := (Let_In v (fun x => .. (fun y => f) .. )).
   Axiom Let_In_nd_Proper : forall {A P},
       Proper (eq ==> pointwise_relation _ eq ==> eq) (@Let_In A (fun _ => P)).
-  Hint Extern 0 (Proper _ (@Let_In _ _)) => simple apply @Let_In_nd_Proper : typeclass_instances.
+  Global Hint Extern 0 (Proper _ (@Let_In _ _)) => simple apply @Let_In_nd_Proper : typeclass_instances.
 End LetInT.
 
 Module Export LetIn : LetInT.
@@ -26,7 +26,7 @@ Module Export LetIn : LetInT.
   Lemma Let_In_def : @Let_In = fun A P x f => let y := x in f y.
   Proof. reflexivity. Qed.
   Global Strategy 100 [Let_In].
-  Hint Opaque Let_In : rewrite.
+  Global Hint Opaque Let_In : rewrite.
   Global Instance Let_In_nd_Proper {A P}
     : Proper (eq ==> pointwise_relation _ eq ==> eq) (@Let_In A (fun _ => P)).
   Proof. cbv; intros; subst; auto. Qed.

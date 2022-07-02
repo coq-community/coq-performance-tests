@@ -51,8 +51,10 @@ else
 GREP_INVOCATION:=
 endif
 
+WARNINGS := -deprecated-hint-rewrite-without-locality,-deprecated-typeclasses-transparency-without-locality
+
 _CoqProject::
-	$(HIDE)(echo "-Q . CoqPerformanceTests"; ($(FILE_FINDER) "*.v" $(GREP_INVOCATION))) > $@
+	$(HIDE)(echo "-Q . CoqPerformanceTests"; echo '-arg -w -arg $(WARNINGS)'; ($(FILE_FINDER) "*.v" $(GREP_INVOCATION))) > $@
 
 Makefile.coq: _CoqProject
 	$(COQBIN)coq_makefile -f $< -o $@

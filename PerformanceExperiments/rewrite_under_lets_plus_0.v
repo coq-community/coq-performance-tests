@@ -175,7 +175,7 @@ Ltac time_solve_goal2 := time_solve_goal constr:(kind_setoid_rewrite).
 Ltac run2 sz := Harness.runtests_verify_sanity (args_of_size (kind_setoid_rewrite)) describe_goal mkgoal2 redgoal time_solve_goal2 verify sz.
 
 
-Hint Opaque Let_In Z.add : rewrite typeclass_instances.
+Global Hint Opaque Let_In Z.add : rewrite typeclass_instances.
 Global Opaque Let_In Z.add.
 
 Global Instance : forall {A}, Proper (eq ==> eq ==> Basics.flip Basics.impl) (@eq A) := _.

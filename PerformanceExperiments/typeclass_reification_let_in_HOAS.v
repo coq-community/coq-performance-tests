@@ -20,16 +20,16 @@ Axiom P : expr -> Prop.
 Axiom p : forall e, P e.
 
 Class reified_of (v : nat) (e : expr) := dummy : True.
-Hint Mode reified_of ! - : typeclass_instances.
-Instance reify_plus {x ex y ey} {_:reified_of x ex} {_:reified_of y ey}
+Global Hint Mode reified_of ! - : typeclass_instances.
+Global Instance reify_plus {x ex y ey} {_:reified_of x ex} {_:reified_of y ey}
   : reified_of (x + y) (Plus ex ey) := I.
-Instance reify_LetIn {x ex f ef} {_:reified_of x ex} {_:forall v ev, reified_of v (Var ev) -> reified_of (f v) (ef ev)}
+Global Instance reify_LetIn {x ex f ef} {_:reified_of x ex} {_:forall v ev, reified_of v (Var ev) -> reified_of (f v) (ef ev)}
   : reified_of (Let_In x f) (LetIn ex ef) := I.
-Instance reify_0 : reified_of 0 Zero := I.
-Instance reify_S {n en} {_:reified_of n en} : reified_of (S n) (Succ en) := I.
+Global Instance reify_0 : reified_of 0 Zero := I.
+Global Instance reify_S {n en} {_:reified_of n en} : reified_of (S n) (Succ en) := I.
 Definition reify (v : nat) {ev : expr} {_ : reified_of v ev} := ev.
-Hint Extern 1 (reified_of _ ?ev) => progress cbv [ev] : typeclass_instances.
-Hint Extern 0 (reified_of _ _) => progress cbv [nested_lets] : typeclass_instances.
+Global Hint Extern 1 (reified_of _ ?ev) => progress cbv [ev] : typeclass_instances.
+Global Hint Extern 0 (reified_of _ _) => progress cbv [nested_lets] : typeclass_instances.
 Notation reified v := (match _ with e => match _ : reified_of v e with _ => e end end) (only parsing).
 
 Ltac mkgoal n := constr:(True).

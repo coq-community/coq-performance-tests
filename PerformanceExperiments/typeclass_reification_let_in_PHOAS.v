@@ -23,24 +23,24 @@ Ltac solve_P := intros; apply p.
 
 Class type_reified_of (v : Type) (t : type) := dummyT : True.
 Typeclasses Opaque type_reified_of.
-Hint Mode type_reified_of ! - : typeclass_instances.
-Instance reify_nat : type_reified_of nat NAT := I.
+Global Hint Mode type_reified_of ! - : typeclass_instances.
+Global Instance reify_nat : type_reified_of nat NAT := I.
 Class reified_of {var A B} (v : A) (e : @expr var B) := dummy : True.
 Typeclasses Opaque reified_of.
 Typeclasses Opaque Nat.add.
-Hint Mode reified_of - - - ! - : typeclass_instances.
-Instance reify_plus {var x ex y ey} {_:reified_of x ex} {_:reified_of y ey}
+Global Hint Mode reified_of - - - ! - : typeclass_instances.
+Global Instance reify_plus {var x ex y ey} {_:reified_of x ex} {_:reified_of y ey}
   : reified_of (x + y) (@Plus var ex ey) := I.
-Instance reify_LetIn {var A B tA tB x ex f ef} {_:reified_of x ex} {_:forall v ev, reified_of v (Var ev) -> reified_of (f v) (ef ev)}
+Global Instance reify_LetIn {var A B tA tB x ex f ef} {_:reified_of x ex} {_:forall v ev, reified_of v (Var ev) -> reified_of (f v) (ef ev)}
   : reified_of (@Let_In A (fun _ => B) x f) (@LetIn var tA tB ex ef) := I.
-Instance reify_0 {var} : reified_of 0 (@Zero var) := I.
-Instance reify_S {var n en} {_:reified_of n en} : reified_of (S n) (@Succ var en) := I.
+Global Instance reify_0 {var} : reified_of 0 (@Zero var) := I.
+Global Instance reify_S {var n en} {_:reified_of n en} : reified_of (S n) (@Succ var en) := I.
 Definition reify {var T T'} (v : T) {ev : @expr var T'} {_ : reified_of v ev} := ev.
 Ltac subst_evars :=
   repeat match goal with
          | [ x := ?e |- _ ] => is_evar e; subst x
          end.
-Hint Extern 0 (reified_of _ _) => progress (cbv [nested_lets]; subst_evars) : typeclass_instances.
+Global Hint Extern 0 (reified_of _ _) => progress (cbv [nested_lets]; subst_evars) : typeclass_instances.
 
 Notation reified var' v := (match _ return _ with t => match _ : @expr var' t return _ with e => match _ : reified_of v e with _ => e end end end) (only parsing).
 
