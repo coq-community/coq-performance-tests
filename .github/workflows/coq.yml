@@ -71,9 +71,6 @@ jobs:
           echo "::group::uname -a"
           uname -a
           echo "::endgroup::"
-          echo "::group::lsb_release -a"
-          lsb_release -a
-          echo "::endgroup::"
           echo "::group::etc/machine.sh"
           etc/machine.sh
           echo "::endgroup::"
