@@ -49,8 +49,8 @@ pdf:
 
 .PHONY: copy-pdf
 copy-pdf:
-	mkdir -p $(OUTPUT)
-	cp -t $(OUTPUT) plots/all.pdf
+	mkdir -p "$(OUTPUT)"
+	cp -t "$(OUTPUT)" plots/all.pdf
 
 .PHONY: doc
 doc:
@@ -58,11 +58,13 @@ doc:
 
 .PHONY: copy-perf
 copy-perf:
+	mkdir -p "$(OUTPUT)"
 	+$(MAKE) --no-print-directory -C PerformanceExperiments OUTPUT="$(abspath $(OUTPUT))" $@
 
 .PHONY: copy-doc
 copy-doc:
-	cp -t $(OUTPUT) plots/*.svg
+	mkdir -p "$(OUTPUT)"
+	cp -t "$(OUTPUT)" plots/*.svg
 
 include PerformanceExperiments/Makefile.variables
 PERF_KINDS := $(addprefix perf-,$(SIZES))
