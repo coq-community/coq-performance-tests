@@ -81,6 +81,7 @@ jobs:
           echo '::group::make copy-perf OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"'
           make copy-perf OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"
           echo '::endgroup::'
+    - run: sudo chmod -R a+rw .
     - run: make pdf
     - run: make doc
     - run: make copy-pdf copy-doc OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"
