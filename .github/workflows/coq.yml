@@ -26,26 +26,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: install deps
-      run: |
-        sudo apt-get -o Acquire::Retries=30 update -q
-        sudo apt-get -o Acquire::Retries=30 install -y --allow-unauthenticated \
-          texlive \
-          texlive-latex-extra \
-          texlive-bibtex-extra \
-          texlive-science \
-          texlive-luatex \
-          texlive-lang-greek \
-          lmodern \
-          biber \
-          gnuplot-nox \
-          wget \
-          curl \
-          sed \
-          grep \
-          pdf2svg \
-          python \
-          python-pygments
     - name: echo build params
       run: |
         echo "::group::lscpu"
@@ -65,6 +45,50 @@ jobs:
         coq_version: ${{ matrix.COQ_VERSION }}
         ocaml_version: default
         custom_script: |
+          echo "::group::install deps"
+          sudo apt-get -o Acquire::Retries=30 update -q
+          sudo apt-get -o Acquire::Retries=30 install -y --allow-unauthenticated \
+            texlive \
+            texlive-latex-extra \
+            texlive-bibtex-extra \
+            texlive-science \
+            texlive-luatex \
+            texlive-lang-greek \
+            lmodern \
+            biber \
+            gnuplot-nox \
+            wget \
+            curl \
+            sed \
+            grep \
+            pdf2svg \
+            python \
+            python-pygments
+          echo '::endgroup::'
+          echo "::group::lscpu"
+          lscpu
+          echo "::endgroup::"
+          echo "::group::uname -a"
+          uname -a
+          echo "::endgroup::"
+          echo "::group::lsb_release -a"
+          lsb_release -a
+          echo "::endgroup::"
+          echo "::group::etc/machine.sh"
+          etc/machine.sh
+          echo "::endgroup::"
+          echo "::group::ocamlc -config"
+          ocamlc -config
+          echo "::endgroup::"
+          echo "::group::coqc --config"
+          coqc --config
+          echo "::endgroup::"
+          echo "::group::coqc --version"
+          coqc --version
+          echo "::endgroup::"
+          echo "::group::echo | coqtop"
+          true | coqtop
+          echo "::endgroup::"
           sudo chmod -R a+rw .
           echo '::group::make -j2 TIMED=1'
           make -j2 TIMED=1
@@ -81,10 +105,15 @@ jobs:
           echo '::group::make copy-perf OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"'
           make copy-perf OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"
           echo '::endgroup::'
-    - run: sudo chmod -R a+rw .
-    - run: make pdf
-    - run: make doc
-    - run: make copy-pdf copy-doc OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"
+          echo '::group::make pdf'
+          make pdf
+          echo '::endgroup::'
+          echo '::group::make doc'
+          make doc
+          echo '::endgroup::'
+          echo '::group::make copy-pdf copy-doc OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"'
+          make copy-pdf copy-doc OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"
+          echo '::endgroup::'
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
