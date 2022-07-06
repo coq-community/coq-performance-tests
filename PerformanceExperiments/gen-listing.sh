@@ -10,7 +10,7 @@ stems="$@"
 stems="$(echo "$stems" | tr ' ' '\n' | sed 's/\.v$//g' | tr '\n' ' ')"
 extra_bar=""
 extra_bar_space=""
-coq_versions="$(grep -o 'COQ_VERSION:\s*[^, ]*' .github/workflows/coq.yml | sed 's/COQ_VERSION://g; s/[ "]//g')"
+coq_versions="$(grep -o 'COQ_VERSION:.*$' .github/workflows/coq.yml | sed 's/COQ_VERSION://g; s/\[//g; s/\]//g; s/[ "'"'"']//g; s/,/ /g')"
 for stem in $stems; do
     stem_dash="$(echo "$stem" | sed 's,[_/],-,g')"
     echo

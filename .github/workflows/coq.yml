@@ -15,51 +15,16 @@ jobs:
       fail-fast: false
       matrix:
         # N.B. The update-README makefile target pulls information
-        # about Coq versions from this file, so be careful about
-        # ordering of the env and about the presence of COQ_VERSION
-        # immediately followed by : in this file
-        env:
-        - { COQ_VERSION: "master", COQ_PACKAGE: "coq        libcoq-ocaml-dev"       , PPA: "ppa:jgross-h/coq-master-daily"             , TIMED: "1" }
-        - { COQ_VERSION: "8.15.0", COQ_PACKAGE: "coq-8.15.0 libcoq-8.15.0-ocaml-dev", PPA: "ppa:jgross-h/many-coq-versions-ocaml-4-08" , TIMED: "1" }
-        - { COQ_VERSION: "8.14.1", COQ_PACKAGE: "coq-8.14.1 libcoq-8.14.1-ocaml-dev", PPA: "ppa:jgross-h/many-coq-versions-ocaml-4-08" , TIMED: "1" }
-        - { COQ_VERSION: "8.13.2", COQ_PACKAGE: "coq-8.13.2 libcoq-8.13.2-ocaml-dev", PPA: "ppa:jgross-h/many-coq-versions-ocaml-4-05" , TIMED: "1" }
-        - { COQ_VERSION: "8.12.2", COQ_PACKAGE: "coq-8.12.2 libcoq-8.12.2-ocaml-dev", PPA: "ppa:jgross-h/many-coq-versions-ocaml-4-05" , TIMED: "1" }
-        - { COQ_VERSION: "8.11.2", COQ_PACKAGE: "coq-8.11.2 libcoq-8.11.2-ocaml-dev", PPA: "ppa:jgross-h/many-coq-versions-ocaml-4-05" , TIMED: "1" }
-        - { COQ_VERSION: "8.10.2", COQ_PACKAGE: "coq-8.10.2 libcoq-8.10.2-ocaml-dev", PPA: "ppa:jgross-h/many-coq-versions-ocaml-4-05" , TIMED: "1" }
-        - { COQ_VERSION: "8.9.1" , COQ_PACKAGE: "coq-8.9.1  libcoq-8.9.1-ocaml-dev" , PPA: "ppa:jgross-h/many-coq-versions"            , TIMED: "1" }
-        - { COQ_VERSION: "8.8.2" , COQ_PACKAGE: "coq-8.8.2  libcoq-8.8.2-ocaml-dev" , PPA: "ppa:jgross-h/many-coq-versions"            , TIMED: "1" }
-
-    env: ${{ matrix.env }}
+        # about Coq versions from this file, so be careful about the
+        # presence of COQ_VERSION immediately followed by : in this
+        # file and about the ordering of the list
+        COQ_VERSION: ["dev", "8.15", "8.14", "8.13", "8.12", "8.11", "8.10", "8.9", "8.8"]
 
     concurrency:
-      group: ${{ github.workflow }}-${{ matrix.env.COQ_VERSION }}-${{ github.head_ref || github.run_id }}
+      group: ${{ github.workflow }}-${{ matrix.COQ_VERSION }}-${{ github.head_ref || github.run_id }}
       cancel-in-progress: true
 
     steps:
-    - name: install Coq and deps
-      run: |
-        if [ ! -z "$PPA" ]; then sudo add-apt-repository "$PPA" -y; fi
-        sudo apt-get -o Acquire::Retries=30 update -q
-        sudo apt-get -o Acquire::Retries=30 install -y --allow-unauthenticated \
-          ocaml-findlib \
-          $COQ_PACKAGE \
-          apt-show-versions \
-          texlive \
-          texlive-latex-extra \
-          texlive-bibtex-extra \
-          texlive-science \
-          texlive-luatex \
-          texlive-lang-greek \
-          lmodern \
-          biber \
-          gnuplot-nox \
-          wget \
-          curl \
-          sed \
-          grep \
-          pdf2svg \
-          python \
-          python-pygments
     - uses: actions/checkout@v3
     - name: echo build params
       run: |
@@ -75,34 +40,82 @@ jobs:
         echo "::group::etc/machine.sh"
         etc/machine.sh
         echo "::endgroup::"
-        echo "::group::ocamlc -config"
-        ocamlc -config
-        echo "::endgroup::"
-        echo "::group::coqc --config"
-        coqc --config
-        echo "::endgroup::"
-        echo "::group::coqc --version"
-        coqc --version
-        echo "::endgroup::"
-        echo "::group::echo | coqtop"
-        true | coqtop
-        echo "::endgroup::"
-        echo "::group::apt-show-versions $COQ_PACKAGE"
-        apt-show-versions $COQ_PACKAGE
-        echo "::endgroup::"
-    - run: make -j2 TiMED=1
-    - run: make perf
-    - run: make validate -j2
-    - run: sudo make install install-perf
-    - run: make pdf
-    - run: make doc
-    - run: make copy-pdf copy-doc copy-perf OUTPUT="doc-build/${COQ_VERSION}"
-    - run: apt-show-versions $COQ_PACKAGE > doc-build/${COQ_VERSION}/.apt-show-versions
+    - uses: coq-community/docker-coq-action@v1
+      with:
+        coq_version: ${{ matrix.COQ_VERSION }}
+        ocaml_version: default
+        custom_script: |
+          echo "::group::install deps"
+          sudo apt-get -o Acquire::Retries=30 update -q
+          sudo apt-get -o Acquire::Retries=30 install -y --allow-unauthenticated \
+            texlive \
+            texlive-latex-extra \
+            texlive-bibtex-extra \
+            texlive-science \
+            texlive-luatex \
+            texlive-lang-greek \
+            lmodern \
+            biber \
+            gnuplot-nox \
+            wget \
+            curl \
+            sed \
+            grep \
+            pdf2svg \
+            python3 \
+            python3-pygments
+          echo '::endgroup::'
+          echo "::group::lscpu"
+          lscpu
+          echo "::endgroup::"
+          echo "::group::uname -a"
+          uname -a
+          echo "::endgroup::"
+          echo "::group::etc/machine.sh"
+          etc/machine.sh
+          echo "::endgroup::"
+          echo "::group::ocamlc -config"
+          ocamlc -config
+          echo "::endgroup::"
+          echo "::group::coqc --config"
+          coqc --config
+          echo "::endgroup::"
+          echo "::group::coqc --version"
+          coqc --version
+          echo "::endgroup::"
+          echo "::group::echo | coqtop"
+          true | coqtop
+          echo "::endgroup::"
+          sudo chmod -R a+rw .
+          echo '::group::make -j2 TIMED=1'
+          make -j2 TIMED=1
+          echo '::endgroup::'
+          echo '::group::make perf TIMED=1'
+          make perf TIMED=1
+          echo '::endgroup::'
+          echo '::group::make validate -j2'
+          make validate -j2
+          echo '::endgroup::'
+          echo '::group::make install install-perf'
+          make install install-perf
+          echo '::endgroup::'
+          echo '::group::make copy-perf OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"'
+          make copy-perf OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"
+          echo '::endgroup::'
+          echo '::group::make pdf'
+          make pdf
+          echo '::endgroup::'
+          echo '::group::make doc'
+          make doc
+          echo '::endgroup::'
+          echo '::group::make copy-pdf copy-doc OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"'
+          make copy-pdf copy-doc OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"
+          echo '::endgroup::'
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ matrix.env.COQ_VERSION }}
-        path: doc-build/${{ matrix.env.COQ_VERSION }}
+        name: ${{ matrix.COQ_VERSION }}
+        path: doc-build/${{ matrix.COQ_VERSION }}
 
   deploy:
 
