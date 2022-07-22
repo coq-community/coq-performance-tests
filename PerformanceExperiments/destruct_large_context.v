@@ -7,8 +7,8 @@ Fixpoint mkgoal_nat (n : nat) : Prop
 
 Global Set Warnings Append "-abstract-large-number".
 
-(*Ltac mkgoal n := constr:(mkgoal_nat (Z.to_nat n)).*)
-Ltac redgoal _ := idtac. (*time lazy; time intros.*)
+Ltac mkgoal n := constr:(mkgoal_nat (Z.to_nat n)).
+Ltac redgoal _ := idtac.
 Ltac step_goal _ :=
   let __ := match goal with
             | _ => (let H := fresh in
@@ -19,6 +19,8 @@ Ltac step_goal _ :=
 
 Ltac time_solve_goal0 n :=
   idtac;
+  time "lazy-regression-linear" lazy;
+  time "intros-regression-linear" intros;
   let H := fresh in
   assert_succeeds (pose proof (conj I I) as H;
                    assert_succeeds (time "destruct-and-regression-linear" destruct H);
@@ -33,13 +35,13 @@ Definition args_of_size (s : size) : list Z
   := match s with
      | Sanity => List.map Z.of_nat (seq 1 3)
      | SuperFast => List.map Z.of_nat (seq 1 10)
-     | Fast => List.map (fun x => Z.of_nat x * 10) (seq 1 20)
+     | Fast => List.map (fun x => Z.of_nat x * 50) (seq 1 4)
      | Medium => []
      | Slow => []
      | VerySlow => []
      end.
 
-Ltac run0 sz := Harness.runtests_step args_of_size default_describe_goal step_goal redgoal time_solve_goal0 sz.
+Ltac run0 sz := Harness.runtests args_of_size default_describe_goal mkgoal redgoal time_solve_goal0 sz(*Harness.runtests_step args_of_size default_describe_goal step_goal redgoal time_solve_goal0 sz*).
 (*
 Goal True. run0 Sanity. run0 SuperFast. run0 Fast. Abort.
 *)
