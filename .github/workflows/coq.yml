@@ -47,7 +47,7 @@ jobs:
         coq_version: ${{ matrix.COQ_VERSION }}
         ocaml_version: default
         custom_script: |
-          echo "::group::install deps"
+          startGroup "install deps"
           sudo apt-get -o Acquire::Retries=30 update -q
           sudo apt-get -o Acquire::Retries=30 install -y --allow-unauthenticated \
             texlive \
@@ -66,55 +66,55 @@ jobs:
             pdf2svg \
             python3 \
             python3-pygments
-          echo '::endgroup::'
-          echo "::group::lscpu"
+          endGroup
+          startGroup "lscpu"
           lscpu
-          echo "::endgroup::"
-          echo "::group::uname -a"
+          endGroup
+          startGroup "uname -a"
           uname -a
-          echo "::endgroup::"
-          echo "::group::etc/machine.sh"
+          endGroup
+          startGroup "etc/machine.sh"
           etc/machine.sh
-          echo "::endgroup::"
-          echo "::group::ocamlc -config"
+          endGroup
+          startGroup "ocamlc -config"
           ocamlc -config
-          echo "::endgroup::"
-          echo "::group::coqc --config"
+          endGroup
+          startGroup "coqc --config"
           coqc --config
-          echo "::endgroup::"
-          echo "::group::coqc --version"
+          endGroup
+          startGroup "coqc --version"
           coqc --version
-          echo "::endgroup::"
-          echo "::group::echo | coqtop"
+          endGroup
+          startGroup "echo | coqtop"
           true | coqtop
-          echo "::endgroup::"
+          endGroup
           sudo chmod -R a=u .
           # Work around https://github.com/actions/checkout/issues/766
           git config --global --add safe.directory "*"
-          echo '::group::make -j2 TIMED=1'
+          startGroup 'make -j2 TIMED=1'
           make -j2 TIMED=1
-          echo '::endgroup::'
-          echo '::group::make perf TIMED=1'
+          endGroup
+          startGroup 'make perf TIMED=1'
           make perf TIMED=1
-          echo '::endgroup::'
-          echo '::group::make validate -j2'
+          endGroup
+          startGroup 'make validate -j2'
           make validate -j2
-          echo '::endgroup::'
-          echo '::group::make install install-perf'
+          endGroup
+          startGroup 'make install install-perf'
           make install install-perf
-          echo '::endgroup::'
-          echo '::group::make copy-perf OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"'
+          endGroup
+          startGroup 'make copy-perf OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"'
           make copy-perf OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"
-          echo '::endgroup::'
-          echo '::group::make pdf'
+          endGroup
+          startGroup 'make pdf'
           make pdf
-          echo '::endgroup::'
-          echo '::group::make doc'
+          endGroup
+          startGroup 'make doc'
           make doc
-          echo '::endgroup::'
-          echo '::group::make copy-pdf copy-doc OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"'
+          endGroup
+          startGroup 'make copy-pdf copy-doc OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"'
           make copy-pdf copy-doc OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"
-          echo '::endgroup::'
+          endGroup
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
