@@ -20,7 +20,7 @@ jobs:
         # about Coq versions from this file, so be careful about the
         # presence of COQ_VERSION immediately followed by : in this
         # file and about the ordering of the list
-        COQ_VERSION: ["dev", "8.15", "8.14", "8.13", "8.12", "8.11", "8.10", "8.9", "8.8"]
+        COQ_VERSION: ["dev", "8.18", "8.17", "8.16", "8.15", "8.14", "8.13", "8.12", "8.11", "8.10", "8.9", "8.8"]
 
     concurrency:
       group: ${{ github.workflow }}-${{ matrix.COQ_VERSION }}-${{ github.head_ref || ( github.ref == 'refs/heads/master' && github.run_id ) || github.ref }}
