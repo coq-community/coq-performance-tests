@@ -959,7 +959,7 @@ Chars 36642 - 36738 [(time~"goal_of_size~5"~~~try~~...] 31132.252 secs (31123.83
 
 Set Ltac Profiling.
 Set Printing Depth 1000000.
-Set Typeclasses Debug.
+(*Set Typeclasses Debug.*)
 Set Printing Width 1000000.
 
 (* sanity check *)
