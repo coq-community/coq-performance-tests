@@ -16,6 +16,7 @@ KINDS := \
 	rewrite_repeated_app_rewrite_strat \
 	rewrite_repeated_app_fast_rewrite \
 	rewrite_repeated_app_fast_rewrite_no_abstract \
+	destruct_large_context \
 	Reify/BaselineStats \
 	Reify/CanonicalStructures \
 	Reify/LtacVariants \
