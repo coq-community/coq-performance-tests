@@ -444,7 +444,7 @@ Proof. cbv; reflexivity. Qed.
 
 Module ViaSetoidRewrite.
   Ltac go_step :=
-    time (match goal with |- ?G => idtac "Goal:" G end;
+    time ((*match goal with |- ?G => idtac "Goal:" G end;*)
           first [ time setoid_rewrite lift_dlet
                 | time setoid_rewrite lift_dlet1
                 | match goal with
