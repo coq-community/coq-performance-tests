@@ -116,7 +116,7 @@ jobs:
           make copy-pdf copy-doc OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"
           endGroup
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.COQ_VERSION }}
         path: doc-build/${{ matrix.COQ_VERSION }}
