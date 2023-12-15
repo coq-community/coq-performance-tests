@@ -141,7 +141,7 @@ jobs:
       - name: checkout repo (only required because of deploy step) # https://github.com/JamesIves/github-pages-deploy-action/issues/335
         uses: actions/checkout@v4
       - name: Download a Build Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: doc-build
       - name: Deploy pdfs
@@ -168,7 +168,7 @@ jobs:
           ssh-private-key: ${{ secrets.HISTORY_DEPLOY_KEY }}
         if: github.ref == 'refs/heads/master' && ( github.event_name == 'push' || github.event_name == 'schedule' )
       - name: Download a Build Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: doc-build
       - name: Deploy pdfs to history repo
