@@ -17,9 +17,9 @@ Ltac time_solve_goal0 n :=
 Definition args_of_size (s : size) : list Z
   := match s with
      | Sanity => List.map Z.of_nat (seq 1 3)
-     | SuperFast => List.map Z.of_nat (seq 1 140)
-     | Fast => List.map (fun x => Z.of_nat x * 100) (seq 1 10) ++ [1500; 2000]
-     | Medium => []
+     | SuperFast => List.map Z.of_nat (seq 1 45)
+     | Fast => List.map (fun x => Z.of_nat x * 50) (seq 1 4)
+     | Medium => List.map (fun x => Z.of_nat x * 100) (seq 1 10) ++ [1500; 2000]
      | Slow => []
      | VerySlow => []
      end.
