@@ -1,0 +1,8 @@
+Params: 0-univ-count= 8 , 1-n= 3
+Tactic call exact-regression-linear ran for 0. secs (0.u,0.s) (success)
+Tactic call abstract-regression-quadratic ran for 0. secs (0.u,0.s) (success)
+Tactic call close-abstract-regression-quadratic ran for 0. secs (0.u,0.s)
+Params: 0-univ-count= 16 , 1-n= 4
+Tactic call exact-regression-linear ran for 0. secs (0.u,0.s) (success)
+Tactic call abstract-regression-quadratic ran for 0.001 secs (0.001u,0.s) (success)
+Tactic call close-abstract-regression-quadratic ran for 0.001 secs (0.001u,0.s)
