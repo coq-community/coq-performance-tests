@@ -9,17 +9,20 @@ $(COMPONENTS):
 .PHONY: coq
 coq: $(COMPONENTS)
 
-.PHONY: validate
-validate: $(addprefix validate-,$(COMPONENTS))
+define make_delegate_target
+.PHONY: $(1)
+$(1): $(addprefix $(1)-,$(COMPONENTS))
 
-.PHONY: $(addprefix validate-,$(COMPONENTS))
-$(addprefix validate-,$(COMPONENTS)) : validate-% :
-	+$(MAKE) -C $* validate
+.PHONY: $(addprefix $(1)-,$(COMPONENTS))
+$(addprefix $(1)-,$(COMPONENTS)) : $(1)-% :
+	+$(MAKE) -C $$* $(1)
+endef
 
-.PHONY: install clean
-install clean:
-	+$(MAKE) -C src $@
-	+$(MAKE) -C PerformanceExperiments $@
+$(eval $(call make_delegate_target,validate))
+$(eval $(call make_delegate_target,make-pretty-timed))
+$(eval $(call make_delegate_target,print-pretty-timed))
+$(eval $(call make_delegate_target,install))
+$(eval $(call make_delegate_target,clean))
 
 .PHONY: perf
 perf: | PerformanceExperiments
