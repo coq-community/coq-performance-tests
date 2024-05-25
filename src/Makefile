@@ -1,7 +1,11 @@
 .DEFAULT_GOAL := all
 
+mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+mkfile_dir := $(dir $(mkfile_path))
+
 TIMED?=1
 TIMING?=1
+PYTHON?=python
 
 export TIMED
 export TIMING
@@ -20,30 +24,12 @@ COQ_VERSION_PREFIX = The Coq Proof Assistant, version
 COQ_VERSION_FULL := $(subst $(COQ_VERSION_PREFIX),,$(shell $(COQBIN)coqc --version 2>/dev/null))
 COQ_VERSION := $(firstword $(COQ_VERSION_FULL))
 
-SKIP_FILES?=
+include $(mkfile_dir)skip-old.mk
 
-SKIP_IF_NOT_NEW?=
-
-ifneq (,$(filter 8.11%,$(COQ_VERSION)))
-SKIP_FILES+=skip-8.11-older.txt $(SKIP_IF_NOT_NEW)
-else
-SKIP_IF_NOT_NEW+=skip-8.11-older.txt
-ifneq (,$(filter 8.10%,$(COQ_VERSION)))
-SKIP_FILES+=skip-8.10-older.txt $(SKIP_IF_NOT_NEW)
-else
-SKIP_IF_NOT_NEW+=skip-8.10-older.txt
-ifneq (,$(filter 8.9%,$(COQ_VERSION)))
-SKIP_FILES+=skip-8.9-older.txt $(SKIP_IF_NOT_NEW)
-else
-SKIP_IF_NOT_NEW+=skip-8.9-older.txt
-ifneq (,$(filter 8.8%,$(COQ_VERSION)))
-SKIP_FILES+=skip-8.8-older.txt $(SKIP_IF_NOT_NEW)
-else
-# new version, don't skip
-endif
-endif
-endif
-endif
+$(mkfile_dir)skip-old.mk: generate-skip.py Makefile
+	rm -f $@
+	$(PYTHON) $< > $@
+	chmod a-w $@
 
 ifneq (,$(SKIP_FILES))
 GREP_INVOCATION:=| grep -v $(foreach f,$(SKIP_FILES),-f $(f))
