@@ -1,0 +1,16 @@
+Params: 0-nm= 5 , 1-n= 1 , 2-m= 5
+Tactic call setoid_rewrite-regression-cubic ran for 0.174 secs (0.167u,0.007s) (success)
+Params: 0-nm= 5 , 1-n= 5 , 2-m= 1
+Tactic call setoid_rewrite-regression-cubic ran for 0.072 secs (0.072u,0.s) (success)
+Params: 0-nm= 6 , 1-n= 2 , 2-m= 3
+Tactic call setoid_rewrite-regression-cubic ran for 0.124 secs (0.124u,0.s) (success)
+Params: 0-nm= 8 , 1-n= 1 , 2-m= 8
+Tactic call setoid_rewrite-regression-cubic ran for 0.554 secs (0.554u,0.s) (success)
+Params: 0-nm= 8 , 1-n= 8 , 2-m= 1
+Tactic call setoid_rewrite-regression-cubic ran for 0.246 secs (0.246u,0.s) (success)
+Params: 0-nm= 10 , 1-n= 1 , 2-m= 10
+Tactic call setoid_rewrite-regression-cubic ran for 1.156 secs (1.156u,0.s) (success)
+Params: 0-nm= 10 , 1-n= 10 , 2-m= 1
+Tactic call setoid_rewrite-regression-cubic ran for 0.482 secs (0.478u,0.003s) (success)
+Params: 0-nm= 12 , 1-n= 3 , 2-m= 4
+Tactic call setoid_rewrite-regression-cubic ran for 0.239 secs (0.239u,0.s) (success)

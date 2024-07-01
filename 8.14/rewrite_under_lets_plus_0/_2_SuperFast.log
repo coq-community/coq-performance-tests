@@ -1,0 +1,10 @@
+Params: n= 22
+Tactic call setoid_rewrite-regression-cubic ran for 0.023 secs (0.019u,0.003s) (success)
+Params: n= 43
+Tactic call setoid_rewrite-regression-cubic ran for 0.099 secs (0.091u,0.007s) (success)
+Params: n= 64
+Tactic call setoid_rewrite-regression-cubic ran for 0.115 secs (0.115u,0.s) (success)
+Params: n= 85
+Tactic call setoid_rewrite-regression-cubic ran for 0.224 secs (0.217u,0.003s) (success)
+Params: n= 106
+Tactic call setoid_rewrite-regression-cubic ran for 0.331 secs (0.331u,0.s) (success)

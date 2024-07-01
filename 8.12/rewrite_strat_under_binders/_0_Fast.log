@@ -1,0 +1,120 @@
+Params: n= 3
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.009 secs (0.005u,0.004s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.001 secs (0.u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.011 secs (0.006u,0.005s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0. secs (0.u,0.s)
+Params: n= 4
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.051 secs (0.051u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.001 secs (0.001u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.054 secs (0.054u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0. secs (0.u,0.s)
+Params: n= 5
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.013 secs (0.013u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.001 secs (0.001u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.016 secs (0.016u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0.001 secs (0.001u,0.s)
+Params: n= 6
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.017 secs (0.017u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.001 secs (0.001u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.02 secs (0.02u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0.001 secs (0.001u,0.s)
+Params: n= 7
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.023 secs (0.023u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.001 secs (0.001u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.026 secs (0.026u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0.001 secs (0.001u,0.s)
+Params: n= 8
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.028 secs (0.028u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.002 secs (0.002u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.032 secs (0.032u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0.002 secs (0.002u,0.s)
+Params: n= 9
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.032 secs (0.032u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.001 secs (0.001u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.037 secs (0.037u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0.002 secs (0.002u,0.s)
+Params: n= 11
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.046 secs (0.046u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.002 secs (0.002u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.052 secs (0.051u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0.003 secs (0.003u,0.s)
+Params: n= 12
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.053 secs (0.053u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.002 secs (0.002u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.059 secs (0.059u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0.003 secs (0.003u,0.s)
+Params: n= 13
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.062 secs (0.062u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.002 secs (0.002u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.069 secs (0.069u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0.003 secs (0.003u,0.s)
+Params: n= 14
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.071 secs (0.071u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.003 secs (0.003u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.078 secs (0.078u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0.004 secs (0.004u,0.s)
+Params: n= 15
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.08 secs (0.08u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.003 secs (0.003u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.088 secs (0.088u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0.004 secs (0.004u,0.s)
+Params: n= 16
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.091 secs (0.091u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.003 secs (0.003u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.101 secs (0.1u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0.005 secs (0.005u,0.s)
+Params: n= 17
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.101 secs (0.101u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.004 secs (0.004u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.112 secs (0.112u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0.006 secs (0.006u,0.s)
+Params: n= 18
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.112 secs (0.112u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.005 secs (0.005u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.124 secs (0.124u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0.006 secs (0.006u,0.s)
+Params: n= 19
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.126 secs (0.126u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.004 secs (0.004u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.137 secs (0.137u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0.006 secs (0.006u,0.s)
+Params: n= 21
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.153 secs (0.153u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.005 secs (0.005u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.167 secs (0.167u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0.008 secs (0.008u,0.s)
+Params: n= 22
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.17 secs (0.17u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.005 secs (0.005u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.185 secs (0.185u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0.008 secs (0.008u,0.s)
+Params: n= 23
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.185 secs (0.185u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.005 secs (0.005u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.2 secs (0.2u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0.009 secs (0.009u,0.s)
+Params: n= 24
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.204 secs (0.204u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.005 secs (0.005u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.22 secs (0.22u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0.009 secs (0.009u,0.s)
+Params: n= 25
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.224 secs (0.224u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.006 secs (0.006u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.241 secs (0.241u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0.01 secs (0.01u,0.s)
+Params: n= 35
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.478 secs (0.478u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.009 secs (0.009u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.509 secs (0.509u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0.02 secs (0.02u,0.s)
+Params: n= 45
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 0.885 secs (0.885u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.014 secs (0.014u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 0.933 secs (0.933u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0.033 secs (0.033u,0.s)
+Params: n= 50
+Tactic call repeat-rewrite_strat-topdown-regression-cubic ran for 1.155 secs (1.155u,0.s) (success)
+Tactic call noop-repeat-rewrite_strat-topdown-regression-cubic ran for 0.022 secs (0.022u,0.s) (success)
+Tactic call abstract+repeat-rewrite_strat-topdown-regression-cubic ran for 1.213 secs (1.213u,0.s) (success)
+Tactic call close-abstract+repeat-rewrite_strat-topdown-regression-quadratic ran for 0.035 secs (0.035u,0.s)

@@ -1,0 +1,32 @@
+Params: n= 50
+Tactic call refine-regression-quadratic-regression-linear ran for 0. secs (0.u,0.s) (success)
+Tactic call pose-build-and-refine-regression-cubic ran for 0.007 secs (0.007u,0.s) (success)
+Tactic call fast_rewrite-regression-cubic ran for 0.007 secs (0.007u,0.s) (success)
+Params: n= 100
+Tactic call refine-regression-quadratic-regression-linear ran for 0. secs (0.u,0.s) (success)
+Tactic call pose-build-and-refine-regression-cubic ran for 0.061 secs (0.045u,0.016s) (success)
+Tactic call fast_rewrite-regression-cubic ran for 0.061 secs (0.045u,0.016s) (success)
+Params: n= 150
+Tactic call refine-regression-quadratic-regression-linear ran for 0. secs (0.u,0.s) (success)
+Tactic call pose-build-and-refine-regression-cubic ran for 0.049 secs (0.049u,0.s) (success)
+Tactic call fast_rewrite-regression-cubic ran for 0.049 secs (0.049u,0.s) (success)
+Params: n= 200
+Tactic call refine-regression-quadratic-regression-linear ran for 0.001 secs (0.001u,0.s) (success)
+Tactic call pose-build-and-refine-regression-cubic ran for 0.112 secs (0.108u,0.003s) (success)
+Tactic call fast_rewrite-regression-cubic ran for 0.112 secs (0.108u,0.003s) (success)
+Params: n= 250
+Tactic call refine-regression-quadratic-regression-linear ran for 0.001 secs (0.001u,0.s) (success)
+Tactic call pose-build-and-refine-regression-cubic ran for 0.167 secs (0.167u,0.s) (success)
+Tactic call fast_rewrite-regression-cubic ran for 0.167 secs (0.167u,0.s) (success)
+Params: n= 300
+Tactic call refine-regression-quadratic-regression-linear ran for 0.002 secs (0.002u,0.s) (success)
+Tactic call pose-build-and-refine-regression-cubic ran for 0.213 secs (0.21u,0.003s) (success)
+Tactic call fast_rewrite-regression-cubic ran for 0.213 secs (0.21u,0.003s) (success)
+Params: n= 350
+Tactic call refine-regression-quadratic-regression-linear ran for 0.002 secs (0.002u,0.s) (success)
+Tactic call pose-build-and-refine-regression-cubic ran for 0.253 secs (0.252u,0.s) (success)
+Tactic call fast_rewrite-regression-cubic ran for 0.253 secs (0.253u,0.s) (success)
+Params: n= 400
+Tactic call refine-regression-quadratic-regression-linear ran for 0.002 secs (0.002u,0.s) (success)
+Tactic call pose-build-and-refine-regression-cubic ran for 0.396 secs (0.392u,0.003s) (success)
+Tactic call fast_rewrite-regression-cubic ran for 0.396 secs (0.392u,0.003s) (success)

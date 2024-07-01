@@ -1,0 +1,10 @@
+Params: n= 2013
+Tactic call vm_compute-regression-quadratic ran for 0.078 secs (0.077u,0.s) (success)
+Params: n= 4024
+Tactic call vm_compute-regression-quadratic ran for 0.222 secs (0.222u,0.s) (success)
+Params: n= 6034
+Tactic call vm_compute-regression-quadratic ran for 0.482 secs (0.482u,0.s) (success)
+Params: n= 8045
+Tactic call vm_compute-regression-quadratic ran for 0.854 secs (0.853u,0.s) (success)
+Params: n= 10056
+Tactic call vm_compute-regression-quadratic ran for 1.319 secs (1.315u,0.003s) (success)

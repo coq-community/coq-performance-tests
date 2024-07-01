@@ -1,0 +1,12 @@
+Params: n= 50
+Tactic call repeat-setoid_rewrite-regression-cubic ran for 0.231 secs (0.231u,0.s) (success)
+Tactic call noop-repeat-setoid_rewrite-regression-cubic ran for 0.074 secs (0.074u,0.s) (success)
+Params: n= 100
+Tactic call repeat-setoid_rewrite-regression-cubic ran for 1.193 secs (1.186u,0.007s) (success)
+Tactic call noop-repeat-setoid_rewrite-regression-cubic ran for 0.503 secs (0.503u,0.s) (success)
+Params: n= 150
+Tactic call repeat-setoid_rewrite-regression-cubic ran for 3.67 secs (3.67u,0.s) (success)
+Tactic call noop-repeat-setoid_rewrite-regression-cubic ran for 1.651 secs (1.651u,0.s) (success)
+Params: n= 200
+Tactic call repeat-setoid_rewrite-regression-cubic ran for 8.316 secs (8.307u,0.007s) (success)
+Tactic call noop-repeat-setoid_rewrite-regression-cubic ran for 4.068 secs (4.067u,0.s) (success)

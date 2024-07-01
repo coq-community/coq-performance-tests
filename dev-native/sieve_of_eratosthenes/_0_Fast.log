@@ -1,0 +1,238 @@
+Params: n= 41
+Tactic call vm_compute-regression-quadratic ran for 0. secs (0.u,0.s) (success)
+Params: n= 80
+Tactic call vm_compute-regression-quadratic ran for 0. secs (0.u,0.s) (success)
+Params: n= 120
+Tactic call vm_compute-regression-quadratic ran for 0. secs (0.u,0.s) (success)
+Params: n= 159
+Tactic call vm_compute-regression-quadratic ran for 0. secs (0.u,0.s) (success)
+Params: n= 198
+Tactic call vm_compute-regression-quadratic ran for 0.001 secs (0.001u,0.s) (success)
+Params: n= 237
+Tactic call vm_compute-regression-quadratic ran for 0.001 secs (0.001u,0.s) (success)
+Params: n= 276
+Tactic call vm_compute-regression-quadratic ran for 0.001 secs (0.001u,0.s) (success)
+Params: n= 316
+Tactic call vm_compute-regression-quadratic ran for 0.002 secs (0.002u,0.s) (success)
+Params: n= 355
+Tactic call vm_compute-regression-quadratic ran for 0.002 secs (0.002u,0.s) (success)
+Params: n= 394
+Tactic call vm_compute-regression-quadratic ran for 0.003 secs (0.003u,0.s) (success)
+Params: n= 433
+Tactic call vm_compute-regression-quadratic ran for 0.004 secs (0.004u,0.s) (success)
+Params: n= 472
+Tactic call vm_compute-regression-quadratic ran for 0.004 secs (0.004u,0.s) (success)
+Params: n= 511
+Tactic call vm_compute-regression-quadratic ran for 0.004 secs (0.004u,0.s) (success)
+Params: n= 551
+Tactic call vm_compute-regression-quadratic ran for 0.005 secs (0.005u,0.s) (success)
+Params: n= 590
+Tactic call vm_compute-regression-quadratic ran for 0.006 secs (0.006u,0.s) (success)
+Params: n= 629
+Tactic call vm_compute-regression-quadratic ran for 0.006 secs (0.006u,0.s) (success)
+Params: n= 668
+Tactic call vm_compute-regression-quadratic ran for 0.007 secs (0.007u,0.s) (success)
+Params: n= 707
+Tactic call vm_compute-regression-quadratic ran for 0.013 secs (0.013u,0.s) (success)
+Params: n= 747
+Tactic call vm_compute-regression-quadratic ran for 0.009 secs (0.009u,0.s) (success)
+Params: n= 786
+Tactic call vm_compute-regression-quadratic ran for 0.01 secs (0.01u,0.s) (success)
+Params: n= 825
+Tactic call vm_compute-regression-quadratic ran for 0.01 secs (0.01u,0.s) (success)
+Params: n= 864
+Tactic call vm_compute-regression-quadratic ran for 0.012 secs (0.012u,0.s) (success)
+Params: n= 903
+Tactic call vm_compute-regression-quadratic ran for 0.012 secs (0.012u,0.s) (success)
+Params: n= 943
+Tactic call vm_compute-regression-quadratic ran for 0.014 secs (0.014u,0.s) (success)
+Params: n= 982
+Tactic call vm_compute-regression-quadratic ran for 0.014 secs (0.014u,0.s) (success)
+Params: n= 1021
+Tactic call vm_compute-regression-quadratic ran for 0.016 secs (0.016u,0.s) (success)
+Params: n= 1060
+Tactic call vm_compute-regression-quadratic ran for 0.017 secs (0.017u,0.s) (success)
+Params: n= 1099
+Tactic call vm_compute-regression-quadratic ran for 0.029 secs (0.029u,0.s) (success)
+Params: n= 1138
+Tactic call vm_compute-regression-quadratic ran for 0.019 secs (0.019u,0.s) (success)
+Params: n= 1178
+Tactic call vm_compute-regression-quadratic ran for 0.02 secs (0.02u,0.s) (success)
+Params: n= 1217
+Tactic call vm_compute-regression-quadratic ran for 0.021 secs (0.021u,0.s) (success)
+Params: n= 1256
+Tactic call vm_compute-regression-quadratic ran for 0.023 secs (0.023u,0.s) (success)
+Params: n= 1295
+Tactic call vm_compute-regression-quadratic ran for 0.024 secs (0.024u,0.s) (success)
+Params: n= 1334
+Tactic call vm_compute-regression-quadratic ran for 0.026 secs (0.026u,0.s) (success)
+Params: n= 1374
+Tactic call vm_compute-regression-quadratic ran for 0.032 secs (0.032u,0.s) (success)
+Params: n= 1413
+Tactic call vm_compute-regression-quadratic ran for 0.029 secs (0.029u,0.s) (success)
+Params: n= 1452
+Tactic call vm_compute-regression-quadratic ran for 0.03 secs (0.03u,0.s) (success)
+Params: n= 1491
+Tactic call vm_compute-regression-quadratic ran for 0.032 secs (0.032u,0.s) (success)
+Params: n= 1530
+Tactic call vm_compute-regression-quadratic ran for 0.033 secs (0.033u,0.s) (success)
+Params: n= 1570
+Tactic call vm_compute-regression-quadratic ran for 0.035 secs (0.035u,0.s) (success)
+Params: n= 1609
+Tactic call vm_compute-regression-quadratic ran for 0.036 secs (0.036u,0.s) (success)
+Params: n= 1648
+Tactic call vm_compute-regression-quadratic ran for 0.038 secs (0.038u,0.s) (success)
+Params: n= 1687
+Tactic call vm_compute-regression-quadratic ran for 0.04 secs (0.04u,0.s) (success)
+Params: n= 1726
+Tactic call vm_compute-regression-quadratic ran for 0.042 secs (0.042u,0.s) (success)
+Params: n= 1765
+Tactic call vm_compute-regression-quadratic ran for 0.043 secs (0.043u,0.s) (success)
+Params: n= 1805
+Tactic call vm_compute-regression-quadratic ran for 0.045 secs (0.045u,0.s) (success)
+Params: n= 1844
+Tactic call vm_compute-regression-quadratic ran for 0.048 secs (0.048u,0.s) (success)
+Params: n= 1883
+Tactic call vm_compute-regression-quadratic ran for 0.119 secs (0.119u,0.s) (success)
+Params: n= 1922
+Tactic call vm_compute-regression-quadratic ran for 0.052 secs (0.052u,0.s) (success)
+Params: n= 1961
+Tactic call vm_compute-regression-quadratic ran for 0.053 secs (0.053u,0.s) (success)
+Params: n= 2001
+Tactic call vm_compute-regression-quadratic ran for 0.057 secs (0.057u,0.s) (success)
+Params: n= 2040
+Tactic call vm_compute-regression-quadratic ran for 0.056 secs (0.056u,0.s) (success)
+Params: n= 2079
+Tactic call vm_compute-regression-quadratic ran for 0.059 secs (0.059u,0.s) (success)
+Params: n= 2118
+Tactic call vm_compute-regression-quadratic ran for 0.1 secs (0.1u,0.s) (success)
+Params: n= 2157
+Tactic call vm_compute-regression-quadratic ran for 0.061 secs (0.061u,0.s) (success)
+Params: n= 2197
+Tactic call vm_compute-regression-quadratic ran for 0.063 secs (0.063u,0.s) (success)
+Params: n= 2236
+Tactic call vm_compute-regression-quadratic ran for 0.068 secs (0.064u,0.003s) (success)
+Params: n= 2275
+Tactic call vm_compute-regression-quadratic ran for 0.066 secs (0.066u,0.s) (success)
+Params: n= 2314
+Tactic call vm_compute-regression-quadratic ran for 0.081 secs (0.081u,0.s) (success)
+Params: n= 2353
+Tactic call vm_compute-regression-quadratic ran for 0.075 secs (0.075u,0.s) (success)
+Params: n= 2392
+Tactic call vm_compute-regression-quadratic ran for 0.077 secs (0.077u,0.s) (success)
+Params: n= 2432
+Tactic call vm_compute-regression-quadratic ran for 0.08 secs (0.08u,0.s) (success)
+Params: n= 2471
+Tactic call vm_compute-regression-quadratic ran for 0.083 secs (0.083u,0.s) (success)
+Params: n= 2510
+Tactic call vm_compute-regression-quadratic ran for 0.081 secs (0.081u,0.s) (success)
+Params: n= 2549
+Tactic call vm_compute-regression-quadratic ran for 0.087 secs (0.087u,0.s) (success)
+Params: n= 2588
+Tactic call vm_compute-regression-quadratic ran for 0.09 secs (0.09u,0.s) (success)
+Params: n= 2628
+Tactic call vm_compute-regression-quadratic ran for 0.093 secs (0.093u,0.s) (success)
+Params: n= 2667
+Tactic call vm_compute-regression-quadratic ran for 0.101 secs (0.101u,0.s) (success)
+Params: n= 2706
+Tactic call vm_compute-regression-quadratic ran for 0.097 secs (0.097u,0.s) (success)
+Params: n= 2745
+Tactic call vm_compute-regression-quadratic ran for 0.103 secs (0.103u,0.s) (success)
+Params: n= 2784
+Tactic call vm_compute-regression-quadratic ran for 0.109 secs (0.109u,0.s) (success)
+Params: n= 2824
+Tactic call vm_compute-regression-quadratic ran for 0.101 secs (0.101u,0.s) (success)
+Params: n= 2863
+Tactic call vm_compute-regression-quadratic ran for 0.111 secs (0.111u,0.s) (success)
+Params: n= 2902
+Tactic call vm_compute-regression-quadratic ran for 0.112 secs (0.112u,0.s) (success)
+Params: n= 2941
+Tactic call vm_compute-regression-quadratic ran for 0.116 secs (0.115u,0.s) (success)
+Params: n= 2980
+Tactic call vm_compute-regression-quadratic ran for 0.187 secs (0.187u,0.s) (success)
+Params: n= 3019
+Tactic call vm_compute-regression-quadratic ran for 0.115 secs (0.115u,0.s) (success)
+Params: n= 3059
+Tactic call vm_compute-regression-quadratic ran for 0.123 secs (0.123u,0.s) (success)
+Params: n= 3098
+Tactic call vm_compute-regression-quadratic ran for 0.16 secs (0.16u,0.s) (success)
+Params: n= 3137
+Tactic call vm_compute-regression-quadratic ran for 0.124 secs (0.124u,0.s) (success)
+Params: n= 3268
+Tactic call vm_compute-regression-quadratic ran for 0.141 secs (0.141u,0.s) (success)
+Params: n= 3398
+Tactic call vm_compute-regression-quadratic ran for 0.159 secs (0.159u,0.s) (success)
+Params: n= 3529
+Tactic call vm_compute-regression-quadratic ran for 0.156 secs (0.156u,0.s) (success)
+Params: n= 3660
+Tactic call vm_compute-regression-quadratic ran for 0.168 secs (0.164u,0.003s) (success)
+Params: n= 3790
+Tactic call vm_compute-regression-quadratic ran for 0.179 secs (0.179u,0.s) (success)
+Params: n= 3921
+Tactic call vm_compute-regression-quadratic ran for 0.201 secs (0.197u,0.003s) (success)
+Params: n= 4052
+Tactic call vm_compute-regression-quadratic ran for 0.214 secs (0.214u,0.s) (success)
+Params: n= 4182
+Tactic call vm_compute-regression-quadratic ran for 0.222 secs (0.222u,0.s) (success)
+Params: n= 4313
+Tactic call vm_compute-regression-quadratic ran for 0.226 secs (0.226u,0.s) (success)
+Params: n= 4444
+Tactic call vm_compute-regression-quadratic ran for 0.238 secs (0.238u,0.s) (success)
+Params: n= 4574
+Tactic call vm_compute-regression-quadratic ran for 0.333 secs (0.333u,0.s) (success)
+Params: n= 4705
+Tactic call vm_compute-regression-quadratic ran for 0.317 secs (0.314u,0.003s) (success)
+Params: n= 4836
+Tactic call vm_compute-regression-quadratic ran for 0.296 secs (0.296u,0.s) (success)
+Params: n= 4966
+Tactic call vm_compute-regression-quadratic ran for 0.313 secs (0.313u,0.s) (success)
+Params: n= 5097
+Tactic call vm_compute-regression-quadratic ran for 0.327 secs (0.327u,0.s) (success)
+Params: n= 5228
+Tactic call vm_compute-regression-quadratic ran for 0.342 secs (0.342u,0.s) (success)
+Params: n= 5358
+Tactic call vm_compute-regression-quadratic ran for 0.365 secs (0.365u,0.s) (success)
+Params: n= 5489
+Tactic call vm_compute-regression-quadratic ran for 0.381 secs (0.381u,0.s) (success)
+Params: n= 5620
+Tactic call vm_compute-regression-quadratic ran for 0.376 secs (0.376u,0.s) (success)
+Params: n= 5750
+Tactic call vm_compute-regression-quadratic ran for 0.419 secs (0.419u,0.s) (success)
+Params: n= 5881
+Tactic call vm_compute-regression-quadratic ran for 0.439 secs (0.439u,0.s) (success)
+Params: n= 6012
+Tactic call vm_compute-regression-quadratic ran for 0.432 secs (0.432u,0.s) (success)
+Params: n= 6142
+Tactic call vm_compute-regression-quadratic ran for 0.45 secs (0.45u,0.s) (success)
+Params: n= 6273
+Tactic call vm_compute-regression-quadratic ran for 0.468 secs (0.468u,0.s) (success)
+Params: n= 6900
+Tactic call vm_compute-regression-quadratic ran for 0.563 secs (0.563u,0.s) (success)
+Params: n= 7527
+Tactic call vm_compute-regression-quadratic ran for 0.665 secs (0.661u,0.003s) (success)
+Params: n= 8154
+Tactic call vm_compute-regression-quadratic ran for 0.784 secs (0.784u,0.s) (success)
+Params: n= 8781
+Tactic call vm_compute-regression-quadratic ran for 0.899 secs (0.899u,0.s) (success)
+Params: n= 9409
+Tactic call vm_compute-regression-quadratic ran for 1.017 secs (1.017u,0.s) (success)
+Params: n= 10036
+Tactic call vm_compute-regression-quadratic ran for 1.086 secs (1.086u,0.s) (success)
+Params: n= 10663
+Tactic call vm_compute-regression-quadratic ran for 1.336 secs (1.336u,0.s) (success)
+Params: n= 11290
+Tactic call vm_compute-regression-quadratic ran for 1.54 secs (1.54u,0.s) (success)
+Params: n= 11917
+Tactic call vm_compute-regression-quadratic ran for 1.708 secs (1.708u,0.s) (success)
+Params: n= 12544
+Tactic call vm_compute-regression-quadratic ran for 1.802 secs (1.802u,0.s) (success)
+Params: n= 15052
+Tactic call vm_compute-regression-quadratic ran for 2.711 secs (2.711u,0.s) (success)
+Params: n= 17561
+Tactic call vm_compute-regression-quadratic ran for 3.582 secs (3.582u,0.s) (success)
+Params: n= 20069
+Tactic call vm_compute-regression-quadratic ran for 4.843 secs (4.843u,0.s) (success)
+Params: n= 22578
+Tactic call vm_compute-regression-quadratic ran for 6.161 secs (6.157u,0.003s) (success)
+Params: n= 25086
+Tactic call vm_compute-regression-quadratic ran for 7.412 secs (7.412u,0.s) (success)

@@ -1,0 +1,52 @@
+version: 4.13.1
+standard_library_default: /home/coq/.opam/4.13.1/lib/ocaml
+standard_library: /home/coq/.opam/4.13.1/lib/ocaml
+ccomp_type: cc
+c_compiler: gcc
+ocamlc_cflags: -O2 -fno-strict-aliasing -fwrapv -pthread -fPIC 
+ocamlc_cppflags: -D_FILE_OFFSET_BITS=64 
+ocamlopt_cflags: -O2 -fno-strict-aliasing -fwrapv -pthread -fPIC 
+ocamlopt_cppflags: -D_FILE_OFFSET_BITS=64 
+bytecomp_c_compiler: gcc -O2 -fno-strict-aliasing -fwrapv -pthread -fPIC  -D_FILE_OFFSET_BITS=64 
+native_c_compiler: gcc -O2 -fno-strict-aliasing -fwrapv -pthread -fPIC  -D_FILE_OFFSET_BITS=64 
+bytecomp_c_libraries: -lm -ldl  -lpthread
+native_c_libraries: -lm -ldl 
+native_pack_linker: ld -r -o 
+ranlib: ranlib
+architecture: amd64
+model: default
+int_size: 63
+word_size: 64
+system: linux
+asm: as
+asm_cfi_supported: true
+with_frame_pointers: false
+ext_exe: 
+ext_obj: .o
+ext_asm: .s
+ext_lib: .a
+ext_dll: .so
+os_type: Unix
+default_executable_name: a.out
+systhread_supported: true
+host: x86_64-pc-linux-gnu
+target: x86_64-pc-linux-gnu
+flambda: false
+safe_string: true
+default_safe_string: true
+flat_float_array: true
+function_sections: true
+afl_instrument: false
+windows_unicode: false
+supports_shared_libraries: true
+exec_magic_number: Caml1999X030
+cmi_magic_number: Caml1999I030
+cmo_magic_number: Caml1999O030
+cma_magic_number: Caml1999A030
+cmx_magic_number: Caml1999Y030
+cmxa_magic_number: Caml1999Z030
+ast_impl_magic_number: Caml1999M030
+ast_intf_magic_number: Caml1999N030
+cmxs_magic_number: Caml1999D030
+cmt_magic_number: Caml1999T030
+linear_magic_number: Caml1999L030
