@@ -1,6 +1,6 @@
 (** * performance of rewrite/rewrite_strat under binders *)
-Require Import Coq.Classes.Morphisms.
-Require Import Coq.Setoids.Setoid.
+From Coq Require Import Morphisms.
+From Coq Require Import Setoid.
 
 Module Type LetInT.
   Parameter Let_In : forall {A P} (x : A) (f : forall a : A, P a), P x.

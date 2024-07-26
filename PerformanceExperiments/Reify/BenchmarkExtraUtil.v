@@ -1,5 +1,5 @@
-Require Import Coq.Lists.List.
-Require Import Coq.NArith.NArith.
+From Coq Require Import List.
+From Coq Require Import NArith.
 Require Import PerformanceExperiments.Sandbox.
 Require Import Reify.ReifyCommon.
 Require Import Reify.PHOASUtil.

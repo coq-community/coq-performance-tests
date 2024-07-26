@@ -1,6 +1,6 @@
 (* -*- coqchk-prog-args: ("-bytecode-compiler" "yes") -*- *)
-Require Import Coq.ZArith.ZArith.
-Require Import Coq.micromega.Lia.
+From Coq Require Import ZArith.
+From Coq Require Import Lia.
 Open Scope Z_scope.
 
 (** Add [Z.to_euclidean_division_equations] to the end of [zify], just for this

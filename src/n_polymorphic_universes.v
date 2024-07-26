@@ -1,4 +1,4 @@
-Require Import Coq.ZArith.ZArith.
+From Coq Require Import ZArith.
 Local Open Scope Z_scope.
 Set Universe Polymorphism.
 Record prod A B := pair { fst : A ; snd : B }.

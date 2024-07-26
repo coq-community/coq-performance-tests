@@ -1,5 +1,5 @@
 (** * Define a primitive pairing type *)
-Require Import Coq.Classes.Morphisms.
+From Coq Require Import Morphisms.
 
 Local Set Primitive Projections.
 

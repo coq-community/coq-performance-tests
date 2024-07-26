@@ -1,4 +1,4 @@
-Require Import Coq.ZArith.ZArith.
+From Coq Require Import ZArith.
 Require Import PerformanceExperiments.Harness.
 Global Open Scope Z_scope.
 Set Universe Polymorphism.

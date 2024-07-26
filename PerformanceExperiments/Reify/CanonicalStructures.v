@@ -1,7 +1,7 @@
 (** * Canonical-structure based reification *)
 Require Import Reify.ReifyCommon.
-Require Import Coq.Lists.List.
-Require Import Coq.NArith.NArith.
+From Coq Require Import List.
+From Coq Require Import NArith.
 Require Import PerformanceExperiments.Harness.
 Require Import Reify.BenchmarkExtraUtil.
 Require Import Reify.CanonicalStructuresReifyCommon.

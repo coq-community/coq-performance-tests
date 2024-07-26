@@ -1,4 +1,4 @@
-Require Export Coq.ZArith.ZArith.
+From Coq Require Export ZArith.
 Require Import PerformanceExperiments.Harness.
 Require Export PerformanceExperiments.rewrite_repeated_app_common.
 
@@ -12,7 +12,7 @@ Definition args_of_size (s : size) : list nat
      | VerySlow => []
      end.
 
-Require Import Coq.ssr.ssreflect.
+From Coq Require Import ssreflect.
 Ltac do_ssr_rewrite_bang := try rewrite !f'g'.
 Ltac do_ssr_rewrite_once := try rewrite f'g'.
 Ltac do_ssr_rewrite_ques := try rewrite ?f'g'.

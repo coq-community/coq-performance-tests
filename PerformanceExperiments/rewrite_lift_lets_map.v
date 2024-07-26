@@ -1,9 +1,9 @@
-Require Import Coq.micromega.Lia.
-Require Import Coq.ZArith.ZArith.
-Require Import Coq.QArith.QArith.
-Require Import Coq.Classes.Morphisms.
-Require Import Coq.Setoids.Setoid.
-Require Import Coq.Lists.List.
+From Coq Require Import Lia.
+From Coq Require Import ZArith.
+From Coq Require Import QArith.
+From Coq Require Import Morphisms.
+From Coq Require Import Setoid.
+From Coq Require Import List.
 Require Import PerformanceExperiments.Harness.
 Require PerformanceExperiments.Sample.
 Require Export PerformanceExperiments.LetIn PerformanceExperiments.ListRectInstances.

@@ -1,5 +1,5 @@
 (** * Various utilities for benchmarking *)
-Require Import Coq.NArith.NArith. (* for Pos.iter_op and Z.of_nat *)
+From Coq Require Import NArith. (* for Pos.iter_op and Z.of_nat *)
 Require Import Reify.Common.
 Require Reify.PHOAS.
 Require Import Reify.PHOASUtil.

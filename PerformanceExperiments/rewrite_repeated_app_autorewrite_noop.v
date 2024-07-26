@@ -20,7 +20,7 @@ Ltac do_rewrite_ques := try rewrite ?fg.
 Ltac do_rewrite_bang_evar := try rewrite !(fg _).
 Ltac do_rewrite_once_evar := try rewrite (fg _).
 Ltac do_rewrite_ques_evar := try rewrite ?(fg _).
-Require Import Coq.ssr.ssreflect.
+From Coq Require Import ssreflect.
 Ltac do_ssr_rewrite_bang := try rewrite !fg.
 Ltac do_ssr_rewrite_once := try rewrite fg.
 Ltac do_ssr_rewrite_ques := try rewrite ?fg.
