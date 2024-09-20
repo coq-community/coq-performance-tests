@@ -123,6 +123,7 @@ jobs:
     - name: Aggregate generated files for debugging if job failed
       if: ${{ failure() }}
       run: |
+        sudo chmod -R a+rw PerformanceExperiments/ src/ plots/
         git ls-files --others -z PerformanceExperiments/ src/ plots/ | xargs -0 tar -czvf generated-files.tar.gz
     - name: Upload generated files for debugging if job failed
       if: ${{ failure() }}
