@@ -120,12 +120,16 @@ jobs:
       with:
         name: ${{ matrix.COQ_VERSION }}
         path: doc-build/${{ matrix.COQ_VERSION }}
-    - name: Upload PerformanceExperiments for debugging if job failed
+    - name: Aggregate generated files for debugging if job failed
+      if: ${{ failure() }}
+      run: |
+        git ls-files --others -z PerformanceExperiments/ src/ plots/ | xargs -0 tar -czvf generated-files.tar.gz
+    - name: Upload generated files for debugging if job failed
       if: ${{ failure() }}
       uses: actions/upload-artifact@v4
       with:
-        name: PerformanceExperiments-${{ matrix.COQ_VERSION }}
-        path: PerformanceExperiments/
+        name: generated-files-${{ matrix.COQ_VERSION }}
+        path: generated-files.tar.gz
 
   check-all:
     runs-on: ubuntu-latest
