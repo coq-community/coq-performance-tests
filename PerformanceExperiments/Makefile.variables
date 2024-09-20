@@ -1,7 +1,12 @@
+PYTHON?=python
 PERF_LIB:=CoqPerformanceTests.PerformanceExperiments
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 PERF_ABS_DIR := $(patsubst %/,%,$(dir $(mkfile_path)))
+ifeq (0,$(shell realpath --help 2>&1 | grep -c -- --relative-to)) # Mac
+PERF_DIR := $(shell $(PYTHON) -c "import os; print(os.path.relpath('$(PERF_ABS_DIR)', os.getcwd()))")
+else
 PERF_DIR:=$(shell realpath --relative-to . $(PERF_ABS_DIR))
+endif
 
 include $(PERF_ABS_DIR)/Makefile.variables.kinds
 
