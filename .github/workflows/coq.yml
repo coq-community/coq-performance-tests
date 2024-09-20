@@ -120,6 +120,12 @@ jobs:
       with:
         name: ${{ matrix.COQ_VERSION }}
         path: doc-build/${{ matrix.COQ_VERSION }}
+    - name: Upload PerformanceExperiments for debugging if job failed
+      if: ${{ failure() }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: PerformanceExperiments-${{ matrix.COQ_VERSION }}
+        path: PerformanceExperiments/
 
   check-all:
     runs-on: ubuntu-latest
