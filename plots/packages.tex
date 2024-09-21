@@ -272,7 +272,7 @@
       }%
       \dosavetable
       \everyeof{\noexpand}%
-      \def\par{^^J}%
+      \endlinechar=`^^J%
       \obeylines
       \makeatletter
       \xdef\pgfplotstable@gnu@table{\@@input \addplotfunctionalregression@tablename\space}%
