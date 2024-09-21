@@ -1,9 +1,9 @@
-Require Import Coq.micromega.Lia.
-Require Import Coq.ZArith.ZArith.
-Require Import Coq.QArith.QArith.
-Require Import Coq.Classes.Morphisms.
-Require Import Coq.Setoids.Setoid.
-Require Import Coq.Lists.List.
+From Coq Require Import Lia.
+From Coq Require Import ZArith.
+From Coq Require Import QArith.
+From Coq Require Import Morphisms.
+From Coq Require Import Setoid.
+From Coq Require Import List.
 Require Import PerformanceExperiments.Harness.
 Require PerformanceExperiments.Sample.
 Import ListNotations.
@@ -91,7 +91,7 @@ Local Instance Z_prod_has_compress : Sample.has_compress (Z * Z) Z := size_of_ar
 Local Instance Z_prod_has_make : Sample.has_make (Z * Z) Z := { make_T := invert_size_of_arg_dumb ; make_T_correct := invert_size_of_arg_dumb_correct }.
 
 Module Import instances.
-  Import Coq.QArith.QArith Coq.QArith.Qround Coq.QArith.Qabs Coq.QArith.Qminmax.
+  Import QArith Qround Qabs Qminmax.
   Import Sample.
   Local Open Scope Z_scope.
   Local Set Warnings Append "-ambiguous-paths".
@@ -346,7 +346,7 @@ Hint Rewrite Z.add_0_r : mydb.
 
 Ltac do_coq_rewrite _ := rewrite -> !Z.add_0_r.
 
-Require Import Coq.ssr.ssreflect.
+From Coq Require Import ssreflect.
 
 Ltac do_ssr_rewrite _ := rewrite !Z.add_0_r.
 

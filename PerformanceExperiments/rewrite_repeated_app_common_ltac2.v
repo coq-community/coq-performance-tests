@@ -1,4 +1,4 @@
-Require Import Coq.Setoids.Setoid Coq.Classes.Morphisms.
+From Coq Require Import Setoid Morphisms.
 Require Export PerformanceExperiments.rewrite_repeated_app_common.
 Require Import Ltac2.Ltac2.
 Require Import Ltac2.Constr.

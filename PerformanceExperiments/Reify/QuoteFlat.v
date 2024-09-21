@@ -1,7 +1,7 @@
 (** * Reification by the quote plugin *)
-Require Import Coq.quote.Quote.
+From Coq Require Import Quote.
 Require Import Reify.ReifyCommon.
-Require Import Coq.NArith.NArith.
+From Coq Require Import NArith.
 Require Import PerformanceExperiments.Harness.
 Require Import Reify.BenchmarkExtraUtil.
 

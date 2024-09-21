@@ -1,7 +1,7 @@
 (** * Reification in OCaml *)
 Require Import Reify.ReifyCommon.
 Require Import Reify.OCamlReify.
-Require Import Coq.NArith.NArith.
+From Coq Require Import NArith.
 Require Import PerformanceExperiments.Harness.
 Require Import Reify.BenchmarkExtraUtil.
 (** See [OCamlReify.v] and [reify_plugin.{ml4,mlg}] for the implementation code. *)

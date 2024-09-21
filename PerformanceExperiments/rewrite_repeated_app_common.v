@@ -1,5 +1,5 @@
-Require Import Coq.ZArith.ZArith.
-Require Import Coq.Setoids.Setoid Coq.Classes.Morphisms.
+From Coq Require Import ZArith.
+From Coq Require Import Setoid Morphisms.
 Local Open Scope core_scope.
 Axiom f : nat -> nat.
 Axiom g : nat -> nat.

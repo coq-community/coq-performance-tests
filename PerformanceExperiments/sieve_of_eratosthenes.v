@@ -1,9 +1,9 @@
-Require Import Coq.QArith.QArith.
-Require Import Coq.MSets.MSetPositive.
-Require Import Coq.Classes.Morphisms.
-Require Import Coq.Setoids.Setoid.
-Require Export Coq.ZArith.ZArith.
-Require Import Coq.Lists.List.
+From Coq Require Import QArith.
+From Coq Require Import MSetPositive.
+From Coq Require Import Morphisms.
+From Coq Require Import Setoid.
+From Coq Require Export ZArith.
+From Coq Require Import List.
 Require Import PerformanceExperiments.Harness.
 Require PerformanceExperiments.Sample.
 Import ListNotations.

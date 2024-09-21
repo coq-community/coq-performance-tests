@@ -1,8 +1,8 @@
-Require Import Coq.ZArith.ZArith.
-Require Import Coq.Lists.List.
-Require Import Coq.Setoids.Setoid.
-Require Import Coq.Classes.Morphisms.
-Require Import Coq.QArith.QArith_base Coq.QArith.Qreduction Coq.QArith.Qround.
+From Coq Require Import ZArith.
+From Coq Require Import List.
+From Coq Require Import Setoid.
+From Coq Require Import Morphisms.
+From Coq Require Import QArith_base Qreduction Qround.
 Import List.ListNotations.
 Local Open Scope Z_scope.
 Local Open Scope list_scope.

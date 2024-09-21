@@ -1,6 +1,6 @@
 (** * Reification by parametricity *)
 Require Import Reify.ReifyCommon.
-Require Import Coq.NArith.NArith.
+From Coq Require Import NArith.
 Require Import PerformanceExperiments.Harness.
 Require Import Reify.ParametricityCommon.
 Require Import Reify.BenchmarkExtraUtil.

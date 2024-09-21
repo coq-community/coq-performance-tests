@@ -12,7 +12,7 @@ Definition args_of_size (s : size) : list nat
      | VerySlow => []
      end.
 
-Require Import Coq.ssr.ssreflect.
+From Coq Require Import ssreflect.
 
 Ltac do_rewrite := rewrite !fg.
 
