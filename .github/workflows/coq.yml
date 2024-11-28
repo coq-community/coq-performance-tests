@@ -92,10 +92,18 @@ jobs:
           # Work around https://github.com/actions/checkout/issues/766
           git config --global --add safe.directory "*"
           startGroup 'make -j2 TIMED=1'
-          make -j2 TIMED=1
+          make -j2 TIMED=1 make-pretty-timed
+          cat time-of-build.log >> time-of-build-all.log
+          endGroup
+          startGroup 'make print-pretty-timed'
+          make print-pretty-timed
           endGroup
           startGroup 'make perf TIMED=1'
-          make perf TIMED=1
+          make TGTS="perf" TIMED=1 make-pretty-timed
+          cat time-of-build.log >> time-of-build-all.log
+          endGroup
+          startGroup 'make print-pretty-timed'
+          make print-pretty-timed
           endGroup
           startGroup 'make validate -j2'
           make validate -j2
@@ -114,6 +122,9 @@ jobs:
           endGroup
           startGroup 'make copy-pdf copy-doc OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"'
           make copy-pdf copy-doc OUTPUT="doc-build/${{ matrix.COQ_VERSION }}"
+          endGroup
+          startGroup 'make print-pretty-timed'
+          make print-pretty-timed TIME_OF_BUILD_FILE="time-of-build-all.log"
           endGroup
     - name: Upload artifact
       uses: actions/upload-artifact@v4
