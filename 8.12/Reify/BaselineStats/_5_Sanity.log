@@ -1,0 +1,24 @@
+Params: n= 1
+native_compute: Conversion to native code done in 0.00011
+native_compute: Compilation done in 0.06813
+native_compute: Evaluation done in 0.00026
+native_compute: Reification done in 0.00002
+Tactic call identity native_compute on PHOAS with big_flat ran for 0.068 secs (0.004u,0.s) (success)
+Params: n= 2
+native_compute: Conversion to native code done in 0.00012
+native_compute: Compilation done in 0.06387
+native_compute: Evaluation done in 0.00025
+native_compute: Reification done in 0.00003
+Tactic call identity native_compute on PHOAS with big_flat ran for 0.064 secs (0.u,0.003s) (success)
+Params: n= 3
+native_compute: Conversion to native code done in 0.00011
+native_compute: Compilation done in 0.06469
+native_compute: Evaluation done in 0.00024
+native_compute: Reification done in 0.00003
+Tactic call identity native_compute on PHOAS with big_flat ran for 0.065 secs (0.u,0.003s) (success)
+Params: n= 4
+native_compute: Conversion to native code done in 0.00012
+native_compute: Compilation done in 0.06472
+native_compute: Evaluation done in 0.00025
+native_compute: Reification done in 0.00003
+Tactic call identity native_compute on PHOAS with big_flat ran for 0.065 secs (0.u,0.003s) (success)
