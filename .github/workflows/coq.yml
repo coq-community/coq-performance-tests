@@ -174,7 +174,7 @@ jobs:
       - name: checkout repo (only required because of deploy step) # https://github.com/JamesIves/github-pages-deploy-action/issues/335
         uses: actions/checkout@v4
       - name: Install SSH Client 🔑
-        uses: webfactory/ssh-agent@v0.9.0
+        uses: webfactory/ssh-agent@v0.9.1
         with:
           ssh-private-key: ${{ secrets.HISTORY_DEPLOY_KEY }}
         if: github.ref == 'refs/heads/master' && ( github.event_name == 'push' || github.event_name == 'schedule' )
