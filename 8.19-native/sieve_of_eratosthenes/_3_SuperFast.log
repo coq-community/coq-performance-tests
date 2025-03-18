@@ -1,0 +1,10 @@
+Params: n= 292
+Tactic call lazy-regression-quadratic ran for 0.047 secs (0.047u,0.s) (success)
+Params: n= 583
+Tactic call lazy-regression-quadratic ran for 0.174 secs (0.173u,0.001s) (success)
+Params: n= 873
+Tactic call lazy-regression-quadratic ran for 0.485 secs (0.481u,0.004s) (success)
+Params: n= 1164
+Tactic call lazy-regression-quadratic ran for 0.894 secs (0.891u,0.003s) (success)
+Params: n= 1454
+Tactic call lazy-regression-quadratic ran for 1.193 secs (1.188u,0.004s) (success)

@@ -1,0 +1,16 @@
+Params: n= 50
+Tactic call setoid_rewrite-regression-cubic ran for 0.105 secs (0.097u,0.008s) (success)
+Tactic call abstract+setoid_rewrite-regression-cubic ran for 0.135 secs (0.126u,0.008s) (success)
+Tactic call close-abstract+setoid_rewrite-regression-quadratic ran for 0.029 secs (0.029u,0.s)
+Params: n= 100
+Tactic call setoid_rewrite-regression-cubic ran for 0.235 secs (0.234u,0.s) (success)
+Tactic call abstract+setoid_rewrite-regression-cubic ran for 0.301 secs (0.3u,0.s) (success)
+Tactic call close-abstract+setoid_rewrite-regression-quadratic ran for 0.065 secs (0.065u,0.s)
+Params: n= 150
+Tactic call setoid_rewrite-regression-cubic ran for 0.692 secs (0.686u,0.005s) (success)
+Tactic call abstract+setoid_rewrite-regression-cubic ran for 0.916 secs (0.91u,0.005s) (success)
+Tactic call close-abstract+setoid_rewrite-regression-quadratic ran for 0.223 secs (0.222u,0.s)
+Params: n= 200
+Tactic call setoid_rewrite-regression-cubic ran for 1.094 secs (1.092u,0.001s) (success)
+Tactic call abstract+setoid_rewrite-regression-cubic ran for 1.318 secs (1.314u,0.002s) (success)
+Tactic call close-abstract+setoid_rewrite-regression-quadratic ran for 0.222 secs (0.221u,0.s)

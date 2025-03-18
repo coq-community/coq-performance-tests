@@ -1,0 +1,10 @@
+Params: n= 458
+Tactic call cbv-regression-quadratic ran for 0.071 secs (0.071u,0.s) (success)
+Params: n= 914
+Tactic call cbv-regression-quadratic ran for 0.303 secs (0.303u,0.s) (success)
+Params: n= 1370
+Tactic call cbv-regression-quadratic ran for 0.547 secs (0.546u,0.s) (success)
+Params: n= 1826
+Tactic call cbv-regression-quadratic ran for 0.699 secs (0.699u,0.s) (success)
+Params: n= 2282
+Tactic call cbv-regression-quadratic ran for 1.065 secs (1.063u,0.001s) (success)

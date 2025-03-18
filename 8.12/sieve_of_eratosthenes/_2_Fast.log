@@ -1,0 +1,242 @@
+Params: n= 11
+Tactic call cbv-regression-quadratic ran for 0. secs (0.u,0.s) (success)
+Params: n= 19
+Tactic call cbv-regression-quadratic ran for 0. secs (0.u,0.s) (success)
+Params: n= 28
+Tactic call cbv-regression-quadratic ran for 0. secs (0.u,0.s) (success)
+Params: n= 36
+Tactic call cbv-regression-quadratic ran for 0. secs (0.u,0.s) (success)
+Params: n= 45
+Tactic call cbv-regression-quadratic ran for 0.001 secs (0.001u,0.s) (success)
+Params: n= 53
+Tactic call cbv-regression-quadratic ran for 0.001 secs (0.001u,0.s) (success)
+Params: n= 62
+Tactic call cbv-regression-quadratic ran for 0.002 secs (0.002u,0.s) (success)
+Params: n= 71
+Tactic call cbv-regression-quadratic ran for 0.002 secs (0.002u,0.s) (success)
+Params: n= 79
+Tactic call cbv-regression-quadratic ran for 0.003 secs (0.003u,0.s) (success)
+Params: n= 88
+Tactic call cbv-regression-quadratic ran for 0.003 secs (0.003u,0.s) (success)
+Params: n= 96
+Tactic call cbv-regression-quadratic ran for 0.003 secs (0.003u,0.s) (success)
+Params: n= 105
+Tactic call cbv-regression-quadratic ran for 0.004 secs (0.004u,0.s) (success)
+Params: n= 113
+Tactic call cbv-regression-quadratic ran for 0.032 secs (0.032u,0.s) (success)
+Params: n= 122
+Tactic call cbv-regression-quadratic ran for 0.005 secs (0.005u,0.s) (success)
+Params: n= 130
+Tactic call cbv-regression-quadratic ran for 0.006 secs (0.006u,0.s) (success)
+Params: n= 139
+Tactic call cbv-regression-quadratic ran for 0.007 secs (0.007u,0.s) (success)
+Params: n= 148
+Tactic call cbv-regression-quadratic ran for 0.008 secs (0.008u,0.s) (success)
+Params: n= 156
+Tactic call cbv-regression-quadratic ran for 0.008 secs (0.008u,0.s) (success)
+Params: n= 165
+Tactic call cbv-regression-quadratic ran for 0.009 secs (0.009u,0.s) (success)
+Params: n= 173
+Tactic call cbv-regression-quadratic ran for 0.011 secs (0.011u,0.s) (success)
+Params: n= 182
+Tactic call cbv-regression-quadratic ran for 0.01 secs (0.01u,0.s) (success)
+Params: n= 190
+Tactic call cbv-regression-quadratic ran for 0.011 secs (0.011u,0.s) (success)
+Params: n= 199
+Tactic call cbv-regression-quadratic ran for 0.012 secs (0.012u,0.s) (success)
+Params: n= 208
+Tactic call cbv-regression-quadratic ran for 0.013 secs (0.013u,0.s) (success)
+Params: n= 216
+Tactic call cbv-regression-quadratic ran for 0.014 secs (0.014u,0.s) (success)
+Params: n= 225
+Tactic call cbv-regression-quadratic ran for 0.016 secs (0.016u,0.s) (success)
+Params: n= 233
+Tactic call cbv-regression-quadratic ran for 0.016 secs (0.016u,0.s) (success)
+Params: n= 242
+Tactic call cbv-regression-quadratic ran for 0.017 secs (0.017u,0.s) (success)
+Params: n= 250
+Tactic call cbv-regression-quadratic ran for 0.017 secs (0.017u,0.s) (success)
+Params: n= 259
+Tactic call cbv-regression-quadratic ran for 0.019 secs (0.019u,0.s) (success)
+Params: n= 268
+Tactic call cbv-regression-quadratic ran for 0.02 secs (0.02u,0.s) (success)
+Params: n= 276
+Tactic call cbv-regression-quadratic ran for 0.021 secs (0.021u,0.s) (success)
+Params: n= 285
+Tactic call cbv-regression-quadratic ran for 0.021 secs (0.021u,0.s) (success)
+Params: n= 293
+Tactic call cbv-regression-quadratic ran for 0.022 secs (0.022u,0.s) (success)
+Params: n= 302
+Tactic call cbv-regression-quadratic ran for 0.023 secs (0.023u,0.s) (success)
+Params: n= 310
+Tactic call cbv-regression-quadratic ran for 0.025 secs (0.025u,0.s) (success)
+Params: n= 319
+Tactic call cbv-regression-quadratic ran for 0.026 secs (0.026u,0.s) (success)
+Params: n= 328
+Tactic call cbv-regression-quadratic ran for 0.026 secs (0.026u,0.s) (success)
+Params: n= 336
+Tactic call cbv-regression-quadratic ran for 0.028 secs (0.028u,0.s) (success)
+Params: n= 345
+Tactic call cbv-regression-quadratic ran for 0.029 secs (0.029u,0.s) (success)
+Params: n= 353
+Tactic call cbv-regression-quadratic ran for 0.03 secs (0.03u,0.s) (success)
+Params: n= 362
+Tactic call cbv-regression-quadratic ran for 0.031 secs (0.03u,0.s) (success)
+Params: n= 370
+Tactic call cbv-regression-quadratic ran for 0.034 secs (0.034u,0.s) (success)
+Params: n= 379
+Tactic call cbv-regression-quadratic ran for 0.037 secs (0.037u,0.s) (success)
+Params: n= 387
+Tactic call cbv-regression-quadratic ran for 0.038 secs (0.038u,0.s) (success)
+Params: n= 396
+Tactic call cbv-regression-quadratic ran for 0.04 secs (0.04u,0.s) (success)
+Params: n= 405
+Tactic call cbv-regression-quadratic ran for 0.041 secs (0.041u,0.s) (success)
+Params: n= 413
+Tactic call cbv-regression-quadratic ran for 0.042 secs (0.042u,0.s) (success)
+Params: n= 422
+Tactic call cbv-regression-quadratic ran for 0.044 secs (0.044u,0.s) (success)
+Params: n= 430
+Tactic call cbv-regression-quadratic ran for 0.045 secs (0.045u,0.s) (success)
+Params: n= 439
+Tactic call cbv-regression-quadratic ran for 0.047 secs (0.047u,0.s) (success)
+Params: n= 447
+Tactic call cbv-regression-quadratic ran for 0.049 secs (0.049u,0.s) (success)
+Params: n= 456
+Tactic call cbv-regression-quadratic ran for 0.05 secs (0.05u,0.s) (success)
+Params: n= 465
+Tactic call cbv-regression-quadratic ran for 0.053 secs (0.053u,0.s) (success)
+Params: n= 473
+Tactic call cbv-regression-quadratic ran for 0.053 secs (0.053u,0.s) (success)
+Params: n= 482
+Tactic call cbv-regression-quadratic ran for 0.055 secs (0.055u,0.s) (success)
+Params: n= 490
+Tactic call cbv-regression-quadratic ran for 0.057 secs (0.057u,0.s) (success)
+Params: n= 499
+Tactic call cbv-regression-quadratic ran for 0.059 secs (0.059u,0.s) (success)
+Params: n= 507
+Tactic call cbv-regression-quadratic ran for 0.063 secs (0.063u,0.s) (success)
+Params: n= 516
+Tactic call cbv-regression-quadratic ran for 0.066 secs (0.066u,0.s) (success)
+Params: n= 525
+Tactic call cbv-regression-quadratic ran for 0.066 secs (0.066u,0.s) (success)
+Params: n= 533
+Tactic call cbv-regression-quadratic ran for 0.065 secs (0.065u,0.s) (success)
+Params: n= 542
+Tactic call cbv-regression-quadratic ran for 0.067 secs (0.067u,0.s) (success)
+Params: n= 550
+Tactic call cbv-regression-quadratic ran for 0.069 secs (0.069u,0.s) (success)
+Params: n= 559
+Tactic call cbv-regression-quadratic ran for 0.074 secs (0.074u,0.s) (success)
+Params: n= 567
+Tactic call cbv-regression-quadratic ran for 0.079 secs (0.078u,0.s) (success)
+Params: n= 576
+Tactic call cbv-regression-quadratic ran for 0.078 secs (0.078u,0.s) (success)
+Params: n= 585
+Tactic call cbv-regression-quadratic ran for 0.077 secs (0.077u,0.s) (success)
+Params: n= 593
+Tactic call cbv-regression-quadratic ran for 0.077 secs (0.077u,0.s) (success)
+Params: n= 602
+Tactic call cbv-regression-quadratic ran for 0.079 secs (0.079u,0.s) (success)
+Params: n= 610
+Tactic call cbv-regression-quadratic ran for 0.083 secs (0.083u,0.s) (success)
+Params: n= 619
+Tactic call cbv-regression-quadratic ran for 0.085 secs (0.085u,0.s) (success)
+Params: n= 627
+Tactic call cbv-regression-quadratic ran for 0.091 secs (0.091u,0.s) (success)
+Params: n= 636
+Tactic call cbv-regression-quadratic ran for 0.094 secs (0.094u,0.s) (success)
+Params: n= 644
+Tactic call cbv-regression-quadratic ran for 0.092 secs (0.092u,0.s) (success)
+Params: n= 653
+Tactic call cbv-regression-quadratic ran for 0.096 secs (0.096u,0.s) (success)
+Params: n= 662
+Tactic call cbv-regression-quadratic ran for 0.1 secs (0.1u,0.s) (success)
+Params: n= 670
+Tactic call cbv-regression-quadratic ran for 0.101 secs (0.101u,0.s) (success)
+Params: n= 679
+Tactic call cbv-regression-quadratic ran for 0.103 secs (0.103u,0.s) (success)
+Params: n= 687
+Tactic call cbv-regression-quadratic ran for 0.104 secs (0.104u,0.s) (success)
+Params: n= 696
+Tactic call cbv-regression-quadratic ran for 0.103 secs (0.103u,0.s) (success)
+Params: n= 704
+Tactic call cbv-regression-quadratic ran for 0.106 secs (0.106u,0.s) (success)
+Params: n= 713
+Tactic call cbv-regression-quadratic ran for 0.113 secs (0.113u,0.s) (success)
+Params: n= 744
+Tactic call cbv-regression-quadratic ran for 0.12 secs (0.12u,0.s) (success)
+Params: n= 775
+Tactic call cbv-regression-quadratic ran for 0.128 secs (0.127u,0.s) (success)
+Params: n= 806
+Tactic call cbv-regression-quadratic ran for 0.148 secs (0.148u,0.s) (success)
+Params: n= 837
+Tactic call cbv-regression-quadratic ran for 0.151 secs (0.151u,0.s) (success)
+Params: n= 868
+Tactic call cbv-regression-quadratic ran for 0.16 secs (0.16u,0.s) (success)
+Params: n= 898
+Tactic call cbv-regression-quadratic ran for 0.163 secs (0.163u,0.s) (success)
+Params: n= 929
+Tactic call cbv-regression-quadratic ran for 0.174 secs (0.174u,0.s) (success)
+Params: n= 960
+Tactic call cbv-regression-quadratic ran for 0.186 secs (0.186u,0.s) (success)
+Params: n= 991
+Tactic call cbv-regression-quadratic ran for 0.202 secs (0.202u,0.s) (success)
+Params: n= 1022
+Tactic call cbv-regression-quadratic ran for 0.218 secs (0.218u,0.s) (success)
+Params: n= 1053
+Tactic call cbv-regression-quadratic ran for 0.232 secs (0.232u,0.s) (success)
+Params: n= 1084
+Tactic call cbv-regression-quadratic ran for 0.229 secs (0.229u,0.s) (success)
+Params: n= 1115
+Tactic call cbv-regression-quadratic ran for 0.244 secs (0.244u,0.s) (success)
+Params: n= 1146
+Tactic call cbv-regression-quadratic ran for 0.261 secs (0.261u,0.s) (success)
+Params: n= 1177
+Tactic call cbv-regression-quadratic ran for 0.277 secs (0.277u,0.s) (success)
+Params: n= 1208
+Tactic call cbv-regression-quadratic ran for 0.287 secs (0.287u,0.s) (success)
+Params: n= 1239
+Tactic call cbv-regression-quadratic ran for 0.308 secs (0.307u,0.s) (success)
+Params: n= 1269
+Tactic call cbv-regression-quadratic ran for 0.327 secs (0.327u,0.s) (success)
+Params: n= 1300
+Tactic call cbv-regression-quadratic ran for 0.337 secs (0.337u,0.s) (success)
+Params: n= 1331
+Tactic call cbv-regression-quadratic ran for 0.36 secs (0.36u,0.s) (success)
+Params: n= 1362
+Tactic call cbv-regression-quadratic ran for 0.358 secs (0.356u,0.001s) (success)
+Params: n= 1393
+Tactic call cbv-regression-quadratic ran for 0.384 secs (0.384u,0.s) (success)
+Params: n= 1424
+Tactic call cbv-regression-quadratic ran for 0.387 secs (0.387u,0.s) (success)
+Params: n= 1566
+Tactic call cbv-regression-quadratic ran for 0.474 secs (0.474u,0.s) (success)
+Params: n= 1709
+Tactic call cbv-regression-quadratic ran for 0.551 secs (0.551u,0.s) (success)
+Params: n= 1851
+Tactic call cbv-regression-quadratic ran for 0.656 secs (0.656u,0.s) (success)
+Params: n= 1993
+Tactic call cbv-regression-quadratic ran for 0.79 secs (0.789u,0.s) (success)
+Params: n= 2136
+Tactic call cbv-regression-quadratic ran for 0.91 secs (0.909u,0.s) (success)
+Params: n= 2278
+Tactic call cbv-regression-quadratic ran for 1.042 secs (1.041u,0.001s) (success)
+Params: n= 2420
+Tactic call cbv-regression-quadratic ran for 1.164 secs (1.163u,0.s) (success)
+Params: n= 2562
+Tactic call cbv-regression-quadratic ran for 1.253 secs (1.252u,0.s) (success)
+Params: n= 2705
+Tactic call cbv-regression-quadratic ran for 1.442 secs (1.442u,0.s) (success)
+Params: n= 2847
+Tactic call cbv-regression-quadratic ran for 1.584 secs (1.582u,0.001s) (success)
+Params: n= 3416
+Tactic call cbv-regression-quadratic ran for 2.255 secs (2.252u,0.002s) (success)
+Params: n= 3985
+Tactic call cbv-regression-quadratic ran for 3.029 secs (3.029u,0.s) (success)
+Params: n= 4555
+Tactic call cbv-regression-quadratic ran for 3.966 secs (3.965u,0.s) (success)
+Params: n= 5124
+Tactic call cbv-regression-quadratic ran for 5.062 secs (5.058u,0.003s) (success)
+Params: n= 5693
+Tactic call cbv-regression-quadratic ran for 6.14 secs (6.136u,0.004s) (success)

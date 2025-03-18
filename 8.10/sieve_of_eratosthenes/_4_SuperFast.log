@@ -1,0 +1,6 @@
+Params: n= 12
+Tactic call cbn-regression-cubic ran for 0.063 secs (0.063u,0.s) (success)
+Params: n= 15
+Tactic call cbn-regression-cubic ran for 0.156 secs (0.156u,0.s) (success)
+Params: n= 18
+Tactic call cbn-regression-cubic ran for 0.176 secs (0.176u,0.s) (success)

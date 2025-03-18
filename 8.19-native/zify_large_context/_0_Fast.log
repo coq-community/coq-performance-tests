@@ -1,0 +1,8 @@
+Params: n= 50
+Tactic call zify-big-context-regression-quadratic ran for 0.977 secs (0.966u,0.01s) (success)
+Params: n= 100
+Tactic call zify-big-context-regression-quadratic ran for 5.19 secs (5.188u,0.s) (success)
+Params: n= 150
+Tactic call zify-big-context-regression-quadratic ran for 17.898 secs (17.896u,0.001s) (success)
+Params: n= 200
+Tactic call zify-big-context-regression-quadratic ran for 42.974 secs (42.965u,0.005s) (success)

@@ -1,0 +1,15 @@
+Params: n= 1
+Tactic call rewrite_strat-topdown ran for 0.001 secs (0.001u,0.s) (success)
+Tactic call rewrite_strat-topdown-noop ran for 0. secs (0.u,0.s) (success)
+Tactic call abstract+rewrite_strat-topdown ran for 0.001 secs (0.001u,0.s) (success)
+Tactic call close-abstract+rewrite_strat-topdown ran for 0. secs (0.u,0.s)
+Params: n= 2
+Tactic call rewrite_strat-topdown ran for 0. secs (0.u,0.s) (success)
+Tactic call rewrite_strat-topdown-noop ran for 0. secs (0.u,0.s) (success)
+Tactic call abstract+rewrite_strat-topdown ran for 0. secs (0.u,0.s) (success)
+Tactic call close-abstract+rewrite_strat-topdown ran for 0. secs (0.u,0.s)
+Params: n= 3
+Tactic call rewrite_strat-topdown ran for 0. secs (0.u,0.s) (success)
+Tactic call rewrite_strat-topdown-noop ran for 0. secs (0.u,0.s) (success)
+Tactic call abstract+rewrite_strat-topdown ran for 0.001 secs (0.001u,0.s) (success)
+Tactic call close-abstract+rewrite_strat-topdown ran for 0. secs (0.u,0.s)

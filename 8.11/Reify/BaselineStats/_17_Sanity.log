@@ -1,0 +1,8 @@
+Params: n= 1
+Tactic call identity native_compute on PHOAS with big ran for 0.069 secs (0.u,0.003s) (success)
+Params: n= 2
+Tactic call identity native_compute on PHOAS with big ran for 0.065 secs (0.u,0.002s) (success)
+Params: n= 3
+Tactic call identity native_compute on PHOAS with big ran for 0.065 secs (0.001u,0.002s) (success)
+Params: n= 4
+Tactic call identity native_compute on PHOAS with big ran for 0.065 secs (0.u,0.002s) (success)
